@@ -117,6 +117,12 @@ export default function Treats() {
           <option value="priceHigh">Price ↓</option>
         </select>
       </div>
+      <button
+         
+          onClick={() => navigate("/add-cake")}
+        >
+          More
+        </button>
 
       {/* ===== PRODUCTS GRID ===== */}
       <div className="treats-grid">
