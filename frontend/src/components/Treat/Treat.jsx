@@ -35,14 +35,11 @@ export default function Treats() {
   /* -------- READ CATEGORY FROM URL -------- */
   useEffect(() => {
     const catFromUrl = searchParams.get("category");
-    if (catFromUrl) {
-      setCategory(catFromUrl);
-    } else {
-      setCategory("all");
-    }
+    setCategory(catFromUrl || "all");
+    setCurrentPage(1);
   }, [searchParams]);
 
-  /* ---------------- FILTER LOGIC ---------------- */
+  /* ---------------- FILTER + SORT ---------------- */
   const filteredProducts = products
     .filter((cake) => {
       if (category !== "all" && cake.category !== category) return false;
@@ -73,75 +70,8 @@ export default function Treats() {
   /* ---------------- UI ---------------- */
   return (
     <section className="treats-section">
-      {/* FILTER BAR */}
+      {/* ===== PREMIUM FILTER BAR ===== */}
       <div className="filter-bar">
-        <button
-          className={`filter-chip ${category === "all" ? "active" : ""}`}
-          onClick={() => setCategory("all")}
-        >
-          All
-        </button>
-
-        <button
-          className={`filter-chip ${category === "classic" ? "active" : ""}`}
-          onClick={() => setCategory("classic")}
-        >
-          Classic
-        </button>
-
-        <button
-          className={`filter-chip ${category === "desserts" ? "active" : ""}`}
-          onClick={() => setCategory("desserts")}
-        >
-          Desserts
-        </button>
-
-        <button
-          className={`filter-chip ${category === "brownies" ? "active" : ""}`}
-          onClick={() => setCategory("brownies")}
-        >
-          Brownies
-        </button>
-
-        <button
-          className={`filter-chip ${category === "designer" ? "active" : ""}`}
-          onClick={() => setCategory("designer")}
-        >
-          Jar Cakes
-        </button>
-
-        <button
-          className={`filter-chip ${category === "waffles" ? "active" : ""}`}
-          onClick={() => setCategory("waffles")}
-        >
-          Waffles
-        </button>
-
-        <button
-          className={`filter-chip ${category === "cakepops" ? "active" : ""}`}
-          onClick={() => setCategory("cakepops")}
-        >
-          Cake Pops
-        </button>
-
-        <button
-          className={`filter-chip ${
-            category === "cakeslices" ? "active" : ""
-          }`}
-          onClick={() => setCategory("cakeslices")}
-        >
-          Cake Slices
-        </button>
-
-        <div
-          style={{
-            width: "1px",
-            height: "20px",
-            background: "#e9e9eb",
-            margin: "0 10px",
-          }}
-        />
-
         <button
           className={`filter-chip ${priceRange === "low" ? "active" : ""}`}
           onClick={() =>
@@ -163,13 +93,13 @@ export default function Treats() {
           value={sortBy}
           onChange={(e) => setSortBy(e.target.value)}
         >
-          <option value="">Sort By</option>
-          <option value="priceLow">Price: Low to High</option>
-          <option value="priceHigh">Price: High to Low</option>
+          <option value="">Sort</option>
+          <option value="priceLow">Price: Low → High</option>
+          <option value="priceHigh">Price: High → Low</option>
         </select>
       </div>
 
-      {/* PRODUCTS GRID */}
+      {/* ===== PRODUCTS GRID ===== */}
       <div className="treats-grid">
         {paginatedProducts.map((cake) => (
           <div
@@ -178,6 +108,10 @@ export default function Treats() {
             onClick={() => navigate(`/cake/${cake._id}`)}
           >
             <div className="card-img-box">
+              {cake.bestseller && (
+                <span className="badge">BESTSELLER</span>
+              )}
+
               <img
                 className="treat-img"
                 src={
@@ -187,6 +121,7 @@ export default function Treats() {
                 }
                 alt={cake.title}
               />
+
               <span className="treat-price-tag">
                 ₹{cake.priceByKg?.["1"] || "N/A"}
               </span>
@@ -199,6 +134,24 @@ export default function Treats() {
           </div>
         ))}
       </div>
+
+      {/* ===== PAGINATION ===== */}
+      {filteredProducts.length > itemsPerPage && (
+        <div className="pagination">
+          {Array.from(
+            { length: Math.ceil(filteredProducts.length / itemsPerPage) },
+            (_, i) => (
+              <button
+                key={i}
+                className={currentPage === i + 1 ? "active" : ""}
+                onClick={() => setCurrentPage(i + 1)}
+              >
+                {i + 1}
+              </button>
+            )
+          )}
+        </div>
+      )}
     </section>
   );
 }

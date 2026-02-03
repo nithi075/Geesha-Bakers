@@ -1,8 +1,8 @@
 /* =========================
-   SWIGGY COLOR SYSTEM
+   COLOR SYSTEM
 ========================= */
 :root {
-  --orange: #F45C5C;
+  --orange: #f45c5c;
   --text: #282c3f;
   --muted: #686b78;
   --border: #e9e9eb;
@@ -19,7 +19,7 @@
 }
 
 /* =========================
-   FILTER BAR – SWIGGY
+   FILTER BAR – PREMIUM
 ========================= */
 .filter-bar {
   position: sticky;
@@ -27,12 +27,14 @@
   z-index: 20;
 
   display: flex;
-  gap: 10px;
-  padding: 12px;
+  align-items: center;
+  gap: 12px;
 
+  padding: 12px 14px;
   background: #fff;
-  overflow-x: auto;
   border-bottom: 1px solid var(--border);
+
+  overflow-x: auto;
 }
 
 .filter-bar::-webkit-scrollbar {
@@ -42,7 +44,8 @@
 .filter-chip,
 .sort-btn {
   padding: 8px 14px;
-  border-radius: 18px;
+  border-radius: 20px;
+
   background: #fff;
   border: 1px solid var(--border);
 
@@ -51,11 +54,20 @@
   color: var(--text);
   white-space: nowrap;
   cursor: pointer;
+
+  transition: all 0.25s ease;
 }
 
-.filter-chip:hover {
+.filter-chip:hover,
+.sort-btn:hover {
   border-color: var(--orange);
   color: var(--orange);
+}
+
+.filter-chip.active {
+  background: var(--orange);
+  color: #fff;
+  border-color: var(--orange);
 }
 
 .sort-btn {
@@ -63,7 +75,7 @@
 }
 
 /* =========================
-   GRID – LISTING STYLE
+   GRID – PREMIUM LISTING
 ========================= */
 .treats-grid {
   display: grid;
@@ -73,74 +85,73 @@
 }
 
 /* =========================
-   CARD (FLAT)
+   CARD – PREMIUM
 ========================= */
 .treat-card {
   cursor: pointer;
 }
 
-/* IMAGE */
 .card-img-box {
   position: relative;
   width: 100%;
   aspect-ratio: 1 / 1;
-  border-radius: 10px;
+  border-radius: 14px;
   overflow: hidden;
-  background: #eee;
+  background: #f2f2f2;
 }
 
+/* IMAGE */
 .treat-img {
   width: 100%;
   height: 100%;
   object-fit: cover;
+
+  transition: transform 0.4s ease;
 }
 
-/* PRICE TAG – SWIGGY */
+/* HOVER (DESKTOP) */
+@media (hover: hover) {
+  .treat-card:hover .treat-img {
+    transform: scale(1.08);
+  }
+}
+
+/* PRICE TAG */
 .treat-price-tag {
   position: absolute;
-  bottom: 8px;
-  left: 8px;
+  bottom: 10px;
+  left: 10px;
 
   background: rgba(255, 255, 255, 0.95);
   padding: 6px 10px;
-  border-radius: 6px;
+  border-radius: 8px;
 
   font-size: 13px;
   font-weight: 700;
   color: var(--text);
+
+  box-shadow: 0 2px 6px rgba(0, 0, 0, 0.08);
 }
 
-/* WISHLIST */
-.heart-icon {
-  position: absolute;
-  top: 8px;
-  right: 8px;
-  font-size: 18px;
-  color: #fff;
-}
-
-.heart-icon.active {
-  color: var(--orange);
-}
-
-/* BADGE */
+/* BADGE – BESTSELLER */
 .badge {
   position: absolute;
-  top: 8px;
-  left: 8px;
+  top: 10px;
+  left: 10px;
 
   background: #ffd166;
   color: #000;
+
   font-size: 10px;
   font-weight: 700;
-
   padding: 4px 6px;
-  border-radius: 4px;
+
+  border-radius: 6px;
 }
 
 /* CONTENT */
 .card-content {
-  margin-top: 6px;
+  margin-top: 8px;
 }
 
 .cake-name {
@@ -155,38 +166,47 @@
   overflow: hidden;
 }
 
+.cake-category {
+  font-size: 12px;
+  color: var(--muted);
+  margin-top: 2px;
+}
+
 /* =========================
-   PAGINATION – SIMPLE
+   PAGINATION – CLEAN
 ========================= */
 .pagination {
   display: flex;
   justify-content: center;
-  gap: 8px;
-  padding: 20px 0 30px;
+  gap: 10px;
+  padding: 24px 0 36px;
 }
 
 .pagination button {
-  min-width: 34px;
-  height: 34px;
-  border-radius: 6px;
+  min-width: 36px;
+  height: 36px;
 
+  border-radius: 8px;
   border: 1px solid var(--border);
   background: #fff;
 
   font-size: 13px;
   font-weight: 600;
+  color: var(--text);
   cursor: pointer;
+
+  transition: all 0.2s ease;
+}
+
+.pagination button:hover {
+  border-color: var(--orange);
+  color: var(--orange);
 }
 
 .pagination button.active {
   background: var(--orange);
   color: #fff;
   border-color: var(--orange);
-}
-
-.pagination button:disabled {
-  opacity: 0.4;
-  cursor: not-allowed;
 }
 
 /* =========================
@@ -197,6 +217,10 @@
     grid-template-columns: repeat(3, 1fr);
     padding: 20px;
     gap: 18px;
+  }
+
+  .filter-bar {
+    padding: 14px 20px;
   }
 }
 
