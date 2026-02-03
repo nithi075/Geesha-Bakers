@@ -200,6 +200,7 @@ export default function AddCake() {
           <option value="waffles">Waffles</option>
           <option value="cakepops">Cake Pops</option>
           <option value="cakeslices">Cake Slices</option>
+          <option value="brownies">Brownies</option>
         </select>
 
         <select name="flavor" onChange={handleChange}>
