@@ -118,7 +118,7 @@ export default function Treats() {
         </select>
       </div>
       <button
-         
+          className={`filter-chip ${onlyBestseller ? "active" : ""}`}
           onClick={() => navigate("/add-cake")}
         >
           More
