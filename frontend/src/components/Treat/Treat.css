@@ -1,12 +1,25 @@
 /* =========================
-   COLOR SYSTEM
+   COLOR SYSTEM – CAKE PALETTE
 ========================= */
 :root {
-  --orange: #f45c5c;
-  --text: #282c3f;
-  --muted: #686b78;
-  --border: #e9e9eb;
-  --bg: #ffffff;
+  /* BACKGROUNDS */
+  --bg-main: #FFF5E4;        /* Vanilla cream */
+  --bg-soft: #FFD1D1;        /* Soft pink */
+  --bg-card: #FFFFFF;
+
+  /* ACCENT */
+  --accent-primary: #FF9494; /* Strawberry pink */
+  --accent-hover: #FF7A7A;
+
+  /* TEXT */
+  --text-dark: #3B2A2A;      /* Chocolate brown */
+  --text-muted: rgba(59, 42, 42, 0.65);
+  --text-light: #FFF5E4;     /* Vanilla text for dark backgrounds */
+
+  /* BORDER */
+  --border: rgba(59, 42, 42, 0.2);
+
+  --white: #FFFFFF;
 }
 
 /* =========================
@@ -14,8 +27,9 @@
 ========================= */
 .treats-section {
   margin-top: 80px;
-  background: var(--bg);
+  background: var(--bg-main);
   font-family: "Quicksand", sans-serif;
+  color: var(--text-dark);
 }
 
 /* =========================
@@ -31,9 +45,8 @@
   gap: 12px;
 
   padding: 12px 14px;
-  background: #fff;
+  background: var(--white);
   border-bottom: 1px solid var(--border);
-
   overflow-x: auto;
 }
 
@@ -45,37 +58,36 @@
 .sort-btn {
   padding: 8px 14px;
   border-radius: 20px;
-
-  background: #fff;
+  background: var(--white);
   border: 1px solid var(--border);
 
   font-size: 13px;
   font-weight: 600;
-  color: var(--text);
-  white-space: nowrap;
+  color: var(--text-dark);
   cursor: pointer;
+  white-space: nowrap;
 
   transition: all 0.25s ease;
 }
 
 .filter-chip:hover,
 .sort-btn:hover {
-  border-color: var(--orange);
-  color: var(--orange);
+  border-color: var(--accent-primary);
+  color: var(--accent-primary);
 }
 
 .filter-chip.active {
-  background: var(--orange);
-  color: #fff;
-  border-color: var(--orange);
-}
-
-.sort-btn {
-  outline: none;
+  background: linear-gradient(
+    135deg,
+    var(--accent-primary),
+    var(--accent-hover)
+  );
+  color: var(--text-light); /* Vanilla text on pink bg */
+  border-color: var(--accent-primary);
 }
 
 /* =========================
-   GRID – PREMIUM LISTING
+   GRID
 ========================= */
 .treats-grid {
   display: grid;
@@ -85,7 +97,7 @@
 }
 
 /* =========================
-   CARD – PREMIUM
+   CARD
 ========================= */
 .treat-card {
   cursor: pointer;
@@ -97,19 +109,16 @@
   aspect-ratio: 1 / 1;
   border-radius: 14px;
   overflow: hidden;
-  background: #f2f2f2;
+  background: var(--bg-soft);
 }
 
-/* IMAGE */
 .treat-img {
   width: 100%;
   height: 100%;
   object-fit: cover;
-
   transition: transform 0.4s ease;
 }
 
-/* HOVER (DESKTOP) */
 @media (hover: hover) {
   .treat-card:hover .treat-img {
     transform: scale(1.08);
@@ -128,28 +137,27 @@
 
   font-size: 13px;
   font-weight: 700;
-  color: var(--text);
-
+  color: var(--text-dark);
   box-shadow: 0 2px 6px rgba(0, 0, 0, 0.08);
 }
 
-/* BADGE – BESTSELLER */
+/* BADGE */
 .badge {
   position: absolute;
   top: 10px;
   left: 10px;
 
-  background: #ffd166;
-  color: #000;
-
+  background: #FFD166; /* Custard gold remain for visual pop */
+  color: var(--text-dark);
   font-size: 10px;
   font-weight: 700;
   padding: 4px 6px;
-
   border-radius: 6px;
 }
 
-/* CONTENT */
+/* =========================
+   CARD CONTENT
+========================= */
 .card-content {
   margin-top: 8px;
 }
@@ -157,7 +165,7 @@
 .cake-name {
   font-size: 14px;
   font-weight: 600;
-  color: var(--text);
+  color: var(--text-dark);
   line-height: 1.4;
 
   display: -webkit-box;
@@ -168,12 +176,12 @@
 
 .cake-category {
   font-size: 12px;
-  color: var(--muted);
+  color: var(--text-muted);
   margin-top: 2px;
 }
 
 /* =========================
-   PAGINATION – CLEAN
+   PAGINATION
 ========================= */
 .pagination {
   display: flex;
@@ -185,58 +193,33 @@
 .pagination button {
   min-width: 36px;
   height: 36px;
-
   border-radius: 8px;
+
   border: 1px solid var(--border);
-  background: #fff;
+  background: var(--white);
 
   font-size: 13px;
   font-weight: 600;
-  color: var(--text);
+  color: var(--text-dark);
   cursor: pointer;
-
   transition: all 0.2s ease;
 }
 
 .pagination button:hover {
-  border-color: var(--orange);
-  color: var(--orange);
+  border-color: var(--accent-primary);
+  color: var(--accent-primary);
 }
 
 .pagination button.active {
-  background: var(--orange);
-  color: #fff;
-  border-color: var(--orange);
+  background: linear-gradient(
+    135deg,
+    var(--accent-primary),
+    var(--accent-hover)
+  );
+  color: var(--text-light);
+  border-color: var(--accent-primary);
 }
 
-/* =========================
-   TABLET
-========================= */
-@media (min-width: 768px) {
-  .treats-grid {
-    grid-template-columns: repeat(3, 1fr);
-    padding: 20px;
-    gap: 18px;
-  }
-
-  .filter-bar {
-    padding: 14px 20px;
-  }
-}
-
-/* =========================
-   DESKTOP
-========================= */
-@media (min-width: 1024px) {
-  .treats-grid {
-    grid-template-columns: repeat(4, 1fr);
-    padding: 24px 80px;
-  }
-
-  .filter-bar {
-    padding: 14px 80px;
-  }
-}
 /* =========================
    IMAGE MENU FILTER
 ========================= */
@@ -245,7 +228,7 @@
   gap: 18px;
   padding: 14px;
   overflow-x: auto;
-  background: #fff;
+  background: var(--white);
 }
 
 .menu-filter::-webkit-scrollbar {
@@ -264,7 +247,6 @@
   border-radius: 50%;
   overflow: hidden;
   border: 2px solid transparent;
-
   transition: all 0.3s ease;
 }
 
@@ -279,13 +261,39 @@
   margin-top: 6px;
   font-size: 12px;
   font-weight: 600;
-  color: var(--muted);
+  color: var(--text-muted);
 }
 
 .menu-filter-item.active .menu-filter-img {
-  border-color: var(--orange);
+  border-color: var(--accent-primary);
 }
 
 .menu-filter-item.active span {
-  color: var(--orange);
+  color: var(--accent-primary);
+}
+
+/* =========================
+   RESPONSIVE
+========================= */
+@media (min-width: 768px) {
+  .treats-grid {
+    grid-template-columns: repeat(3, 1fr);
+    padding: 20px;
+    gap: 18px;
+  }
+
+  .filter-bar {
+    padding: 14px 20px;
+  }
+}
+
+@media (min-width: 1024px) {
+  .treats-grid {
+    grid-template-columns: repeat(4, 1fr);
+    padding: 24px 80px;
+  }
+
+  .filter-bar {
+    padding: 14px 80px;
+  }
 }
