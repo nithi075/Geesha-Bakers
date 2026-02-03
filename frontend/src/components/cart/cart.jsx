@@ -22,7 +22,7 @@ export default function Cart() {
     }
 
     // ✅ Local backend image
-    return `http://localhost:5000${img}`;
+    return `https://geesha-bakers.onrender.com${img}`;
   };
 
   /* =========================
