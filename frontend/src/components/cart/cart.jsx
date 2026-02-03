@@ -9,21 +9,21 @@ export default function Cart() {
   const navigate = useNavigate();
 
   /* =========================
-     IMAGE HANDLER (PRODUCTION SAFE)
+     IMAGE HANDLER (CLOUDINARY ONLY)
   ========================= */
   const getImageSrc = (img) => {
-    // ❌ Invalid image
+    // ❌ invalid / empty
     if (!img || typeof img !== "string") {
       return "/placeholder-cake.jpg";
     }
 
-    // ✅ Cloudinary / external image
-    if (img.startsWith("http")) {
+    // ✅ Cloudinary image (ONLY ACCEPT THIS)
+    if (img.includes("res.cloudinary.com")) {
       return img;
     }
 
-    // ✅ Backend uploaded image (Render)
-    return `https://geesha-bakers.onrender.com${img}`;
+    // ❌ anything else → placeholder
+    return "/placeholder-cake.jpg";
   };
 
   /* =========================
@@ -32,6 +32,7 @@ export default function Cart() {
   const fetchCart = async () => {
     try {
       const res = await API.get("/cart");
+      // NOTE: assuming backend returns items array directly
       setCart(res.data);
     } catch (err) {
       console.error("Fetch cart failed", err);
@@ -100,14 +101,14 @@ export default function Cart() {
       {/* CART ITEMS */}
       {cart.map((item) => (
         <div className="cart-card" key={item._id}>
-          {/* ✅ IMAGE WITH FALLBACK */}
+          {/* ✅ CLOUDINARY IMAGE WITH FALLBACK */}
           <img
             src={getImageSrc(item.img)}
             alt={item.title}
             className="cart-img"
             loading="lazy"
             onError={(e) => {
-              e.currentTarget.onerror = null; // prevent infinite loop
+              e.currentTarget.onerror = null;
               e.currentTarget.src = "/placeholder-cake.jpg";
             }}
           />
