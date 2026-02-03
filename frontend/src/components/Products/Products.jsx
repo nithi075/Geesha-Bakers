@@ -56,7 +56,7 @@ export default function IndiaLoves() {
               <img
                 src={
                   cake.images?.[0]
-                    ? `http://localhost:5000${cake.images[0]}`
+                    ? `https://geesha-bakers.onrender.com${cake.images[0]}`
                     : "/placeholder-cake.jpg"
                 }
                 alt={cake.title}

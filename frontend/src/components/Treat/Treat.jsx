@@ -4,7 +4,7 @@ import "./Treat.css";
 import API from "../api";
 
 const BACKEND_URL =
-  import.meta.env.VITE_BACKEND_URL || "http://localhost:5000";
+  import.meta.env.VITE_BACKEND_URL || "https://geesha-bakers.onrender.com";
 
 export default function Treats() {
   const navigate = useNavigate();

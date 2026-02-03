@@ -68,7 +68,7 @@ export default function SingleCake() {
         <img
           src={
             activeImg
-              ? `http://localhost:5000${activeImg}`
+              ? `https://geesha-bakers.onrender.com${activeImg}`
               : "/placeholder-cake.jpg"
           }
           alt={cake.title}
@@ -81,7 +81,7 @@ export default function SingleCake() {
           {cake.images.map((img, i) => (
             <img
               key={i}
-              src={`http://localhost:5000${img}`}
+              src={`https://geesha-bakers.onrender.com${img}`}
               alt="cake"
               className={activeImg === img ? "active" : ""}
               onClick={() => setActiveImg(img)}
@@ -161,7 +161,7 @@ export default function SingleCake() {
             <img
               src={
                 item.images?.[0]
-                  ? `http://localhost:5000${item.images[0]}`
+                  ? `https://geesha-bakers.onrender.com${item.images[0]}`
                   : "/placeholder-cake.jpg"
               }
               alt={item.title}
