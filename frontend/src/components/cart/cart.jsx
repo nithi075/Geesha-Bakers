@@ -9,19 +9,20 @@ export default function Cart() {
   const navigate = useNavigate();
 
   /* =========================
-     IMAGE HANDLER (FIXED)
+     IMAGE HANDLER (PRODUCTION SAFE)
   ========================= */
   const getImageSrc = (img) => {
+    // ❌ Invalid image
     if (!img || typeof img !== "string") {
       return "/placeholder-cake.jpg";
     }
 
-    // ✅ Cloudinary / external URL
+    // ✅ Cloudinary / external image
     if (img.startsWith("http")) {
       return img;
     }
 
-    // ✅ Local backend image
+    // ✅ Backend uploaded image (Render)
     return `https://geesha-bakers.onrender.com${img}`;
   };
 
@@ -42,7 +43,7 @@ export default function Cart() {
   }, []);
 
   /* =========================
-     UPDATE QTY
+     UPDATE QUANTITY
   ========================= */
   const updateQty = async (id, type) => {
     try {
@@ -99,14 +100,14 @@ export default function Cart() {
       {/* CART ITEMS */}
       {cart.map((item) => (
         <div className="cart-card" key={item._id}>
-          {/* ✅ FIXED IMAGE */}
+          {/* ✅ IMAGE WITH FALLBACK */}
           <img
             src={getImageSrc(item.img)}
-            className="cart-img"
             alt={item.title}
+            className="cart-img"
             loading="lazy"
             onError={(e) => {
-              console.log("Image failed:", item.img);
+              e.currentTarget.onerror = null; // prevent infinite loop
               e.currentTarget.src = "/placeholder-cake.jpg";
             }}
           />
