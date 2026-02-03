@@ -5,35 +5,33 @@ import { FiTrash2, FiEdit2 } from "react-icons/fi";
 import API from "../api";
 
 export default function Cart() {
-  const [cart, setCart] = useState([]);
+  const [cartItems, setCartItems] = useState([]);
   const navigate = useNavigate();
 
   /* =========================
-     IMAGE HANDLER (CLOUDINARY ONLY)
+     IMAGE HANDLER – CLOUDINARY
   ========================= */
   const getImageSrc = (img) => {
-    // ❌ invalid / empty
     if (!img || typeof img !== "string") {
       return "/placeholder-cake.jpg";
     }
 
-    // ✅ Cloudinary image (ONLY ACCEPT THIS)
     if (img.includes("res.cloudinary.com")) {
       return img;
     }
 
-    // ❌ anything else → placeholder
     return "/placeholder-cake.jpg";
   };
 
   /* =========================
-     FETCH CART
+     FETCH CART (🔥 FIXED)
   ========================= */
   const fetchCart = async () => {
     try {
       const res = await API.get("/cart");
-      // NOTE: assuming backend returns items array directly
-      setCart(res.data);
+
+      // 🔥 THIS WAS YOUR BUG
+      setCartItems(res.data.items || []);
     } catch (err) {
       console.error("Fetch cart failed", err);
     }
@@ -44,7 +42,7 @@ export default function Cart() {
   }, []);
 
   /* =========================
-     UPDATE QUANTITY
+     UPDATE QTY
   ========================= */
   const updateQty = async (id, type) => {
     try {
@@ -70,7 +68,7 @@ export default function Cart() {
   /* =========================
      TOTAL
   ========================= */
-  const subtotal = cart.reduce(
+  const subtotal = cartItems.reduce(
     (sum, item) => sum + item.price * item.qty,
     0
   );
@@ -80,7 +78,7 @@ export default function Cart() {
       <h2 className="cart-title">Your Cart</h2>
 
       {/* EMPTY CART */}
-      {cart.length === 0 && (
+      {cartItems.length === 0 && (
         <div className="empty-cart-box">
           <img
             src="https://cdn-icons-png.flaticon.com/512/2038/2038854.png"
@@ -99,14 +97,12 @@ export default function Cart() {
       )}
 
       {/* CART ITEMS */}
-      {cart.map((item) => (
+      {cartItems.map((item) => (
         <div className="cart-card" key={item._id}>
-          {/* ✅ CLOUDINARY IMAGE WITH FALLBACK */}
           <img
             src={getImageSrc(item.img)}
             alt={item.title}
             className="cart-img"
-            loading="lazy"
             onError={(e) => {
               e.currentTarget.onerror = null;
               e.currentTarget.src = "/placeholder-cake.jpg";
@@ -129,15 +125,6 @@ export default function Cart() {
               <span>{item.qty}</span>
               <button onClick={() => updateQty(item._id, "increase")}>+</button>
             </div>
-
-            {item.message && (
-              <div className="message-row">
-                <span>
-                  <strong>Message:</strong> {item.message}
-                </span>
-                <FiEdit2 className="edit-icon" />
-              </div>
-            )}
           </div>
 
           <FiTrash2
@@ -148,7 +135,7 @@ export default function Cart() {
       ))}
 
       {/* BILL */}
-      {cart.length > 0 && (
+      {cartItems.length > 0 && (
         <div className="bill-box">
           <h3>Order Summary</h3>
 
