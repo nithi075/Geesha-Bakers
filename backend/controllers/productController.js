@@ -1,4 +1,5 @@
 import Product from "../models/Product.js";
+import cloudinary from "../config/cloudinary.js";
 
 /* =========================
    GET ALL PRODUCTS
@@ -41,36 +42,54 @@ export const getSingleProduct = async (req, res) => {
 };
 
 /* =========================
-   CREATE PRODUCT (LOCAL IMAGE)
+   CREATE PRODUCT (CLOUDINARY + MEMORY STORAGE)
 ========================= */
 export const createProduct = async (req, res) => {
   try {
-    console.log("📥 BODY:", req.body);
-    console.log("📸 FILES:", req.files?.length);
+    console.log("📦 BODY:", req.body);
+    console.log("🖼 FILE COUNT:", req.files?.length);
 
     if (!req.files || req.files.length === 0) {
       return res.status(400).json({ error: "No images uploaded" });
     }
 
-    // ✅ parse priceByKg
+    /* ✅ parse priceByKg */
     let priceByKg;
     try {
       priceByKg = JSON.parse(req.body.priceByKg);
-    } catch (e) {
+    } catch {
       return res.status(400).json({ error: "Invalid priceByKg format" });
     }
 
-    // ✅ local image URLs
-    const imageUrls = req.files.map(
-      (file) => `/uploads/products/${file.filename}`
-    );
+    /* 🔥 UPLOAD BUFFERS TO CLOUDINARY */
+    const uploadPromises = req.files.map((file) => {
+      return new Promise((resolve, reject) => {
+        cloudinary.uploader
+          .upload_stream(
+            {
+              folder: "cakes",
+              resource_type: "image",
+              quality: "auto",
+              fetch_format: "auto",
+            },
+            (error, result) => {
+              if (error) return reject(error);
+              resolve(result.secure_url); // 🔥 THIS IS IMPORTANT
+            }
+          )
+          .end(file.buffer); // 🔥 buffer from memoryStorage
+      });
+    });
 
+    const imageUrls = await Promise.all(uploadPromises);
+
+    /* ✅ SAVE PRODUCT */
     const product = new Product({
       title: req.body.title,
       priceByKg,
       rating: Number(req.body.rating || 0),
       reviews: req.body.reviews || "",
-      images: imageUrls,
+      images: imageUrls, // ✅ CLOUDINARY URLS
       category: req.body.category,
       flavor: req.body.flavor,
       occasion: req.body.occasion,
