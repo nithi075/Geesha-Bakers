@@ -1,179 +1,236 @@
-/* =========================
-   COLOR SYSTEM – CAKE THEME
-========================= */
 :root {
-  /* BACKGROUNDS */
-  --bg: #FFF5E4;          /* Vanilla cream */
-  --bg-soft: #FFD1D1;     /* Soft pink */
+  /* CAKE PALETTE */
+  --bg-main: #FFF5E4;        /* Vanilla cream */
+  --bg-soft: #FFD1D1;        /* Soft pink */
   --bg-card: #FFFFFF;
 
-  /* ACCENT */
-  --orange: #FF9494;      /* Strawberry pink */
-  --orange-hover: #FF7A7A;
+  --accent-primary: #FF9494; /* Strawberry pink */
+  --accent-hover: #FF7A7A;
 
-  /* TEXT */
-  --text: #3B2A2A;        /* Chocolate brown */
-  --muted: rgba(59, 42, 42, 0.65);
+  --text-dark: #3B2A2A;      /* Chocolate */
+  --text-muted: rgba(59, 42, 42, 0.65);
+  --text-light: #FFF5E4;
 
-  /* BORDER */
   --border: rgba(59, 42, 42, 0.2);
-
   --white: #FFFFFF;
 }
-
 /* =========================
-   MAIN SECTION
+   MAIN IMAGE
 ========================= */
-.treats-section {
-  margin-top: 80px;
-  background: var(--bg);
-  font-family: "Quicksand", sans-serif;
-}
-
-/* =========================
-   FILTER BAR – PREMIUM
-========================= */
-.filter-bar {
-  position: sticky;
-  top: 64px;
-  z-index: 20;
-
-  display: flex;
-  align-items: center;
-  gap: 12px;
-
-  padding: 12px 14px;
-  background: var(--white);
-  border-bottom: 1px solid var(--border);
-
-  overflow-x: auto;
-}
-
-.filter-bar::-webkit-scrollbar {
-  display: none;
-}
-
-.filter-chip,
-.sort-btn {
-  padding: 8px 14px;
-  border-radius: 20px;
-
-  background: var(--white);
-  border: 1px solid var(--border);
-
-  font-size: 13px;
-  font-weight: 600;
-  color: var(--text);
-  white-space: nowrap;
-  cursor: pointer;
-
-  transition: all 0.25s ease;
-}
-
-.filter-chip:hover,
-.sort-btn:hover {
-  border-color: var(--orange);
-  color: var(--orange);
-}
-
-.filter-chip.active {
-  background: linear-gradient(
-    135deg,
-    var(--orange),
-    var(--orange-hover)
-  );
-  color: #fff;
-  border-color: var(--orange);
-}
-
-.sort-btn {
-  outline: none;
-}
-
-/* =========================
-   GRID – PREMIUM LISTING
-========================= */
-.treats-grid {
-  display: grid;
-  grid-template-columns: repeat(2, 1fr);
-  gap: 14px;
-  padding: 14px;
-}
-
-/* =========================
-   CARD – PREMIUM
-========================= */
-.treat-card {
-  cursor: pointer;
-}
-
-.card-img-box {
-  position: relative;
+.swiggy-img-wrap img {
+  margin-top: 68px;
   width: 100%;
-  aspect-ratio: 1 / 1;
-  border-radius: 14px;
-  overflow: hidden;
+  height: 320px;
+  object-fit: cover;
   background: var(--bg-soft);
 }
 
-/* IMAGE */
-.treat-img {
-  width: 100%;
-  height: 100%;
+/* =========================
+   SUB IMAGES
+========================= */
+.swiggy-sub-images {
+  display: flex;
+  gap: 10px;
+  padding: 10px 16px;
+  overflow-x: auto;
+  background: var(--white);
+}
+
+.swiggy-sub-images::-webkit-scrollbar {
+  display: none;
+}
+
+.swiggy-sub-images img {
+  width: 70px;
+  height: 70px;
+  border-radius: 10px;
   object-fit: cover;
-  transition: transform 0.4s ease;
+  cursor: pointer;
+  border: 2px solid transparent;
 }
 
-/* HOVER (DESKTOP) */
-@media (hover: hover) {
-  .treat-card:hover .treat-img {
-    transform: scale(1.08);
-  }
+.swiggy-sub-images img.active {
+  border-color: var(--accent-primary);
 }
 
-/* PRICE TAG */
-.treat-price-tag {
-  position: absolute;
-  bottom: 10px;
-  left: 10px;
+/* =========================
+   PAGE CONTENT
+========================= */
+.swiggy-page {
+  padding: 16px;
+  font-family: "Quicksand", sans-serif;
+  background: var(--white);
+}
 
-  background: rgba(255, 255, 255, 0.95);
-  padding: 6px 10px;
+/* HEADER */
+.swiggy-header {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+}
+
+.swiggy-header h1 {
+  font-size: 22px;
+  font-weight: 700;
+  color: var(--text-dark);
+}
+
+.swiggy-heart {
+  font-size: 22px;
+  color: var(--text-muted);
+  cursor: pointer;
+}
+
+.swiggy-heart.active {
+  color: var(--accent-primary);
+}
+
+/* DESC */
+.swiggy-desc {
+  font-size: 14px;
+  color: var(--text-muted);
+  margin: 6px 0 12px;
+}
+
+/* PRICE */
+.swiggy-price {
+  font-size: 20px;
+  font-weight: 700;
+  margin-bottom: 14px;
+  color: var(--text-dark);
+}
+
+.swiggy-price span {
+  font-size: 12px;
+  font-weight: 400;
+  color: var(--text-muted);
+}
+
+/* KG */
+.swiggy-kg {
+  display: flex;
+  gap: 10px;
+  margin-bottom: 18px;
+}
+
+.swiggy-kg button {
+  padding: 8px 16px;
   border-radius: 8px;
-
+  border: 1px solid var(--border);
+  background: var(--white);
   font-size: 13px;
+  cursor: pointer;
+  color: var(--text-dark);
+}
+
+.swiggy-kg button.active {
+  border-color: var(--accent-primary);
+  color: var(--accent-primary);
   font-weight: 700;
-  color: var(--text);
-
-  box-shadow: 0 2px 6px rgba(0, 0, 0, 0.08);
 }
 
-/* BADGE – BESTSELLER */
-.badge {
-  position: absolute;
-  top: 10px;
-  left: 10px;
+/* MESSAGE */
+.swiggy-message {
+  margin-bottom: 20px;
+}
 
-  background: #FFD166;
-  color: var(--text);
+.swiggy-message label {
+  font-size: 13px;
+  color: var(--text-dark);
+  font-weight: 600;
+}
 
-  font-size: 10px;
+.swiggy-message input {
+  width: 100%;
+  padding: 10px;
+  margin-top: 6px;
+  border-radius: 8px;
+  border: 1px solid var(--border);
+}
+
+/* =========================
+   ACTION ROW
+========================= */
+.swiggy-action-row {
+  display: flex;
+  gap: 12px;
+}
+
+/* ADD TO CART */
+.swiggy-add-btn {
+  flex: 1;
+  background: linear-gradient(135deg, var(--accent-primary), var(--accent-hover));
+  color: #fff;
+  padding: 14px;
+  border-radius: 8px;
+  font-size: 16px;
   font-weight: 700;
-  padding: 4px 6px;
-
-  border-radius: 6px;
+  border: none;
+  cursor: pointer;
 }
 
-/* CONTENT */
-.card-content {
-  margin-top: 8px;
+/* BUY NOW */
+.swiggy-buy-btn {
+  flex: 1;
+  background: var(--white);
+  color: var(--accent-primary);
+  padding: 14px;
+  border-radius: 8px;
+  font-size: 15px;
+  font-weight: 700;
+  border: 2px solid var(--accent-primary);
+  cursor: pointer;
 }
 
-.cake-name {
+/* =========================
+   YOU MAY ALSO LIKE
+========================= */
+.swiggy-related {
+  padding: 16px;
+  background: var(--bg-main);
+}
+
+.swiggy-related h3 {
+  font-size: 18px;
+  font-weight: 700;
+  margin-bottom: 12px;
+  color: var(--text-dark);
+}
+
+/* HORIZONTAL SCROLL */
+.related-scroll {
+  display: flex;
+  gap: 12px;
+  overflow-x: auto;
+  padding-bottom: 6px;
+}
+
+.related-scroll::-webkit-scrollbar {
+  display: none;
+}
+
+/* CARD */
+.related-card {
+  flex: 0 0 auto;
+  width: 160px;
+  cursor: pointer;
+}
+
+/* IMAGE */
+.related-card img {
+  width: 100%;
+  aspect-ratio: 1 / 1;
+  border-radius: 12px;
+  object-fit: cover;
+  background: var(--bg-soft);
+}
+
+/* TITLE */
+.related-title {
   font-size: 14px;
   font-weight: 600;
-  color: var(--text);
-  line-height: 1.4;
+  margin: 6px 0 2px;
+  color: var(--text-dark);
 
   display: -webkit-box;
   -webkit-line-clamp: 2;
@@ -181,131 +238,35 @@
   overflow: hidden;
 }
 
-.cake-category {
-  font-size: 12px;
-  color: var(--muted);
-  margin-top: 2px;
+/* PRICE */
+.related-price {
+  font-size: 14px;
+  font-weight: 700;
+  color: var(--accent-primary);
 }
 
 /* =========================
-   PAGINATION – CLEAN
-========================= */
-.pagination {
-  display: flex;
-  justify-content: center;
-  gap: 10px;
-  padding: 24px 0 36px;
-}
-
-.pagination button {
-  min-width: 36px;
-  height: 36px;
-
-  border-radius: 8px;
-  border: 1px solid var(--border);
-  background: var(--white);
-
-  font-size: 13px;
-  font-weight: 600;
-  color: var(--text);
-  cursor: pointer;
-
-  transition: all 0.2s ease;
-}
-
-.pagination button:hover {
-  border-color: var(--orange);
-  color: var(--orange);
-}
-
-.pagination button.active {
-  background: linear-gradient(
-    135deg,
-    var(--orange),
-    var(--orange-hover)
-  );
-  color: #fff;
-  border-color: var(--orange);
-}
-
-/* =========================
-   TABLET
+   DESKTOP CENTER
 ========================= */
 @media (min-width: 768px) {
-  .treats-grid {
-    grid-template-columns: repeat(3, 1fr);
-    padding: 20px;
-    gap: 18px;
+  .swiggy-page,
+  .swiggy-related {
+    max-width: 520px;
+    margin: auto;
   }
-
-  .filter-bar {
-    padding: 14px 20px;
-  }
-}
-
-/* =========================
-   DESKTOP
-========================= */
-@media (min-width: 1024px) {
-  .treats-grid {
-    grid-template-columns: repeat(4, 1fr);
-    padding: 24px 80px;
-  }
-
-  .filter-bar {
-    padding: 14px 80px;
+  .related-title {
+    font-size: 10px;
   }
 }
 
-/* =========================
-   IMAGE MENU FILTER
-========================= */
-.menu-filter {
-  display: flex;
-  gap: 18px;
-  padding: 14px;
-  overflow-x: auto;
-  background: var(--white);
-}
+/* MOBILE */
+@media (max-width: 480px) {
+  .related-card {
+    width: 140px;
+  }
 
-.menu-filter::-webkit-scrollbar {
-  display: none;
-}
-
-.menu-filter-item {
-  flex-shrink: 0;
-  text-align: center;
-  cursor: pointer;
-}
-
-.menu-filter-img {
-  width: 64px;
-  height: 64px;
-  border-radius: 50%;
-  overflow: hidden;
-  border: 2px solid transparent;
-
-  transition: all 0.3s ease;
-}
-
-.menu-filter-img img {
-  width: 100%;
-  height: 100%;
-  object-fit: cover;
-}
-
-.menu-filter-item span {
-  display: block;
-  margin-top: 6px;
-  font-size: 12px;
-  font-weight: 600;
-  color: var(--muted);
-}
-
-.menu-filter-item.active .menu-filter-img {
-  border-color: var(--orange);
-}
-
-.menu-filter-item.active span {
-  color: var(--orange);
+  .related-title,
+  .related-price {
+    font-size: 12px;
+  }
 }
