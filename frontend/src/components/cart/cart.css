@@ -1,0 +1,247 @@
+:root {
+  /* CORE CAKE PALETTE */
+  --cream: #FFF5E4;        /* Vanilla cream */
+  --pink: #FF9494;         /* Strawberry pink */
+  --pink-soft: #FFD1D1;    /* Soft pink */
+  --choco: #3B2A2A;        /* Chocolate brown */
+  --white: #ffffff;
+
+  /* LAYOUT */
+  --header-height: 72px;
+
+  /* SHADOW */
+  --shadow-soft: 0 4px 14px rgba(59, 42, 42, 0.18);
+}
+/* =============================
+   PAGE
+============================= */
+.cart-section {
+  background: var(--white);
+  font-family: "Quicksand", sans-serif;
+  padding: 10px;
+  padding-top: calc(var(--header-height) + 12px);
+  padding-bottom: 90px;
+  color: var(--choco);
+}
+
+/* =============================
+   TITLE
+============================= */
+.cart-title {
+  text-align: center;
+  font-size: 16px;
+  font-weight: 700;
+  margin-bottom: 12px;
+  color: var(--choco);
+}
+
+/* =============================
+   CART CARD
+============================= */
+.cart-card {
+  background: var(--white);
+  border-radius: 14px;
+  padding: 10px;
+  display: flex;
+  gap: 10px;
+  margin-bottom: 10px;
+  box-shadow: var(--shadow-soft);
+  position: relative;
+  border: 1px solid var(--pink-soft);
+}
+
+/* IMAGE */
+.cart-img {
+  width: 64px;
+  height: 60px;
+  border-radius: 8px;
+  object-fit: cover;
+  background: var(--pink-soft);
+}
+
+/* INFO */
+.cart-info h3 {
+  font-size: 13px;
+  font-weight: 700;
+  line-height: 1.2;
+  margin-bottom: 2px;
+}
+
+.cart-kg {
+  font-size: 11px;
+  opacity: 0.7;
+  margin-bottom: 2px;
+}
+
+.cart-price {
+  font-size: 14px;
+  font-weight: 700;
+  color: var(--pink);
+  margin-bottom: 6px;
+}
+
+/* =============================
+   QTY CONTROL
+============================= */
+.qty-row {
+  display: inline-flex;
+  align-items: center;
+  border: 1px solid var(--pink-soft);
+  border-radius: 999px;
+  overflow: hidden;
+}
+
+.qty-row button {
+  width: 26px;
+  height: 26px;
+  border: none;
+  background: transparent;
+  color: var(--pink);
+  font-size: 15px;
+  font-weight: 700;
+  cursor: pointer;
+}
+
+.qty-row span {
+  width: 22px;
+  text-align: center;
+  font-size: 12px;
+  font-weight: 700;
+}
+
+/* =============================
+   MESSAGE
+============================= */
+.message-row {
+  font-size: 11px;
+  opacity: 0.75;
+  display: flex;
+  align-items: center;
+  gap: 6px;
+  margin-top: 6px;
+}
+
+.edit-icon {
+  font-size: 12px;
+  color: var(--pink);
+  cursor: pointer;
+}
+
+/* =============================
+   DELETE ICON
+============================= */
+.delete-icon {
+  position: absolute;
+  top: 8px;
+  right: 8px;
+  font-size: 16px;
+  color: var(--pink-soft);
+  cursor: pointer;
+}
+
+.delete-icon:hover {
+  color: var(--pink);
+}
+
+/* =============================
+   BILL BOX
+============================= */
+.bill-box {
+  background: var(--white);
+  border-radius: 16px;
+  padding: 14px;
+  margin-top: 14px;
+  box-shadow: var(--shadow-soft);
+  border: 1px solid var(--pink-soft);
+}
+
+.bill-box h3 {
+  font-size: 14px;
+  font-weight: 700;
+  margin-bottom: 10px;
+}
+
+.bill-row {
+  display: flex;
+  justify-content: space-between;
+  font-size: 13px;
+  margin-bottom: 6px;
+  opacity: 0.85;
+}
+
+.bill-row.grand {
+  font-size: 15px;
+  font-weight: 700;
+  border-top: 1px dashed var(--pink-soft);
+  padding-top: 8px;
+  margin-top: 6px;
+  opacity: 1;
+}
+
+.free {
+  color: #16a34a;
+  font-weight: 700;
+}
+
+/* =============================
+   PROCEED BUTTON
+============================= */
+.proceed-btn {
+  width: 100%;
+  margin-top: 14px;
+  background: linear-gradient(
+    135deg,
+    var(--pink),
+    #ff7a7a
+  );
+  color: var(--white);
+  border: none;
+  padding: 12px;
+  border-radius: 12px;
+  font-size: 14px;
+  font-weight: 700;
+  cursor: pointer;
+}
+
+/* =============================
+   EMPTY CART
+============================= */
+.empty-cart-box {
+  background: var(--white);
+  border-radius: 18px;
+  padding: 30px 16px;
+  text-align: center;
+  margin-top: 30px;
+  box-shadow: var(--shadow-soft);
+}
+
+.empty-cart-img {
+  width: 120px;
+  margin-bottom: 14px;
+}
+
+.shop-now-btn {
+  margin-top: 14px;
+  background: linear-gradient(
+    135deg,
+    var(--pink),
+    #ff7a7a
+  );
+  color: var(--white);
+  border: none;
+  padding: 10px 26px;
+  border-radius: 10px;
+  font-weight: 700;
+}
+
+/* =============================
+   DESKTOP
+============================= */
+@media (min-width: 1024px) {
+  .cart-section {
+    max-width: 640px;
+    margin: auto;
+    padding-top: calc(var(--header-height) + 20px);
+    padding-bottom: 40px;
+  }
+}

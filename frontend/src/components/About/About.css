@@ -1,0 +1,267 @@
+:root {
+  /* CORE CAKE PALETTE */
+  --cream: #FFF5E4;        /* Vanilla cream */
+  --pink: #FF9494;         /* Strawberry pink */
+  --pink-soft: #FFD1D1;    /* Soft pink */
+  --choco: #3B2A2A;        /* Chocolate brown */
+  --white: #FFFFFF;
+}
+/* ===============================
+   MAIN
+=============================== */
+.about-new {
+  font-family: 'Quicksand', sans-serif;
+  background: var(--cream);
+  color: var(--choco);
+}
+
+/* ===============================
+   HERO
+=============================== */
+.about-hero-new {
+  min-height: 85vh;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  background: linear-gradient(
+    135deg,
+    var(--pink-soft),
+    var(--cream)
+  );
+  border-bottom-left-radius: 40px;
+  border-bottom-right-radius: 40px;
+  padding: 40px 20px;
+  text-align: center;
+}
+
+.hero-text h1 {
+  font-size: 56px;
+  color: var(--choco);
+  font-weight: 700;
+}
+
+.hero-text p {
+  font-size: 20px;
+  max-width: 600px;
+  margin: 16px auto 30px;
+  opacity: 0.85;
+}
+
+.hero-btn {
+  padding: 14px 36px;
+  border-radius: 999px;
+  background: linear-gradient(
+    135deg,
+    var(--pink),
+    #ff7a7a
+  );
+  color: white;
+  text-decoration: none;
+  font-weight: 600;
+  transition: 0.3s ease;
+}
+
+.hero-btn:hover {
+  transform: translateY(-3px);
+  box-shadow: 0 14px 30px rgba(255, 148, 148, 0.45);
+}
+
+/* ===============================
+   SPLIT SECTION
+=============================== */
+.about-split {
+  display: flex;
+  align-items: center;
+  gap: 60px;
+  padding: 100px 120px;
+}
+
+.about-text {
+  flex: 1;
+}
+
+.about-text h2 {
+  font-size: 38px;
+  color: var(--choco);
+  margin-bottom: 16px;
+}
+
+.about-text p {
+  font-size: 17px;
+  line-height: 1.7;
+  margin-bottom: 14px;
+  opacity: 0.9;
+}
+
+.about-img {
+  flex: 1;
+}
+
+.about-img img {
+  width: 100%;
+  border-radius: 24px;
+  box-shadow: 0 18px 40px rgba(59, 42, 42, 0.25);
+}
+
+/* ===============================
+   WHY US
+=============================== */
+.why-us {
+  text-align: center;
+  padding: 90px 120px;
+  background: linear-gradient(
+    135deg,
+    var(--pink-soft),
+    var(--cream)
+  );
+  border-radius: 40px;
+}
+
+.why-us h2 {
+  font-size: 40px;
+  color: var(--choco);
+  margin-bottom: 50px;
+}
+
+.why-cards {
+  display: grid;
+  grid-template-columns: repeat(3, 1fr);
+  gap: 35px;
+}
+
+.why-card {
+  background: rgba(255, 255, 255, 0.95);
+  padding: 40px 28px;
+  border-radius: 22px;
+  box-shadow: 0 16px 36px rgba(59, 42, 42, 0.22);
+  transition: 0.35s ease;
+}
+
+.why-card:hover {
+  transform: translateY(-8px);
+}
+
+.why-card span {
+  font-size: 40px;
+  display: block;
+  margin-bottom: 16px;
+  color: var(--pink);
+}
+
+.why-card h3 {
+  font-size: 22px;
+  color: var(--choco);
+  margin-bottom: 10px;
+}
+
+.why-card p {
+  font-size: 15px;
+  opacity: 0.85;
+}
+
+/* ===============================
+   STATS
+=============================== */
+.about-stats {
+  display: flex;
+  justify-content: space-around;
+  padding: 80px 120px;
+  text-align: center;
+}
+
+.stat h3 {
+  font-size: 42px;
+  color: var(--pink);
+  font-weight: 700;
+}
+
+.stat p {
+  font-size: 16px;
+  opacity: 0.85;
+}
+
+/* ===============================
+   CTA
+=============================== */
+.about-cta {
+  background: linear-gradient(
+    135deg,
+    var(--pink),
+    #ff7a7a
+  );
+  text-align: center;
+  padding: 90px 30px;
+  color: white;
+  border-top-left-radius: 40px;
+  border-top-right-radius: 40px;
+}
+
+.about-cta h2 {
+  font-size: 36px;
+  margin-bottom: 14px;
+}
+
+.about-cta p {
+  font-size: 18px;
+  margin-bottom: 30px;
+  opacity: 0.95;
+}
+
+.cta-btn {
+  background: white;
+  color: var(--pink);
+  padding: 14px 40px;
+  border-radius: 999px;
+  text-decoration: none;
+  font-weight: 600;
+  transition: 0.3s ease;
+}
+
+.cta-btn:hover {
+  transform: translateY(-3px);
+  box-shadow: 0 14px 30px rgba(0, 0, 0, 0.25);
+}
+
+/* ===============================
+   RESPONSIVE
+=============================== */
+@media (max-width: 1000px) {
+  .about-split {
+    flex-direction: column;
+    text-align: center;
+    padding: 70px 60px;
+  }
+
+  .why-cards {
+    grid-template-columns: repeat(2, 1fr);
+  }
+
+  .about-stats {
+    flex-direction: column;
+    gap: 40px;
+  }
+}
+
+@media (max-width: 600px) {
+  .hero-text h1 {
+    font-size: 36px;
+  }
+
+  .hero-text p {
+    font-size: 16px;
+  }
+
+  .about-split,
+  .why-us,
+  .about-stats {
+    padding: 50px 20px;
+  }
+
+  .why-cards {
+    grid-template-columns: 1fr;
+  }
+
+  .about-cta h2 {
+    font-size: 28px;
+  }
+}

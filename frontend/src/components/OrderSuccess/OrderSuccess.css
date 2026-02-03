@@ -1,0 +1,83 @@
+/* ===============================
+   ROOT VARIABLES (Consistent Theme)
+=============================== */
+:root {
+  --pink: #F45C5C;        /* Strong strawberry pink */
+  --pink-soft: #FD9A9A;   /* Soft highlight pink */
+  --beige-light: #FFF1D6; /* Creamy bakery background */
+  --beige-soft: #FFD6D1;  /* Section background */
+  --text-dark: #3E2424;   /* Rich cocoa brown */
+  --white: #ffffff;
+}
+
+/* ===============================
+   SUCCESS BOX
+=============================== */
+.success-box {
+  min-height: 100vh;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+  text-align: center;
+  /* Updated to Bakery Cream Gradient */
+  background: linear-gradient(135deg, var(--beige-light), var(--beige-soft));
+  padding: 20px;
+  font-family: "Quicksand", sans-serif; /* Updated font */
+}
+
+.success-box h2 {
+  font-size: 34px;
+  color: var(--pink); /* Updated to Strawberry Pink */
+  font-weight: 700;
+  margin-bottom: 12px;
+}
+
+.success-box p {
+  font-size: 17px;
+  color: var(--text-dark); /* Updated to Cocoa Brown */
+  opacity: 0.9;
+  margin-bottom: 28px;
+}
+
+.success-box button {
+  padding: 14px 38px;
+  border: none;
+  border-radius: 40px;
+  /* Updated to signature Strawberry Gradient */
+  background: linear-gradient(135deg, var(--pink), #E94444);
+  color: var(--white);
+  font-size: 16px;
+  font-weight: 700;
+  cursor: pointer;
+  transition: all 0.3s ease;
+  box-shadow: 0 8px 20px rgba(244, 92, 92, 0.3);
+}
+
+.success-box button:hover {
+  transform: translateY(-4px);
+  /* Themed Pink Glow */
+  box-shadow: 0 12px 25px rgba(244, 92, 92, 0.45);
+}
+
+/* ===============================
+   MOBILE RESPONSIVENESS
+=============================== */
+@media (max-width: 480px) {
+  .success-box {
+    padding: 15px;
+  }
+  
+  .success-box h2 {
+    font-size: 26px;
+  }
+
+  .success-box p {
+    font-size: 15px;
+    line-height: 1.5;
+  }
+  
+  .success-box button {
+    width: 80%; /* Slightly wider button for mobile tap target */
+  }
+}

@@ -1,0 +1,132 @@
+:root {
+  --cream: #fff5e4;
+  --pink: #ff9494;
+  --choco: #3b2a2a;
+}
+
+/* ===============================
+   SECTION
+=============================== */
+.menu-section {
+  background: var(--cream);
+  padding: 40px clamp(16px, 5vw, 60px);
+  font-family: "Quicksand", sans-serif;
+}
+
+/* ===============================
+   HEADER
+=============================== */
+.menu-header {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  margin-bottom: 20px;
+}
+
+.menu-title {
+  font-size: 28px;
+  font-weight: 700;
+  color: var(--choco);
+}
+
+.menu-sub {
+  font-size: 14px;
+  margin-top: 4px;
+  color: #555;
+}
+
+/* ===============================
+   ARROWS (DESKTOP)
+=============================== */
+.menu-arrows {
+  display: flex;
+  gap: 12px;
+}
+
+.menu-arrows button {
+  width: 38px;
+  height: 38px;
+  border-radius: 50%;
+  border: none;
+  background: #fff;
+  cursor: pointer;
+  font-size: 18px;
+  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.15);
+  transition: all 0.2s ease;
+}
+
+.menu-arrows button:hover {
+  background: var(--pink);
+  color: #fff;
+}
+
+/* ===============================
+   SLIDER
+=============================== */
+.menu-slider {
+  display: flex;
+  gap: 20px;
+  overflow-x: auto;
+  scroll-behavior: smooth;
+  padding-bottom: 10px;
+}
+
+.menu-slider::-webkit-scrollbar {
+  display: none;
+}
+
+/* ===============================
+   CARD (SWIGGY STYLE)
+=============================== */
+.menu-card {
+  flex: 0 0 auto;
+  width: 170px;
+  cursor: pointer;
+}
+
+.menu-img {
+  width: 100%;
+  height: 170px;
+  border-radius: 16px;
+  overflow: hidden;
+}
+
+.menu-img img {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+  transition: transform 0.4s ease;
+}
+
+.menu-card:hover img {
+  transform: scale(1.08);
+}
+
+.menu-name {
+  margin-top: 10px;
+  font-size: 15px;
+  font-weight: 700;
+  color: var(--choco);
+  text-align: center;
+}
+
+/* ===============================
+   MOBILE
+=============================== */
+@media (max-width: 768px) {
+  .menu-arrows {
+    display: none;
+  }
+
+  .menu-card {
+    width: 140px;
+  }
+
+  .menu-img {
+    height: 140px;
+  }
+
+  .menu-name {
+    font-size: 13px;
+  }
+}

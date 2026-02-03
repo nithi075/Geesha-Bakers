@@ -1,0 +1,134 @@
+/* ===============================
+   PAGE WRAPPER (COMPACT)
+=============================== */
+.review-page {
+  padding: 80px 12px 40px;
+  max-width: 720px; /* SWIGGY WIDTH */
+  margin: auto;
+  font-family: "Quicksand", sans-serif;
+  color: var(--text-dark);
+}
+
+/* ===============================
+   TITLE (SMALLER)
+=============================== */
+.page-title {
+  text-align: center;
+  font-size: 26px; /* ↓ from 38 */
+  font-weight: 700;
+  color: var(--pink);
+  margin-bottom: 24px;
+}
+
+/* ===============================
+   WRITE REVIEW BOX
+=============================== */
+.write-review-box {
+  padding: 20px;          /* ↓ */
+  border-radius: 14px;    /* ↓ */
+  margin-bottom: 32px;    /* ↓ */
+}
+
+/* TITLE */
+.write-review-box h3 {
+  font-size: 17px; /* ↓ */
+  margin-bottom: 14px;
+}
+
+/* INPUTS */
+.write-review-box input,
+.write-review-box textarea {
+  padding: 12px;
+  margin-bottom: 12px;
+  border-radius: 10px;
+  font-size: 14px;
+}
+
+.write-review-box textarea {
+  min-height: 90px;
+}
+
+/* ===============================
+   STAR SELECT
+=============================== */
+.rating-select {
+  gap: 6px;
+  margin-bottom: 14px;
+}
+
+.rating-select .star {
+  font-size: 22px; /* ↓ */
+}
+
+/* ===============================
+   SUBMIT BUTTON
+=============================== */
+.submit-btn {
+  padding: 12px;
+  font-size: 15px;
+  border-radius: 10px;
+}
+
+/* ===============================
+   REVIEW LIST
+=============================== */
+.review-list {
+  gap: 14px; /* ↓ */
+}
+
+/* REVIEW CARD */
+.review-item {
+  padding: 16px;       /* ↓ */
+  border-radius: 14px; /* ↓ */
+  box-shadow: 0 4px 12px rgba(62, 36, 36, 0.06);
+}
+
+/* NAME */
+.review-item h4 {
+  font-size: 15px;
+  margin-bottom: 4px;
+}
+
+/* STARS */
+.review-item .rating-row {
+  gap: 3px;
+  margin-bottom: 8px;
+}
+
+.review-item .rating-row .star {
+  font-size: 15px;
+}
+
+/* TEXT */
+.review-item p {
+  font-size: 14px;
+  line-height: 1.5;
+}
+
+/* ===============================
+   STATES
+=============================== */
+.center {
+  font-size: 14px;
+  margin-top: 20px;
+}
+
+/* ===============================
+   MOBILE
+=============================== */
+@media (max-width: 600px) {
+  .page-title {
+    font-size: 22px;
+  }
+
+  .review-page {
+    padding-top: 70px;
+  }
+}
+
+/* VERY SMALL */
+@media (max-width: 380px) {
+  .rating-select .star {
+    font-size: 20px;
+  }
+}

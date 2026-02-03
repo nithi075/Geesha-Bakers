@@ -1,0 +1,194 @@
+:root {
+  /* CAKE PALETTE */
+  --bg-main: #FFF5E4;        /* Vanilla cream */
+  --bg-card: #FFFFFF;
+
+  --accent-primary: #FF9494; /* Strawberry pink */
+  --accent-hover: #FF7A7A;
+
+  --text-dark: #3B2A2A;      /* Chocolate */
+  --text-muted: rgba(59, 42, 42, 0.65);
+  --text-light: #FFF5E4;
+
+  --border: rgba(59, 42, 42, 0.18);
+
+  --star: #F2B705;           /* Cake sprinkle gold */
+}
+/* =========================
+   MAIN WRAPPER
+========================= */
+.swiggy-review-section {
+  padding: 16px;
+  background: var(--bg-main);
+  font-family: "Quicksand", sans-serif;
+}
+
+/* =========================
+   SUMMARY
+========================= */
+.swiggy-review-summary {
+  display: flex;
+  align-items: center;
+  margin-bottom: 16px;
+}
+
+.summary-left h2 {
+  font-size: 36px;
+  font-weight: 700;
+  color: var(--text-dark);
+}
+
+.summary-left p {
+  font-size: 13px;
+  color: var(--text-muted);
+}
+
+.summary-stars {
+  display: flex;
+  gap: 4px;
+  margin: 4px 0;
+}
+
+.summary-stars svg {
+  font-size: 16px;
+  color: rgba(59, 42, 42, 0.25);
+}
+
+.summary-stars svg.filled {
+  color: var(--star);
+}
+
+/* =========================
+   REVIEW LIST
+========================= */
+.swiggy-review-list {
+  display: flex;
+  flex-direction: column;
+  gap: 14px;
+}
+
+/* REVIEW ITEM */
+.swiggy-review-item {
+  padding-bottom: 14px;
+  border-bottom: 1px solid var(--border);
+}
+
+/* TOP ROW */
+.review-top {
+  display: flex;
+  gap: 12px;
+  align-items: center;
+}
+
+/* AVATAR */
+.avatar {
+  width: 36px;
+  height: 36px;
+  border-radius: 50%;
+  background: var(--accent-primary);
+  color: #fff;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-weight: 700;
+}
+
+/* INFO */
+.review-info {
+  display: flex;
+  flex-direction: column;
+  gap: 2px;
+}
+
+.review-name {
+  font-size: 14px;
+  font-weight: 600;
+  color: var(--text-dark);
+}
+
+.review-stars svg {
+  font-size: 13px;
+  color: var(--star);
+}
+
+/* TEXT */
+.review-text {
+  margin-top: 6px;
+  font-size: 14px;
+  color: var(--text-muted);
+  line-height: 1.5;
+}
+
+/* =========================
+   WRITE REVIEW
+========================= */
+.swiggy-write-review {
+  margin-top: 24px;
+}
+
+.swiggy-write-review h3 {
+  font-size: 18px;
+  margin-bottom: 10px;
+  color: var(--text-dark);
+}
+
+/* STAR SELECT */
+.rating-select {
+  display: flex;
+  gap: 6px;
+  margin-bottom: 12px;
+}
+
+.rating-select svg {
+  font-size: 22px;
+  color: rgba(59, 42, 42, 0.25);
+  cursor: pointer;
+}
+
+.rating-select svg.filled {
+  color: var(--star);
+}
+
+/* FORM */
+.swiggy-write-review input,
+.swiggy-write-review textarea {
+  width: 100%;
+  padding: 12px;
+  border-radius: 8px;
+  border: 1px solid var(--border);
+  margin-bottom: 10px;
+  font-size: 14px;
+  background: var(--bg-card);
+}
+
+.swiggy-write-review textarea {
+  resize: none;
+  min-height: 80px;
+}
+
+/* SUBMIT BUTTON */
+.swiggy-write-review button {
+  width: 100%;
+  background: linear-gradient(
+    135deg,
+    var(--accent-primary),
+    var(--accent-hover)
+  );
+  color: #fff;
+  padding: 14px;
+  border-radius: 8px;
+  border: none;
+  font-size: 15px;
+  font-weight: 700;
+  cursor: pointer;
+}
+
+/* =========================
+   DESKTOP CENTER
+========================= */
+@media (min-width: 768px) {
+  .swiggy-review-section {
+    max-width: 520px;
+    margin: auto;
+  }
+}

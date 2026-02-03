@@ -1,0 +1,161 @@
+:root {
+  --cream: #FFF5E4;        /* Main background (vanilla cream) */
+  --pink: #FF9494;         /* Accent / buttons (strawberry) */
+  --pink-soft: #FFD1D1;    /* Soft sections / cards */
+  --choco: #3B2A2A;        /* Text (chocolate brown) */
+}
+/* ===============================
+   SECTION
+=============================== */
+.insta-section {
+  padding: 36px 16px 44px;
+  background: var(--cream);
+  font-family: "Quicksand", sans-serif;
+}
+
+/* ===============================
+   TITLE
+=============================== */
+.insta-title {
+  text-align: center;
+  font-size: clamp(26px, 6vw, 32px);
+  font-weight: 700;
+  color: var(--choco);
+  padding-top: 10px;
+}
+
+.insta-sub {
+  text-align: center;
+  margin-top: 6px;
+  margin-bottom: 22px;
+  font-size: 18px;
+  color: var(--choco);
+  opacity: 0.85;
+}
+
+/* ===============================
+   FOLLOW BUTTON – CTA
+=============================== */
+.follow-btn {
+  display: block;
+  margin: 0 auto 26px;
+  padding: 10px 28px;
+  font-size: 16px;
+  font-weight: 700;
+
+  color: #fff;
+  background: linear-gradient(
+    135deg,
+    var(--pink),
+    #ff7a7a
+  );
+
+  border: none;
+  border-radius: 999px;
+  cursor: pointer;
+
+  box-shadow: 0 8px 22px rgba(255, 148, 148, 0.45);
+  transition: all 0.25s ease;
+}
+
+.follow-btn:hover {
+  transform: translateY(-3px);
+  box-shadow: 0 12px 32px rgba(255, 148, 148, 0.6);
+  filter: brightness(1.05);
+}
+
+/* ===============================
+   POLAROID GRID
+=============================== */
+.polaroid-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(150px, 1fr));
+  gap: 22px;
+  padding: 0 clamp(16px, 6vw, 80px);
+}
+
+/* ===============================
+   CARD
+=============================== */
+.polaroid-card {
+  background: #fff;
+  padding: 8px 8px 26px;
+  border-radius: 14px;
+
+  box-shadow: 0 10px 22px rgba(59, 42, 42, 0.18);
+
+  cursor: pointer;
+  position: relative;
+  transition: transform 0.3s ease;
+}
+
+/* subtle tilt */
+.polaroid-card:nth-child(odd) {
+  transform: rotate(-2deg);
+}
+
+.polaroid-card:nth-child(even) {
+  transform: rotate(2deg);
+}
+
+.polaroid-card:hover {
+  transform: rotate(0deg) scale(1.05);
+}
+
+/* ===============================
+   IMAGE
+=============================== */
+.polaroid-card img {
+  width: 100%;
+  aspect-ratio: 4 / 6;
+  object-fit: cover;
+  border-radius: 10px;
+}
+
+/* ===============================
+   TAG
+=============================== */
+.polaroid-tag {
+  position: absolute;
+  bottom: 8px;
+  left: 50%;
+  transform: translateX(-50%);
+  font-size: 14px;
+  font-weight: 600;
+  color: var(--pink);
+}
+
+/* ===============================
+   MOBILE – STORY STRIP STYLE
+=============================== */
+@media (max-width: 600px) {
+  .polaroid-grid {
+    display: flex;
+    overflow-x: auto;
+    gap: 14px;
+    padding: 0 12px;
+    scroll-snap-type: x mandatory;
+  }
+
+  .polaroid-grid::-webkit-scrollbar {
+    display: none;
+  }
+
+  .polaroid-card {
+    min-width: 150px;
+    scroll-snap-align: start;
+    transform: none;
+  }
+
+  .polaroid-card:hover {
+    transform: scale(1.03);
+  }
+
+  .polaroid-card img {
+    aspect-ratio: 3 / 5;
+  }
+
+  .polaroid-tag {
+    font-size: 13px;
+  }
+}

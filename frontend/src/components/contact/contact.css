@@ -1,0 +1,236 @@
+:root {
+  /* CORE CAKE PALETTE */
+  --cream: #FFF5E4;        /* Vanilla cream */
+  --pink: #FF9494;         /* Strawberry pink */
+  --pink-soft: #FFD1D1;    /* Soft pink */
+  --choco: #3B2A2A;        /* Chocolate brown */
+  --white: #FFFFFF;
+}
+/* ===============================
+   MAIN WRAPPER
+=============================== */
+.contact-new {
+  font-family: "Quicksand", sans-serif;
+  background: var(--cream);
+  color: var(--choco);
+}
+
+/* ===============================
+   HERO
+=============================== */
+.contact-hero-new {
+  padding: 72px 20px 56px;
+  text-align: center;
+  background: linear-gradient(
+    135deg,
+    var(--pink-soft),
+    var(--cream)
+  );
+  border-bottom-left-radius: 32px;
+  border-bottom-right-radius: 32px;
+}
+
+.contact-hero-new h1 {
+  font-size: 36px;
+  color: var(--choco);
+  font-weight: 700;
+}
+
+.contact-hero-new p {
+  font-size: 16px;
+  max-width: 520px;
+  margin: 10px auto 0;
+  opacity: 0.9;
+}
+
+/* ===============================
+   CONTENT WRAPPER
+=============================== */
+.contact-wrapper {
+  max-width: 1100px;
+  margin: -40px auto 0;
+  padding: 0 16px 60px;
+  display: grid;
+  grid-template-columns: 1fr 1.2fr;
+  gap: 18px;
+}
+
+/* ===============================
+   CARD BASE
+=============================== */
+.contact-card {
+  background: var(--white);
+  border-radius: 18px;
+  padding: 20px 22px;
+  box-shadow: 0 8px 22px rgba(59, 42, 42, 0.15);
+}
+
+/* ===============================
+   INFO CARD
+=============================== */
+.info-card h2 {
+  font-size: 20px;
+  color: var(--choco);
+  margin-bottom: 16px;
+}
+
+.contact-item {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  font-size: 14px;
+  margin-bottom: 12px;
+}
+
+/* ===============================
+   INSTAGRAM BOX
+=============================== */
+.instagram-box {
+  display: flex;
+  gap: 12px;
+  background: var(--pink-soft);
+  padding: 12px;
+  border-radius: 14px;
+  margin-top: 18px;
+}
+
+.instagram-box img {
+  width: 48px;
+  height: 48px;
+  border-radius: 50%;
+  object-fit: cover;
+}
+
+.instagram-box h4 {
+  font-size: 14px;
+  margin-bottom: 2px;
+}
+
+.instagram-box p {
+  font-size: 12px;
+  opacity: 0.8;
+  margin-bottom: 6px;
+}
+
+.instagram-box a {
+  display: inline-flex;
+  align-items: center;
+  gap: 6px;
+  font-size: 12px;
+  font-weight: 600;
+  color: var(--pink);
+  text-decoration: none;
+}
+
+/* ===============================
+   FORM CARD
+=============================== */
+.form-card h2 {
+  font-size: 20px;
+  color: var(--choco);
+  margin-bottom: 14px;
+}
+
+.form-grid {
+  display: grid;
+  grid-template-columns: repeat(2, 1fr);
+  gap: 10px;
+}
+
+.form-card input,
+.form-card select,
+.form-card textarea {
+  width: 100%;
+  padding: 12px 14px;
+  font-size: 13px;
+  border-radius: 12px;
+  border: 1px solid rgba(59, 42, 42, 0.2);
+  outline: none;
+  font-family: inherit;
+}
+
+.form-card textarea {
+  margin-top: 10px;
+  resize: none;
+  min-height: 110px;
+}
+
+.form-card input:focus,
+.form-card select:focus,
+.form-card textarea:focus {
+  border-color: var(--pink);
+}
+
+/* ===============================
+   SUBMIT BUTTON
+=============================== */
+.form-card button {
+  margin-top: 14px;
+  width: 100%;
+  padding: 13px;
+  border: none;
+  border-radius: 14px;
+  background: linear-gradient(
+    135deg,
+    var(--pink),
+    #ff7a7a
+  );
+  color: var(--white);
+  font-size: 14px;
+  font-weight: 600;
+  cursor: pointer;
+  transition: 0.2s ease;
+}
+
+.form-card button:hover {
+  transform: translateY(-2px);
+  box-shadow: 0 10px 22px rgba(255, 148, 148, 0.35);
+}
+
+/* ===============================
+   MAP SECTION
+=============================== */
+.contact-map {
+  padding: 60px 16px 40px;
+  text-align: center;
+}
+
+.contact-map h2 {
+  font-size: 26px;
+  color: var(--choco);
+  margin-bottom: 6px;
+}
+
+.contact-map p {
+  font-size: 14px;
+  opacity: 0.85;
+  margin-bottom: 18px;
+}
+
+.contact-map iframe {
+  border-radius: 18px;
+  box-shadow: 0 8px 20px rgba(59, 42, 42, 0.18);
+}
+
+/* ===============================
+   RESPONSIVE
+=============================== */
+@media (max-width: 850px) {
+  .contact-wrapper {
+    grid-template-columns: 1fr;
+  }
+}
+
+@media (max-width: 600px) {
+  .contact-hero-new h1 {
+    font-size: 28px;
+  }
+
+  .form-grid {
+    grid-template-columns: 1fr;
+  }
+
+  .contact-map h2 {
+    font-size: 22px;
+  }
+}

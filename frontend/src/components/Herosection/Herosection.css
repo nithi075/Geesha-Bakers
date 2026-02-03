@@ -1,0 +1,181 @@
+:root {
+  --cream: #FFF5E4;        /* Vanilla cream background */
+  --pink: #FF9494;         /* Strawberry accent */
+  --pink-soft: #FFD1D1;    /* Soft pink */
+  --choco: #3B2A2A;        /* Chocolate text */
+}
+/* ==================================================
+   HERO - LAYOUT & BACKGROUND
+================================================== */
+.ref-hero {
+  width: 100%;
+  height: 88vh;
+  min-height: 600px;
+
+  background-color: var(--cream);
+  background-image: url("/images/hero/hero2.jpeg");
+  background-repeat: no-repeat;
+  background-size: cover;
+  background-position: right center;
+
+  display: flex;
+  align-items: center;
+  position: relative;
+  overflow: hidden;
+}
+
+/* ==================================================
+   GRADIENT OVERLAY
+================================================== */
+.ref-hero::before {
+  content: "";
+  position: absolute;
+  inset: 0;
+  background: linear-gradient(
+    to right,
+    rgba(255, 245, 228, 0.95) 0%,
+    rgba(255, 245, 228, 0.9) 22%,
+    rgba(255, 245, 228, 0.55) 50%,
+    rgba(255, 245, 228, 0) 80%
+  );
+  z-index: 1;
+}
+
+/* ==================================================
+   CONTENT WRAPPER
+================================================== */
+.ref-wrap {
+  margin: 0 auto;
+  width: 100%;
+  padding-left: 100px;
+  position: relative;
+  z-index: 2;
+}
+
+/* ==================================================
+   TEXT STYLING
+================================================== */
+.ref-left {
+  max-width: 800px;
+}
+
+.ref-left h1 {
+  font-family: "Quicksand", sans-serif;
+  font-weight: 700;
+  line-height: 1.1;
+  letter-spacing: -2px;
+  color: var(--choco);
+  margin-bottom: 25px;
+  font-size: 92px;
+}
+
+.ref-left p {
+  font-family: "Comic Relief", cursive;
+  font-size: 35px;
+  color: var(--choco);
+  opacity: 0.85;
+  margin-bottom: 40px;
+  line-height: 1.6;
+}
+
+/* ==================================================
+   BUTTON – CTA
+================================================== */
+.ref-btn {
+  display: inline-block;
+  text-decoration: none;
+
+  background: linear-gradient(
+    135deg,
+    var(--pink),
+    #ff7a7a
+  );
+  color: #fff;
+
+  border-radius: 999px;
+  padding: 16px 48px;
+
+  font-size: 25px;
+  font-weight: 700;
+  letter-spacing: 1px;
+
+  cursor: pointer;
+  transition: all 0.3s ease;
+
+  box-shadow: 0 8px 22px rgba(255, 148, 148, 0.45);
+}
+
+.ref-btn:hover {
+  transform: translateY(-3px);
+  box-shadow: 0 12px 32px rgba(255, 148, 148, 0.6);
+  filter: brightness(1.08);
+}
+
+/* ==================================================
+   HERO → MENU SCALLOP DIVIDER
+================================================== */
+.hero-divider {
+  position: absolute;
+  bottom: -1px;
+  left: 0;
+  width: 100%;
+  height: 90px;
+  z-index: 3;
+
+  background:
+    radial-gradient(
+      circle at 30px 0,
+      transparent 28px,
+      var(--cream) 29px
+    ) repeat-x;
+
+  background-size: 60px 100%;
+  background-position: bottom;
+}
+
+/* ==================================================
+   RESPONSIVE
+================================================== */
+
+/* Tablets */
+@media (max-width: 1024px) {
+  .ref-wrap {
+    padding: 0 50px;
+  }
+
+  .ref-left h1 {
+    font-size: 70px;
+  }
+}
+
+/* Mobile */
+@media (max-width: 600px) {
+  .ref-hero {
+    height: 80vh;
+    text-align: center;
+  }
+
+  .ref-wrap {
+    padding: 0 20px;
+  }
+
+  .ref-left h1 {
+    font-size: 43px;
+    letter-spacing: -1px;
+  }
+
+  .ref-left p {
+    font-size: 20px;
+    margin-bottom: 25px;
+  }
+
+  .ref-btn {
+    font-size: 14px;
+    padding: 14px 34px;
+  }
+
+  .hero-divider {
+    height: 80px;
+    background-size: 60px 90%;
+  }
+}

@@ -1,0 +1,78 @@
+/* ------------------------------
+   GLOBAL FONT & RESET
+------------------------------ */
+
+* {
+  margin: 0;
+  padding: 0;
+  box-sizing: border-box;
+  font-family: "Poppins", sans-serif !important;
+}
+
+body {
+  background-color: #FFFFFF;  /* Clean bright white */
+  color: #333333;             /* Charcoal text */
+  overflow-x: hidden;
+}
+
+/* ------------------------------
+   COLOR VARIABLES
+------------------------------ */
+
+:root {
+  --pink: #ff4f88;        /* Accent Pink */
+  --white: #FFFFFF;       /* Primary Background */
+  --text-dark: #333333;   /* Main Text */
+  --beige: #EBE8D8;       /* Soft Beige */
+}
+
+/* ------------------------------
+   REUSABLE UTILITY CLASSES
+------------------------------ */
+
+.primary-btn {
+  background: var(--pink);
+  color: var(--white);
+  padding: 12px 26px;
+  border-radius: 6px;
+  border: none;
+  font-size: 15px;
+  font-weight: 600;
+  cursor: pointer;
+  transition: 0.3s ease;
+}
+
+.primary-btn:hover {
+  opacity: 0.85;
+}
+
+.section-title {
+  font-size: 28px;
+  font-weight: 600;
+  color: var(--text-dark);
+  margin-bottom: 10px;
+}
+
+.sub-text {
+  color: #555;
+  font-size: 15px;
+  margin-bottom: 20px;
+}
+
+.card {
+  background: var(--beige);
+  padding: 20px;
+  border-radius: 10px;
+  box-shadow: 0px 2px 6px rgba(0,0,0,0.08);
+}
+
+input {
+  font-family: inherit;
+}
+/* ------------------------------
+   GLOBAL FIXED WIDTH LAYOUT
+------------------------------ */
+
+
+
+

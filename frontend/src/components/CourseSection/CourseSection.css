@@ -1,0 +1,123 @@
+/* ===============================
+   ROOT VARIABLES (Consistent Theme)
+=============================== */
+:root {
+  --pink: #F45C5C;        /* Strong strawberry pink */
+  --pink-soft: #FD9A9A;   /* Soft highlight pink */
+  --beige-light: #FFF1D6; /* Creamy bakery background */
+  --beige-soft: #FFD6D1;  /* Section background */
+  --text-dark: #3E2424;   /* Rich cocoa brown */
+  --white: #ffffff;
+  
+  --shadow-soft: 0 6px 16px rgba(244, 92, 92, 0.25);
+}
+
+/* ==================================================
+   MAIN WRAPPER
+================================================== */
+.courses-wrapper {
+  width: 100%;
+  text-align: center;
+  padding: clamp(60px, 8vw, 100px) clamp(20px, 6vw, 60px);
+  background: var(--beige-light); /* Matching About/Contact background */
+  font-family: 'Quicksand', sans-serif;
+}
+
+/* ==================================================
+   TITLE
+================================================== */
+.courses-title {
+  font-size: clamp(28px, 4vw, 46px);
+  color: var(--pink); /* Updated to strawberry pink */
+  font-weight: 700;
+  margin-bottom: 8px;
+}
+
+.courses-sub {
+  font-size: clamp(16px, 2.5vw, 22px);
+  color: var(--text-dark); /* Updated to cocoa brown */
+  opacity: 0.9;
+  margin-bottom: clamp(30px, 5vw, 50px);
+}
+
+/* ==================================================
+   GRID (AUTO RESPONSIVE)
+================================================== */
+.courses-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(180px, 1fr));
+  gap: clamp(20px, 4vw, 40px);
+  margin-bottom: clamp(30px, 5vw, 50px);
+}
+
+/* ==================================================
+   COURSE BOX
+================================================== */
+.course-box {
+  padding: clamp(14px, 2vw, 20px);
+  text-align: center;
+  transition: transform 0.25s ease;
+}
+
+.course-box:hover {
+  transform: translateY(-6px);
+}
+
+/* ==================================================
+   ICON
+================================================== */
+.course-icon {
+  width: clamp(56px, 6vw, 90px);
+  height: clamp(56px, 6vw, 90px);
+  object-fit: contain;
+  margin-bottom: 14px;
+  /* Updated shadow to match theme tint */
+  filter: drop-shadow(0px 4px 8px rgba(62, 36, 36, 0.15));
+}
+
+/* ==================================================
+   TEXT
+================================================= */
+.course-box h3 {
+  font-size: clamp(15px, 2vw, 20px);
+  font-weight: 700;
+  color: var(--text-dark); /* Updated to cocoa brown */
+  margin-bottom: 6px;
+}
+
+.course-box p {
+  color: var(--text-dark);
+  opacity: 0.8;
+  font-size: clamp(13px, 1.8vw, 15px);
+  line-height: 1.5;
+}
+
+/* ==================================================
+   BUTTON
+================================================== */
+.courses-btn {
+  padding: clamp(12px, 2vw, 14px) clamp(26px, 4vw, 36px);
+  font-size: clamp(14px, 2vw, 18px);
+  /* Matching Strawberry Gradient */
+  background: linear-gradient(135deg, var(--pink), #E94444);
+  color: var(--white);
+  border: none;
+  border-radius: 12px;
+  cursor: pointer;
+  font-weight: 700;
+  transition: transform 0.25s ease, box-shadow 0.25s ease;
+}
+
+.courses-btn:hover {
+  transform: translateY(-3px);
+  box-shadow: 0 8px 20px rgba(244, 92, 92, 0.35);
+}
+
+/* ==================================================
+   MOBILE – FORCE 2 PER ROW
+================================================== */
+@media (max-width: 540px) {
+  .courses-grid {
+    grid-template-columns: repeat(2, 1fr);
+  }
+}

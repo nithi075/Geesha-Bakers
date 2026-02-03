@@ -1,0 +1,277 @@
+:root {
+  /* MAIN CAKE PALETTE */
+  --bg-main: #FFF5E4;      /* Vanilla cream */
+  --bg-soft: #FFD1D1;      /* Soft pink */
+  --bg-accent: #FF9494;   /* Strawberry */
+
+  --accent-primary: #FF9494;
+  --accent-hover: #FF7A7A;
+
+  /* DARK CHOCOLATE */
+  --accent-dark: #3B2A2A;
+  --accent-darker: #2A1C1C;
+
+  /* TEXT */
+  --text-heading: #3B2A2A;
+  --text-dark: #3B2A2A;
+  --text-light: #FFF5E4;
+
+  --white: #ffffff;
+
+  /* HEADER */
+  --header-bg: #FFF5E4;
+  --header-shadow: rgba(59, 42, 42, 0.22);
+}
+/* ===============================
+   HEADER – DEFAULT (COMPACT)
+=============================== */
+.simple-header {
+  width: 100%;
+  height: 72px;
+  padding: 0 clamp(16px, 5vw, 72px);
+
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+
+  position: fixed;
+  top: 0;
+  left: 0;
+  z-index: 1000;
+
+  background: var(--bg-main);
+  box-shadow: 0 6px 20px var(--header-shadow);
+
+  font-family: "Quicksand", sans-serif;
+  transition: all 0.3s ease;
+}
+
+/* ===============================
+   HOME / HERO PAGE ONLY
+=============================== */
+.has-hero .simple-header {
+  position: absolute;
+  background: transparent;
+  box-shadow: none;
+  backdrop-filter: blur(3px);
+}
+
+/* SCROLL AFTER HERO */
+.simple-header.scrolled {
+  background: var(--header-bg);
+  box-shadow: 0 8px 26px rgba(59, 42, 42, 0.35);
+}
+
+/* ===============================
+   LOGO
+=============================== */
+.logo-section {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  text-decoration: none;
+}
+
+.header-logo {
+  width: 44px;
+  height: 44px;
+}
+
+.logo-text h2 {
+  font-size: 18px;
+  margin: 0;
+  color: var(--accent-dark);
+}
+
+.logo-text span {
+  font-size: 10px;
+  letter-spacing: 1.2px;
+  text-transform: uppercase;
+  color: var(--text-dark);
+  opacity: 0.75;
+}
+
+/* ===============================
+   DESKTOP NAV
+=============================== */
+.nav-menu {
+  display: flex;
+  align-items: center;
+  gap: 24px;
+}
+
+.nav-menu a {
+  text-decoration: none;
+  font-size: 16px;
+  font-weight: 600;
+  color: var(--text-dark);
+  position: relative;
+}
+
+/* underline hover */
+.nav-menu a::after {
+  content: "";
+  position: absolute;
+  left: 0;
+  bottom: -6px;
+  width: 0%;
+  height: 2px;
+  background: var(--accent-primary);
+  transition: width 0.25s ease;
+}
+
+.nav-menu a:hover {
+  color: var(--accent-primary);
+}
+
+.nav-menu a:hover::after {
+  width: 100%;
+}
+
+/* ===============================
+   ICONS + BADGE
+=============================== */
+.cart-icon-desktop,
+.wishlist-icon-desktop,
+.mobile-cart,
+.mobile-wishlist {
+  position: relative;
+  cursor: pointer;
+  color: var(--text-dark);
+}
+
+.cart-badge {
+  position: absolute;
+  top: -5px;
+  right: -5px;
+
+  width: 14px;
+  height: 14px;
+  border-radius: 50%;
+  background: var(--accent-primary);
+  color: #fff;
+
+  font-size: 9px;
+  font-weight: 700;
+
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+/* ===============================
+   MOBILE ICON BAR
+=============================== */
+.mobile-icons {
+  display: none;
+  align-items: center;
+  gap: 18px;
+}
+
+.hamburger {
+  font-size: 24px;
+  cursor: pointer;
+  color: var(--text-dark);
+}
+
+/* ===============================
+   MOBILE OVERLAY
+=============================== */
+.mobile-overlay {
+  position: fixed;
+  inset: 0;
+  background: rgba(59, 42, 42, 0.45);
+  backdrop-filter: blur(3px);
+  z-index: 1500;
+}
+
+/* ===============================
+   MOBILE NAV DRAWER
+=============================== */
+.mobile-nav {
+  position: fixed;
+  top: 0;
+  right: -100%;
+  width: 260px;
+  height: 100vh;
+
+  background: linear-gradient(
+    to bottom,
+    var(--bg-soft),
+    var(--bg-main)
+  );
+
+  padding: 22px 18px;
+
+  display: flex;
+  flex-direction: column;
+  gap: 14px;
+
+  transition: right 0.35s ease;
+  z-index: 2000;
+
+  box-shadow: -10px 0 34px rgba(59, 42, 42, 0.35);
+}
+
+.mobile-nav.open {
+  right: 0;
+}
+
+.mobile-close {
+  align-self: flex-end;
+  font-size: 28px;
+  cursor: pointer;
+  margin-bottom: 8px;
+  color: var(--text-dark);
+}
+
+.mobile-nav a {
+  text-decoration: none;
+  font-size: 18px;
+  font-weight: 700;
+  color: var(--text-dark);
+
+  padding: 12px 14px;
+  border-radius: 12px;
+
+  transition: all 0.25s ease;
+}
+
+.mobile-nav a:hover,
+.mobile-nav a.active {
+  background: rgba(255, 148, 148, 0.25);
+  color: var(--accent-primary);
+  transform: translateX(6px);
+}
+
+/* ===============================
+   MOBILE RESPONSIVE
+=============================== */
+@media (max-width: 768px) {
+  .nav-menu {
+    display: none;
+  }
+
+  .mobile-icons {
+    display: flex;
+  }
+
+  .simple-header {
+    height: 64px;
+  }
+
+  .mobile-cart svg,
+  .mobile-wishlist svg {
+    width: 22px;
+    height: 22px;
+  }
+}
+
+/* DESKTOP ICON SIZE */
+@media (min-width: 769px) {
+  .cart-icon-desktop svg,
+  .wishlist-icon-desktop svg {
+    width: 24px;
+    height: 24px;
+  }
+}

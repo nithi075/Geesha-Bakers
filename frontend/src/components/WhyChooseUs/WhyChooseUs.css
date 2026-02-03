@@ -1,0 +1,128 @@
+:root {
+  /* BACKGROUNDS */
+  --bg-main: #FFF5E4;     /* Vanilla cream (same as menu & hero) */
+  --bg-soft: #FFD1D1;     /* Soft pink (cards / borders) */
+  --bg-accent: #FF9494;  /* Strawberry accent */
+
+  /* ACCENTS */
+  --accent-primary: #FF9494; /* Strawberry pink */
+
+  /* DARK ACCENTS */
+  --accent-dark: #3B2A2A;    /* Chocolate brown */
+  --accent-darker: #2A1C1C; /* Dark chocolate */
+
+  /* TEXT */
+  --text-heading: #3B2A2A;
+  --text-dark: #3B2A2A;
+  --text-light: #FFF5E4;
+
+  /* BASE */
+  --white: #FFFFFF;
+}
+/* ===============================
+   SECTION
+=============================== */
+.why-section {
+  background: var(--bg-main);
+  padding: 60px 16px;
+  font-family: "Quicksand", sans-serif;
+  text-align: center;
+}
+
+/* ===============================
+   TITLE
+=============================== */
+.why-title {
+  font-size: 28px;
+  font-weight: 700;
+  color: var(--text-heading);
+}
+
+.why-sub {
+  margin-top: 6px;
+  margin-bottom: 32px;
+  font-size: 14px;
+  color: var(--text-dark);
+  opacity: 0.8;
+}
+
+/* ===============================
+   GRID
+=============================== */
+.why-grid {
+  display: grid;
+  grid-template-columns: repeat(2, 1fr);
+  gap: 14px;
+}
+
+/* ===============================
+   CARD
+=============================== */
+.why-card {
+  background: var(--white);
+  padding: 22px 14px;
+  border-radius: 16px;
+
+  box-shadow:
+    0 8px 22px rgba(59, 42, 42, 0.18);
+
+  border: 1px solid var(--bg-soft);
+  transition: transform 0.25s ease;
+}
+
+.why-card:hover {
+  transform: translateY(-4px);
+}
+
+/* ===============================
+   ICON
+=============================== */
+.why-icon {
+  font-size: 28px;
+  color: var(--accent-primary);
+  margin-bottom: 10px;
+}
+
+/* ===============================
+   TEXT
+=============================== */
+.why-card h3 {
+  font-size: 15px;
+  font-weight: 700;
+  color: var(--text-heading);
+  margin-bottom: 4px;
+}
+
+.why-card p {
+  font-size: 13px;
+  color: var(--text-dark);
+  opacity: 0.8;
+}
+
+/* ===============================
+   TABLET
+=============================== */
+@media (min-width: 768px) {
+  .why-section {
+    padding: 80px 40px;
+  }
+
+  .why-grid {
+    grid-template-columns: repeat(3, 1fr);
+    gap: 20px;
+  }
+
+  .why-title {
+    font-size: 36px;
+  }
+}
+
+/* ===============================
+   DESKTOP
+=============================== */
+@media (min-width: 1024px) {
+  .why-section {
+    max-width: 1200px;
+    margin: auto;
+  }
+}
