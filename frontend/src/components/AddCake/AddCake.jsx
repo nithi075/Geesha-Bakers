@@ -193,6 +193,7 @@ export default function AddCake() {
           <option value="cakeslices">Cake Slices</option>
           <option value="brownies">Brownies</option>
           <option value="cupcake">Cup Cake</option>
+          <option value="jarcake">Jar Cake</option>
         </select>
 
         {/* ===== KG PRICE ===== */}
