@@ -1,10 +1,10 @@
 import express from "express";
 import upload from "../middleware/upload.js";
 import {
-  updateProduct,
   getProducts,
   getSingleProduct,
   createProduct,
+  updateProduct,
 } from "../controllers/productController.js";
 
 const router = express.Router();

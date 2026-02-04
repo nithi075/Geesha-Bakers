@@ -15,7 +15,6 @@ export const getProducts = async (req, res) => {
 
     res.json(formatted);
   } catch (err) {
-    console.error("GET PRODUCTS ERROR:", err);
     res.status(500).json({ error: err.message });
   }
 };
@@ -26,7 +25,6 @@ export const getProducts = async (req, res) => {
 export const getSingleProduct = async (req, res) => {
   try {
     const product = await Product.findById(req.params.id);
-
     if (!product) {
       return res.status(404).json({ error: "Product not found" });
     }
@@ -36,7 +34,6 @@ export const getSingleProduct = async (req, res) => {
       price: product.priceByKg?.["1"] || 0,
     });
   } catch (err) {
-    console.error("GET SINGLE PRODUCT ERROR:", err);
     res.status(500).json({ error: err.message });
   }
 };
@@ -46,8 +43,8 @@ export const getSingleProduct = async (req, res) => {
 ========================= */
 export const createProduct = async (req, res) => {
   try {
-    console.log("📦 BODY:", req.body);
-    console.log("🖼 FILE COUNT:", req.files?.length);
+    console.log("BODY 👉", req.body);
+    console.log("FILES 👉", req.files?.length);
 
     if (!req.files || req.files.length === 0) {
       return res.status(400).json({ error: "No images uploaded" });
@@ -60,24 +57,25 @@ export const createProduct = async (req, res) => {
       return res.status(400).json({ error: "Invalid priceByKg format" });
     }
 
-    const uploadPromises = req.files.map((file) => {
-      return new Promise((resolve, reject) => {
-        cloudinary.uploader
-          .upload_stream(
-            {
-              folder: "cakes",
-              resource_type: "image",
-              quality: "auto",
-              fetch_format: "auto",
-            },
-            (error, result) => {
-              if (error) return reject(error);
-              resolve(result.secure_url);
-            }
-          )
-          .end(file.buffer);
-      });
-    });
+    const uploadPromises = req.files.map(
+      (file) =>
+        new Promise((resolve, reject) => {
+          cloudinary.uploader
+            .upload_stream(
+              {
+                folder: "cakes",
+                resource_type: "image",
+                quality: "auto",
+                fetch_format: "auto",
+              },
+              (err, result) => {
+                if (err) return reject(err);
+                resolve(result.secure_url);
+              }
+            )
+            .end(file.buffer);
+        })
+    );
 
     const imageUrls = await Promise.all(uploadPromises);
 
@@ -90,14 +88,14 @@ export const createProduct = async (req, res) => {
       category: req.body.category,
       flavor: req.body.flavor,
       occasion: req.body.occasion,
-      eggless: req.body.eggless === "true",
-      bestseller: req.body.bestseller === "true",
+      eggless: req.body.eggless === "true" || req.body.eggless === true,
+      bestseller:
+        req.body.bestseller === "true" || req.body.bestseller === true,
     });
 
     await product.save();
     res.status(201).json(product);
   } catch (err) {
-    console.error("🔥 CREATE PRODUCT ERROR:", err);
     res.status(500).json({ error: err.message });
   }
 };
@@ -107,9 +105,6 @@ export const createProduct = async (req, res) => {
 ========================= */
 export const updateProduct = async (req, res) => {
   try {
-    console.log("✏️ UPDATE BODY:", req.body);
-    console.log("🖼 NEW FILES:", req.files?.length);
-
     const product = await Product.findById(req.params.id);
     if (!product) {
       return res.status(404).json({ error: "Product not found" });
@@ -130,27 +125,28 @@ export const updateProduct = async (req, res) => {
     }
 
     if (req.files && req.files.length > 0) {
-      const uploadPromises = req.files.map((file) => {
-        return new Promise((resolve, reject) => {
-          cloudinary.uploader
-            .upload_stream(
-              {
-                folder: "cakes",
-                resource_type: "image",
-                quality: "auto",
-                fetch_format: "auto",
-              },
-              (error, result) => {
-                if (error) return reject(error);
-                resolve(result.secure_url);
-              }
-            )
-            .end(file.buffer);
-        });
-      });
+      const uploadPromises = req.files.map(
+        (file) =>
+          new Promise((resolve, reject) => {
+            cloudinary.uploader
+              .upload_stream(
+                {
+                  folder: "cakes",
+                  resource_type: "image",
+                  quality: "auto",
+                  fetch_format: "auto",
+                },
+                (err, result) => {
+                  if (err) return reject(err);
+                  resolve(result.secure_url);
+                }
+              )
+              .end(file.buffer);
+          })
+      );
 
-      const newImageUrls = await Promise.all(uploadPromises);
-      images = [...images, ...newImageUrls];
+      const newUrls = await Promise.all(uploadPromises);
+      images = [...images, ...newUrls];
     }
 
     if (images.length > 5) {
@@ -165,13 +161,13 @@ export const updateProduct = async (req, res) => {
     product.category = req.body.category;
     product.flavor = req.body.flavor;
     product.occasion = req.body.occasion;
-    product.eggless = req.body.eggless === "true";
-    product.bestseller = req.body.bestseller === "true";
+    product.eggless = req.body.eggless === "true" || req.body.eggless === true;
+    product.bestseller =
+      req.body.bestseller === "true" || req.body.bestseller === true;
 
     await product.save();
     res.json(product);
   } catch (err) {
-    console.error("🔥 UPDATE PRODUCT ERROR:", err);
     res.status(500).json({ error: err.message });
   }
 };
