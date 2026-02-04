@@ -39,13 +39,13 @@ export default function IndiaLoves() {
     setWishlist(res.data.map((i) => i.productId));
   };
 
-  /* PRICE HANDLER */
+  /* ✅ PRICE HANDLER – FIXED */
   const getDisplayPrice = (cake) => {
-    if (cake.category === "piece" && cake.pricePerPiece) {
-      return `₹${cake.pricePerPiece}`;
+    if (cake.pricingType === "piece" && cake.priceByPiece?.["1"]) {
+      return `₹${cake.priceByPiece["1"]}`;
     }
 
-    if (cake.priceByKg?.["1"]) {
+    if (cake.pricingType === "kg" && cake.priceByKg?.["1"]) {
       return `₹${cake.priceByKg["1"]}`;
     }
 
