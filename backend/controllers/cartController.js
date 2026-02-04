@@ -12,7 +12,8 @@ export const getCart = async (req, res) => {
       await cart.save();
     }
 
-    res.json(cart.items);
+    // 🔥 frontend expects items inside object
+    res.json({ items: cart.items });
   } catch (err) {
     res.status(500).json({ error: err.message });
   }
@@ -23,25 +24,34 @@ export const getCart = async (req, res) => {
 ========================= */
 export const addToCart = async (req, res) => {
   try {
-    const { productId, title, price, qty, img, message, kg } = req.body;
+    const {
+      productId,
+      title,
+      price,
+      qty,
+      img,
+      message,
+      kg,
+    } = req.body;
 
     let cart = await Cart.findOne();
     if (!cart) cart = new Cart({ items: [], wishlist: [] });
 
+    // 🔥 SAFE comparison (cakes + brownies)
     const existingItem = cart.items.find(
       (item) =>
         item.productId.toString() === productId &&
-        item.kg === kg
+        (item.kg || "") === (kg || "")
     );
 
     if (existingItem) {
-      existingItem.qty += qty || 1;
+      existingItem.qty += Number(qty) || 1;
     } else {
       cart.items.push({
         productId,
         title,
         price,
-        qty: qty || 1,
+        qty: Number(qty) || 1,
         img,
         message,
         kg,
@@ -49,7 +59,7 @@ export const addToCart = async (req, res) => {
     }
 
     await cart.save();
-    res.json(cart.items);
+    res.json({ items: cart.items });
   } catch (err) {
     res.status(500).json({ error: err.message });
   }
@@ -64,7 +74,7 @@ export const updateQty = async (req, res) => {
     const { id } = req.params;
 
     const cart = await Cart.findOne();
-    if (!cart) return res.json([]);
+    if (!cart) return res.json({ items: [] });
 
     const item = cart.items.id(id);
     if (!item) {
@@ -75,7 +85,7 @@ export const updateQty = async (req, res) => {
     if (type === "decrease" && item.qty > 1) item.qty -= 1;
 
     await cart.save();
-    res.json(cart.items);
+    res.json({ items: cart.items });
   } catch (err) {
     res.status(500).json({ error: err.message });
   }
@@ -89,14 +99,14 @@ export const removeFromCart = async (req, res) => {
     const { id } = req.params;
 
     const cart = await Cart.findOne();
-    if (!cart) return res.json([]);
+    if (!cart) return res.json({ items: [] });
 
     cart.items = cart.items.filter(
       (item) => item._id.toString() !== id
     );
 
     await cart.save();
-    res.json(cart.items);
+    res.json({ items: cart.items });
   } catch (err) {
     res.status(500).json({ error: err.message });
   }
