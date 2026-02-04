@@ -44,7 +44,6 @@ export default function IndiaLoves() {
       <h1 className="il-title">Our Cakes</h1>
       <p className="il-sub">Every slice tells a sweet story</p>
 
-      {/* 🔥 PRODUCTS STRIP – RECENT FIRST */}
       <div className="il-grid">
         {cakes.slice(0, 8).map((cake) => (
           <article
@@ -54,11 +53,7 @@ export default function IndiaLoves() {
           >
             <div className="portrait-img">
               <img
-                src={
-                  cake.images?.[0]
-                    ? `https://geesha-bakers.onrender.com${cake.images[0]}`
-                    : "/placeholder-cake.jpg"
-                }
+                src={cake.images?.[0] || "/placeholder-cake.jpg"}
                 alt={cake.title}
               />
 
@@ -72,7 +67,6 @@ export default function IndiaLoves() {
         ))}
       </div>
 
-      {/* 🔽 VIEW MORE */}
       <div className="view-more-wrap">
         <button
           className="view-more-btn"
