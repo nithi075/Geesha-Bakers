@@ -13,11 +13,11 @@ export default function SingleCake() {
   const [price, setPrice] = useState(0);
   const [adding, setAdding] = useState(false);
 
-  // cakes
+  // KG cakes
   const [kg, setKg] = useState("1");
   const [message, setMessage] = useState("");
 
-  // brownies
+  // PIECE products
   const [pieceQty, setPieceQty] = useState(1);
   const [perPiecePrice, setPerPiecePrice] = useState(0);
 
@@ -29,7 +29,7 @@ export default function SingleCake() {
       setCake(data);
       setActiveImg(data.images?.[0] || "");
 
-      if (data.category === "brownies") {
+      if (data.pricingType === "piece") {
         const ppp = data.priceByPiece?.["1"] || 0;
         setPerPiecePrice(ppp);
         setPieceQty(1);
@@ -45,17 +45,22 @@ export default function SingleCake() {
 
   if (!cake) return null;
 
-  const isCake = cake.category !== "brownies";
+  const isCake = cake.pricingType === "kg";
 
+  /* ===== KG HANDLER ===== */
   const handleKg = (k) => {
     setKg(k);
     setPrice(cake.priceByKg[k]);
   };
 
-  const handlePieceQty = (qty) => {
-    setPieceQty(Math.max(1, Number(qty)));
+  /* ===== PIECE QTY HANDLER ===== */
+  const handleQtyChange = (val) => {
+    const qty = Math.max(1, Number(val));
+    setPieceQty(qty);
+    setPrice(qty * perPiecePrice);
   };
 
+  /* ===== ADD TO CART ===== */
   const addToCart = async (redirect = false) => {
     try {
       setAdding(true);
@@ -73,7 +78,7 @@ export default function SingleCake() {
         : {
             productId: cake._id,
             title: cake.title,
-            price: perPiecePrice,
+            price,
             qty: pieceQty,
             img: activeImg,
           };
@@ -90,18 +95,33 @@ export default function SingleCake() {
 
   return (
     <>
+      {/* MAIN IMAGE */}
       <div className="swiggy-img-wrap">
         <img src={activeImg || "/placeholder-cake.jpg"} alt={cake.title} />
       </div>
 
+      {/* MULTI IMAGE THUMBNAILS (FOR BOTH) */}
+      {cake.images?.length > 1 && (
+        <div className="swiggy-thumb-row">
+          {cake.images.map((img, i) => (
+            <img
+              key={i}
+              src={img}
+              alt="thumb"
+              className={activeImg === img ? "active" : ""}
+              onClick={() => setActiveImg(img)}
+            />
+          ))}
+        </div>
+      )}
+
       <section className="swiggy-page">
         <h1>{cake.title}</h1>
 
-        <div className="swiggy-price">
-          ₹{isCake ? price : perPiecePrice * pieceQty}
-        </div>
+        {/* PRICE */}
+        <div className="swiggy-price">₹{price}</div>
 
-        {/* CAKES */}
+        {/* ===== KG CAKES ===== */}
         {isCake && (
           <>
             <div className="swiggy-kg">
@@ -116,7 +136,6 @@ export default function SingleCake() {
               ))}
             </div>
 
-            {/* MESSAGE */}
             <div className="swiggy-message">
               <label>Message on Cake</label>
               <input
@@ -133,14 +152,13 @@ export default function SingleCake() {
           </>
         )}
 
-        {/* BROWNIES */}
+        {/* ===== PIECE PRODUCTS ===== */}
         {!isCake && (
-          <input
-            type="number"
-            min="1"
-            value={pieceQty}
-            onChange={(e) => handlePieceQty(e.target.value)}
-          />
+          <div className="piece-qty-wrap">
+            <button onClick={() => handleQtyChange(pieceQty - 1)}>-</button>
+            <span>{pieceQty}</span>
+            <button onClick={() => handleQtyChange(pieceQty + 1)}>+</button>
+          </div>
         )}
 
         {/* ACTION BUTTONS */}
