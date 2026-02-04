@@ -39,6 +39,19 @@ export default function IndiaLoves() {
     setWishlist(res.data.map((i) => i.productId));
   };
 
+  /* PRICE HANDLER */
+  const getDisplayPrice = (cake) => {
+    if (cake.category === "piece" && cake.pricePerPiece) {
+      return `₹${cake.pricePerPiece}`;
+    }
+
+    if (cake.priceByKg?.["1"]) {
+      return `₹${cake.priceByKg["1"]}`;
+    }
+
+    return "Price N/A";
+  };
+
   return (
     <section className="india-loves">
       <h1 className="il-title">Our Cakes</h1>
@@ -58,7 +71,7 @@ export default function IndiaLoves() {
               />
 
               <span className="price-tag">
-                ₹{cake.priceByKg?.["1"]}
+                {getDisplayPrice(cake)}
               </span>
             </div>
 
