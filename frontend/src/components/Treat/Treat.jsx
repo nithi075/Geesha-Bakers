@@ -5,13 +5,13 @@ import API from "../api";
 
 /* ===== MENU FILTERS ===== */
 const menuCategories = [
-  {  title: "CLASSIC", value: "classic", img: "/images/menu/menu1.jpg" },
-  {  title: "OCCASIONAL", value: "occsional", img: "/images/menu/menu3.jpg" },
-     { title: "BROWNIES", value: "brownies", img: "/images/menu/menu7.jpg" },
-  {  title: "JAR CAKES", value: "designer", img: "/images/menu/menu2.jpg" },
-  {  title: "WAFFLES", value: "waffles", img: "/images/menu/menu4.jpeg" },
-  {  title: "CAKE POPS", value: "cakepops", img: "/images/menu/menu5.jpg" },
-  {  title: "CAKESLICES", value: "cakeslices", img: "/images/menu/menu6.jpeg" },
+  { title: "CLASSIC", value: "classic", img: "/images/menu/menu1.jpg" },
+  { title: "OCCASIONAL", value: "occsional", img: "/images/menu/menu3.jpg" },
+  { title: "BROWNIES", value: "brownies", img: "/images/menu/menu7.jpg" },
+  { title: "JAR CAKES", value: "jarcakes", img: "/images/menu/menu2.jpg" },
+  { title: "WAFFLES", value: "waffles", img: "/images/menu/menu4.jpeg" },
+  { title: "CAKE POPS", value: "cakepops", img: "/images/menu/menu5.jpg" },
+  { title: "CAKESLICES", value: "cakeslices", img: "/images/menu/menu6.jpeg" },
 ];
 
 export default function Treats() {
@@ -42,22 +42,28 @@ export default function Treats() {
     setCurrentPage(1);
   }, [searchParams]);
 
+  /* ===== PRICE HELPER ===== */
+  const getBasePrice = (cake) => {
+    if (cake.pricingType === "piece") {
+      return Number(cake.priceByPiece?.["1"] || 0);
+    }
+    return Number(cake.priceByKg?.["1"] || 0);
+  };
+
   /* ---------------- FILTER ---------------- */
   const filteredProducts = products
     .filter((cake) => {
       if (category !== "all" && cake.category !== category) return false;
 
-      const price = cake.priceByKg?.["1"] || 0;
+      const price = getBasePrice(cake);
       if (priceRange === "low" && price > 500) return false;
       if (onlyBestseller && !cake.bestseller) return false;
 
       return true;
     })
     .sort((a, b) => {
-      if (sortBy === "priceLow")
-        return (a.priceByKg?.["1"] || 0) - (b.priceByKg?.["1"] || 0);
-      if (sortBy === "priceHigh")
-        return (b.priceByKg?.["1"] || 0) - (a.priceByKg?.["1"] || 0);
+      if (sortBy === "priceLow") return getBasePrice(a) - getBasePrice(b);
+      if (sortBy === "priceHigh") return getBasePrice(b) - getBasePrice(a);
       return 0;
     });
 
@@ -86,7 +92,7 @@ export default function Treats() {
         ))}
       </div>
 
-      {/* ===== SECONDARY FILTER BAR ===== */}
+      {/* ===== FILTER BAR ===== */}
       <div className="filter-bar">
         <button
           className={`filter-chip ${priceRange === "low" ? "active" : ""}`}
@@ -139,7 +145,7 @@ export default function Treats() {
               />
 
               <span className="treat-price-tag">
-                ₹{cake.priceByKg?.["1"]}
+                ₹{getBasePrice(cake)}
               </span>
             </div>
 
