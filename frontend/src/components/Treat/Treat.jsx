@@ -5,13 +5,13 @@ import API from "../api";
 
 /* ===== MENU FILTERS ===== */
 const menuCategories = [
-  { title: "Classic", value: "classic", img: "/images/menu/menu1.jpg" },
-  { title: "Desserts", value: "desserts", img: "/images/menu/menu3.jpg" },
-  { title: "Brownies", value: "brownies", img: "/images/menu/menu7.jpg" },
-  { title: "Jar Cakes", value: "designer", img: "/images/menu/menu2.jpg" },
-  { title: "Waffles", value: "waffles", img: "/images/menu/menu4.jpeg" },
-  { title: "Cake Pops", value: "cakepops", img: "/images/menu/menu5.jpg" },
-  { title: "Cake Slices", value: "cakeslices", img: "/images/menu/menu6.jpeg" },
+  {  title: "CLASSIC", value: "classic", img: "/images/menu/menu1.jpg" },
+  {  title: "OCCASIONAL", value: "occsional", img: "/images/menu/menu3.jpg" },
+     { title: "BROWNIES", value: "brownies", img: "/images/menu/menu7.jpg" },
+  {  title: "JAR CAKES", value: "designer", img: "/images/menu/menu2.jpg" },
+  {  title: "WAFFLES", value: "waffles", img: "/images/menu/menu4.jpeg" },
+  {  title: "CAKE POPS", value: "cakepops", img: "/images/menu/menu5.jpg" },
+  {  title: "CAKESLICES", value: "cakeslices", img: "/images/menu/menu6.jpeg" },
 ];
 
 export default function Treats() {
