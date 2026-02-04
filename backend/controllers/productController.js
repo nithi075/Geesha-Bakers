@@ -95,7 +95,6 @@ export const createProduct = async (req, res) => {
     });
 
     await product.save();
-
     res.status(201).json(product);
   } catch (err) {
     console.error("🔥 CREATE PRODUCT ERROR:", err);
@@ -170,7 +169,6 @@ export const updateProduct = async (req, res) => {
     product.bestseller = req.body.bestseller === "true";
 
     await product.save();
-
     res.json(product);
   } catch (err) {
     console.error("🔥 UPDATE PRODUCT ERROR:", err);
