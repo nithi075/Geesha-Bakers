@@ -15,12 +15,13 @@ export default function SingleCake() {
   const [price, setPrice] = useState(0);
   const [adding, setAdding] = useState(false);
 
-  // cake
+  // cakes
   const [kg, setKg] = useState("1");
   const [message, setMessage] = useState("");
 
-  // pieces
-  const [pieceQty, setPieceQty] = useState("1");
+  // brownies
+  const [pieceQty, setPieceQty] = useState(1);
+  const [perPiecePrice, setPerPiecePrice] = useState(0);
 
   useEffect(() => {
     API.get(`/products/${id}`).then((res) => {
@@ -28,10 +29,11 @@ export default function SingleCake() {
       setCake(data);
       setActiveImg(data.images?.[0] || "");
 
-      // 🔥 category based pricing
       if (data.category === "brownies") {
-        setPieceQty("1");
-        setPrice(data.priceByPiece?.["1"] || 0);
+        const ppp = data.priceByPiece?.["1"] || 0;
+        setPerPiecePrice(ppp);
+        setPieceQty(1);
+        setPrice(ppp);
       } else {
         setKg("1");
         setPrice(data.priceByKg?.["1"] || 0);
@@ -60,9 +62,10 @@ export default function SingleCake() {
     setPrice(cake.priceByKg[k]);
   };
 
-  const handlePiece = (p) => {
-    setPieceQty(p);
-    setPrice(cake.priceByPiece[p]);
+  const handlePieceQty = (qty) => {
+    const q = Math.max(1, Number(qty));
+    setPieceQty(q);
+    setPrice(perPiecePrice * q);
   };
 
   const addToCart = async (redirect = false) => {
@@ -82,8 +85,9 @@ export default function SingleCake() {
         : {
             productId: cake._id,
             title: cake.title,
-            price,
-            qty: Number(pieceQty),
+            price,              // total price
+            qty: pieceQty,      // number of pieces
+            perPiecePrice,
             img: activeImg,
           };
 
@@ -123,10 +127,10 @@ export default function SingleCake() {
 
         <div className="swiggy-price">
           ₹{price}{" "}
-          <span>{isCake ? "Inclusive of taxes" : "/ piece"}</span>
+          <span>{isCake ? "Inclusive of taxes" : `(${pieceQty} pcs)`}</span>
         </div>
 
-        {/* ===== CAKES → KG + MESSAGE ===== */}
+        {/* ===== CAKES ===== */}
         {isCake && (
           <>
             <div className="swiggy-kg">
@@ -154,18 +158,19 @@ export default function SingleCake() {
           </>
         )}
 
-        {/* ===== BROWNIES → PIECES ===== */}
+        {/* ===== BROWNIES → USER TYPES PIECES ===== */}
         {!isCake && (
-          <div className="swiggy-kg">
-            {Object.keys(cake.priceByPiece).map((p) => (
-              <button
-                key={p}
-                className={pieceQty === p ? "active" : ""}
-                onClick={() => handlePiece(p)}
-              >
-                {p} Pieces
-              </button>
-            ))}
+          <div className="swiggy-message">
+            <label>Number of Pieces</label>
+            <input
+              type="number"
+              min="1"
+              value={pieceQty}
+              onChange={(e) => handlePieceQty(e.target.value)}
+            />
+            <p className="piece-note">
+              ₹{perPiecePrice} per piece
+            </p>
           </div>
         )}
 
