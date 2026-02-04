@@ -7,22 +7,52 @@ const productSchema = new mongoose.Schema(
       required: true,
     },
 
-    priceByKg: {
-      type: Object,
+    pricingType: {
+      type: String,
+      enum: ["kg", "piece"],
       required: true,
     },
 
-    rating: Number,
-    reviews: String,
+    priceByKg: {
+      type: Object,
+      default: {},
+    },
 
-    images: [String], // 🔥 CLOUDINARY URLs
+    priceByPiece: {
+      type: Object,
+      default: {},
+    },
+
+    cakeMessage: {
+      type: String,
+      default: "",
+    },
+
+    rating: {
+      type: Number,
+      default: 0,
+    },
+
+    reviews: {
+      type: String,
+      default: "",
+    },
+
+    images: [String],
 
     category: String,
     flavor: String,
     occasion: String,
 
-    eggless: Boolean,
-    bestseller: Boolean,
+    eggless: {
+      type: Boolean,
+      default: false,
+    },
+
+    bestseller: {
+      type: Boolean,
+      default: false,
+    },
   },
   { timestamps: true }
 );

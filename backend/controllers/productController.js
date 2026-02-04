@@ -8,10 +8,17 @@ export const getProducts = async (req, res) => {
   try {
     const products = await Product.find();
 
-    const formatted = products.map((p) => ({
-      ...p._doc,
-      price: p.priceByKg?.["1"] || 0,
-    }));
+    const formatted = products.map((p) => {
+      const price =
+        p.pricingType === "piece"
+          ? p.priceByPiece?.["1"] || 0
+          : p.priceByKg?.["1"] || 0;
+
+      return {
+        ...p._doc,
+        price,
+      };
+    });
 
     res.json(formatted);
   } catch (err) {
@@ -29,9 +36,14 @@ export const getSingleProduct = async (req, res) => {
       return res.status(404).json({ error: "Product not found" });
     }
 
+    const price =
+      product.pricingType === "piece"
+        ? product.priceByPiece?.["1"] || 0
+        : product.priceByKg?.["1"] || 0;
+
     res.json({
       ...product._doc,
-      price: product.priceByKg?.["1"] || 0,
+      price,
     });
   } catch (err) {
     res.status(500).json({ error: err.message });
@@ -43,20 +55,42 @@ export const getSingleProduct = async (req, res) => {
 ========================= */
 export const createProduct = async (req, res) => {
   try {
-    console.log("BODY 👉", req.body);
-    console.log("FILES 👉", req.files?.length);
+    const { pricingType, category } = req.body;
+
+    if (!pricingType) {
+      return res.status(400).json({ error: "pricingType is required" });
+    }
 
     if (!req.files || req.files.length === 0) {
-      return res.status(400).json({ error: "No images uploaded" });
+      return res.status(400).json({ error: "At least one image is required" });
     }
 
-    let priceByKg;
-    try {
-      priceByKg = JSON.parse(req.body.priceByKg);
-    } catch {
-      return res.status(400).json({ error: "Invalid priceByKg format" });
+    let priceByKg = {};
+    let priceByPiece = {};
+
+    if (pricingType === "kg") {
+      try {
+        priceByKg = JSON.parse(req.body.priceByKg);
+        if (!priceByKg["1"]) {
+          return res.status(400).json({ error: "1Kg price required" });
+        }
+      } catch {
+        return res.status(400).json({ error: "Invalid priceByKg format" });
+      }
     }
 
+    if (pricingType === "piece") {
+      try {
+        priceByPiece = JSON.parse(req.body.priceByPiece);
+        if (!priceByPiece["1"]) {
+          return res.status(400).json({ error: "1 piece price required" });
+        }
+      } catch {
+        return res.status(400).json({ error: "Invalid priceByPiece format" });
+      }
+    }
+
+    /* ---------- Upload Images ---------- */
     const uploadPromises = req.files.map(
       (file) =>
         new Promise((resolve, reject) => {
@@ -79,15 +113,28 @@ export const createProduct = async (req, res) => {
 
     const imageUrls = await Promise.all(uploadPromises);
 
+    /* ---------- Cake message safety ---------- */
+    let cakeMessage = req.body.cakeMessage || "";
+    if (category === "brownies") {
+      cakeMessage = "";
+    }
+
     const product = new Product({
       title: req.body.title,
+      pricingType,
       priceByKg,
+      priceByPiece,
+      cakeMessage,
+
       rating: Number(req.body.rating || 0),
       reviews: req.body.reviews || "",
+
       images: imageUrls,
-      category: req.body.category,
+
+      category,
       flavor: req.body.flavor,
       occasion: req.body.occasion,
+
       eggless: req.body.eggless === "true" || req.body.eggless === true,
       bestseller:
         req.body.bestseller === "true" || req.body.bestseller === true,
@@ -110,14 +157,21 @@ export const updateProduct = async (req, res) => {
       return res.status(404).json({ error: "Product not found" });
     }
 
-    let priceByKg;
-    try {
-      priceByKg = JSON.parse(req.body.priceByKg);
-    } catch {
-      return res.status(400).json({ error: "Invalid priceByKg format" });
+    const { pricingType, category } = req.body;
+
+    let priceByKg = {};
+    let priceByPiece = {};
+
+    if (pricingType === "kg") {
+      priceByKg = JSON.parse(req.body.priceByKg || "{}");
+    }
+
+    if (pricingType === "piece") {
+      priceByPiece = JSON.parse(req.body.priceByPiece || "{}");
     }
 
     let images = [];
+
     if (req.body.existingImages) {
       images = Array.isArray(req.body.existingImages)
         ? req.body.existingImages
@@ -125,27 +179,19 @@ export const updateProduct = async (req, res) => {
     }
 
     if (req.files && req.files.length > 0) {
-      const uploadPromises = req.files.map(
+      const uploads = req.files.map(
         (file) =>
           new Promise((resolve, reject) => {
             cloudinary.uploader
-              .upload_stream(
-                {
-                  folder: "cakes",
-                  resource_type: "image",
-                  quality: "auto",
-                  fetch_format: "auto",
-                },
-                (err, result) => {
-                  if (err) return reject(err);
-                  resolve(result.secure_url);
-                }
-              )
+              .upload_stream({ folder: "cakes" }, (err, result) => {
+                if (err) reject(err);
+                else resolve(result.secure_url);
+              })
               .end(file.buffer);
           })
       );
 
-      const newUrls = await Promise.all(uploadPromises);
+      const newUrls = await Promise.all(uploads);
       images = [...images, ...newUrls];
     }
 
@@ -154,13 +200,19 @@ export const updateProduct = async (req, res) => {
     }
 
     product.title = req.body.title;
+    product.pricingType = pricingType;
     product.priceByKg = priceByKg;
+    product.priceByPiece = priceByPiece;
+    product.cakeMessage = category === "brownies" ? "" : req.body.cakeMessage;
+
     product.rating = Number(req.body.rating || 0);
     product.reviews = req.body.reviews || "";
     product.images = images;
-    product.category = req.body.category;
+
+    product.category = category;
     product.flavor = req.body.flavor;
     product.occasion = req.body.occasion;
+
     product.eggless = req.body.eggless === "true" || req.body.eggless === true;
     product.bestseller =
       req.body.bestseller === "true" || req.body.bestseller === true;
