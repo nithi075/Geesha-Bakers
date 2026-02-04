@@ -49,9 +49,7 @@ export default function SingleCake() {
         price,
         kg,
         qty: 1,
-        img: activeImg
-          ? `http://localhost:5000${activeImg}`
-          : "",
+        img: activeImg, // ✅ already cloudinary URL
         message,
       });
 
@@ -66,11 +64,7 @@ export default function SingleCake() {
       {/* MAIN IMAGE */}
       <div className="swiggy-img-wrap">
         <img
-          src={
-            activeImg
-              ? `https://geesha-bakers.onrender.com${activeImg}`
-              : "/placeholder-cake.jpg"
-          }
+          src={activeImg || "/placeholder-cake.jpg"}
           alt={cake.title}
         />
       </div>
@@ -81,7 +75,7 @@ export default function SingleCake() {
           {cake.images.map((img, i) => (
             <img
               key={i}
-              src={`https://geesha-bakers.onrender.com${img}`}
+              src={img}
               alt="cake"
               className={activeImg === img ? "active" : ""}
               onClick={() => setActiveImg(img)}
@@ -98,7 +92,6 @@ export default function SingleCake() {
           ₹{price} <span>Inclusive of taxes</span>
         </div>
 
-        {/* KG OPTIONS */}
         <div className="swiggy-kg">
           {Object.keys(cake.priceByKg).map((k) => (
             <button
@@ -111,7 +104,6 @@ export default function SingleCake() {
           ))}
         </div>
 
-        {/* MESSAGE */}
         <div className="swiggy-message">
           <label>Cake Message</label>
           <input
@@ -123,7 +115,6 @@ export default function SingleCake() {
           />
         </div>
 
-        {/* ACTION BUTTONS */}
         <div className="swiggy-action-row">
           <button
             className="swiggy-buy-btn"
@@ -144,41 +135,35 @@ export default function SingleCake() {
       </section>
 
       {/* RELATED PRODUCTS */}
-    {/* RELATED PRODUCTS – INDIA LOVES STYLE */}
-{relatedProducts.length > 0 && (
-  <section className="india-loves">
-    <h1 className="il-title">You may also like</h1>
-    <p className="il-sub">Customers also loved these cakes</p>
+      {relatedProducts.length > 0 && (
+        <section className="india-loves">
+          <h1 className="il-title">You may also like</h1>
+          <p className="il-sub">Customers also loved these cakes</p>
 
-    <div className="il-grid">
-      {relatedProducts.slice(0, 8).map((item) => (
-        <article
-          className="portrait-card"
-          key={item._id}
-          onClick={() => navigate(`/cake/${item._id}`)}
-        >
-          <div className="portrait-img">
-            <img
-              src={
-                item.images?.[0]
-                  ? `https://geesha-bakers.onrender.com${item.images[0]}`
-                  : "/placeholder-cake.jpg"
-              }
-              alt={item.title}
-            />
+          <div className="il-grid">
+            {relatedProducts.slice(0, 8).map((item) => (
+              <article
+                className="portrait-card"
+                key={item._id}
+                onClick={() => navigate(`/cake/${item._id}`)}
+              >
+                <div className="portrait-img">
+                  <img
+                    src={item.images?.[0] || "/placeholder-cake.jpg"}
+                    alt={item.title}
+                  />
 
-            <span className="price-tag">
-              ₹{item.priceByKg?.["1"]}
-            </span>
+                  <span className="price-tag">
+                    ₹{item.priceByKg?.["1"]}
+                  </span>
+                </div>
+
+                <h3 className="portrait-title">{item.title}</h3>
+              </article>
+            ))}
           </div>
-
-          <h3 className="portrait-title">{item.title}</h3>
-        </article>
-      ))}
-    </div>
-  </section>
-)}
-
+        </section>
+      )}
 
       <SingleCakeReview />
     </>

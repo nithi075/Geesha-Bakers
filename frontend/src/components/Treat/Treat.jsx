@@ -3,9 +3,6 @@ import { useNavigate, useSearchParams } from "react-router-dom";
 import "./Treat.css";
 import API from "../api";
 
-const BACKEND_URL =
-  import.meta.env.VITE_BACKEND_URL || "https://geesha-bakers.onrender.com";
-
 /* ===== MENU FILTERS ===== */
 const menuCategories = [
   { title: "Classic", value: "classic", img: "/images/menu/menu1.jpg" },
@@ -116,14 +113,11 @@ export default function Treats() {
           <option value="priceLow">Price ↑</option>
           <option value="priceHigh">Price ↓</option>
         </select>
-          <button
-          className={`filter-chip ${onlyBestseller ? "active" : ""}`}
-          onClick={() => navigate("/add-cake")}
-        >
+
+        <button className="filter-chip" onClick={() => navigate("/add-cake")}>
           More
         </button>
       </div>
-    
 
       {/* ===== PRODUCTS GRID ===== */}
       <div className="treats-grid">
@@ -134,11 +128,13 @@ export default function Treats() {
             onClick={() => navigate(`/cake/${cake._id}`)}
           >
             <div className="card-img-box">
-              {cake.bestseller && <span className="badge">BESTSELLER</span>}
+              {cake.bestseller && (
+                <span className="badge">BESTSELLER</span>
+              )}
 
               <img
                 className="treat-img"
-                src={`${BACKEND_URL}${cake.images?.[0]}`}
+                src={cake.images?.[0] || "/placeholder-cake.jpg"}
                 alt={cake.title}
               />
 
