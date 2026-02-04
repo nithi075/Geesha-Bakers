@@ -1,8 +1,12 @@
-import { useState } from "react";
-import "./AddCake.css";
+import { useEffect, useState } from "react";
+import { useParams, useNavigate } from "react-router-dom";
 import API from "../api";
+import "./AddCake.css";
 
-export default function AddCake() {
+export default function UpdateCake() {
+  const { id } = useParams();
+  const navigate = useNavigate();
+
   const [form, setForm] = useState({
     title: "",
     rating: "",
@@ -14,231 +18,159 @@ export default function AddCake() {
     bestseller: false,
   });
 
-  // 🔥 KG BASED PRICE
   const [priceByKg, setPriceByKg] = useState({
     "0.5": "",
     "1": "",
     "2": "",
   });
 
-  const [images, setImages] = useState([]);
+  const [existingImages, setExistingImages] = useState([]);
+  const [newImages, setNewImages] = useState([]);
   const [previews, setPreviews] = useState([]);
 
   /* =========================
-     HANDLE INPUT
+     FETCH PRODUCT
+  ========================= */
+  useEffect(() => {
+    const fetchCake = async () => {
+      try {
+        const res = await API.get(`/products/${id}`);
+        const cake = res.data;
+
+        setForm({
+          title: cake.title,
+          rating: cake.rating,
+          reviews: cake.reviews,
+          category: cake.category,
+          flavor: cake.flavor,
+          occasion: cake.occasion,
+          eggless: cake.eggless,
+          bestseller: cake.bestseller,
+        });
+
+        setPriceByKg(cake.priceByKg);
+        setExistingImages(cake.images || []);
+      } catch (err) {
+        alert("❌ Error loading cake");
+      }
+    };
+
+    fetchCake();
+  }, [id]);
+
+  /* =========================
+     HANDLERS
   ========================= */
   const handleChange = (e) => {
     const { name, value, type, checked } = e.target;
-    setForm({
-      ...form,
-      [name]: type === "checkbox" ? checked : value,
-    });
+    setForm({ ...form, [name]: type === "checkbox" ? checked : value });
   };
 
-  /* =========================
-     HANDLE KG PRICE
-  ========================= */
   const handleKgPrice = (kg, value) => {
-    setPriceByKg({
-      ...priceByKg,
-      [kg]: value,
-    });
+    setPriceByKg({ ...priceByKg, [kg]: value });
   };
 
-  /* =========================
-     HANDLE IMAGES
-  ========================= */
   const handleImages = (e) => {
     const files = Array.from(e.target.files);
 
-    if (images.length + files.length > 5) {
+    if (existingImages.length + newImages.length + files.length > 5) {
       alert("❌ Maximum 5 images only");
       return;
     }
 
-    setImages((prev) => [...prev, ...files]);
+    setNewImages((prev) => [...prev, ...files]);
     setPreviews((prev) => [
       ...prev,
-      ...files.map((file) => URL.createObjectURL(file)),
+      ...files.map((f) => URL.createObjectURL(f)),
     ]);
   };
 
-  const removeImage = (index) => {
-    setImages((prev) => prev.filter((_, i) => i !== index));
-    setPreviews((prev) => prev.filter((_, i) => i !== index));
+  const removeExistingImage = (i) => {
+    setExistingImages(existingImages.filter((_, index) => index !== i));
+  };
+
+  const removeNewImage = (i) => {
+    setNewImages(newImages.filter((_, index) => index !== i));
+    setPreviews(previews.filter((_, index) => index !== i));
   };
 
   /* =========================
-     SUBMIT
+     UPDATE SUBMIT
   ========================= */
-  const submitCake = async (e) => {
+  const updateCake = async (e) => {
     e.preventDefault();
-
-    if (!images.length) {
-      alert("❌ Please upload at least one image");
-      return;
-    }
-
-    if (!priceByKg["1"]) {
-      alert("❌ At least 1Kg price is required");
-      return;
-    }
 
     const data = new FormData();
 
-    // normal fields
     Object.keys(form).forEach((key) => {
       data.append(key, form[key]);
     });
 
-    // 🔥 priceByKg (IMPORTANT)
     data.append("priceByKg", JSON.stringify(priceByKg));
 
-    // images
-    images.forEach((img) => {
+    existingImages.forEach((img) => {
+      data.append("existingImages", img);
+    });
+
+    newImages.forEach((img) => {
       data.append("images", img);
     });
 
     try {
-      await API.post("/products", data, {
-        headers: { "Content-Type": "multipart/form-data" },
-      });
-
-      alert("🎂 Cake Added Successfully!");
-
-      // reset
-      setForm({
-        title: "",
-        rating: "",
-        reviews: "",
-        category: "",
-        flavor: "",
-        occasion: "",
-        eggless: false,
-        bestseller: false,
-      });
-      setPriceByKg({ "0.5": "", "1": "", "2": "" });
-      setImages([]);
-      setPreviews([]);
+      await API.put(`/products/${id}`, data);
+      alert("✅ Cake Updated Successfully");
+      navigate("/admin/products");
     } catch (err) {
-      console.error(err);
-      alert("❌ Error adding cake");
+      alert("❌ Update failed");
     }
   };
 
+  /* =========================
+     JSX
+  ========================= */
   return (
     <section className="add-cake-section">
-      <h1>Add New Cake 🎂</h1>
+      <h1>Update Cake 🎂</h1>
 
-      <form className="add-cake-form" onSubmit={submitCake}>
-        <input
-          name="title"
-          placeholder="Cake Title"
-          value={form.title}
-          onChange={handleChange}
-          required
-        />
-
-        {/* ⭐ KG PRICE */}
-        <h3 className="kg-title">Price by Weight</h3>
+      <form className="add-cake-form" onSubmit={updateCake}>
+        <input name="title" value={form.title} onChange={handleChange} />
 
         <input
-          type="number"
-          placeholder="0.5 Kg Price ₹"
+          placeholder="0.5 Kg Price"
           value={priceByKg["0.5"]}
           onChange={(e) => handleKgPrice("0.5", e.target.value)}
         />
-
         <input
-          type="number"
-          placeholder="1 Kg Price ₹ (Required)"
+          placeholder="1 Kg Price"
           value={priceByKg["1"]}
           onChange={(e) => handleKgPrice("1", e.target.value)}
           required
         />
-
         <input
-          type="number"
-          placeholder="2 Kg Price ₹"
+          placeholder="2 Kg Price"
           value={priceByKg["2"]}
           onChange={(e) => handleKgPrice("2", e.target.value)}
         />
 
-        <input
-          type="number"
-          step="0.1"
-          name="rating"
-          placeholder="Rating"
-          value={form.rating}
-          onChange={handleChange}
-        />
-
-        <input
-          name="reviews"
-          placeholder="Reviews (eg: 2.3K)"
-          value={form.reviews}
-          onChange={handleChange}
-        />
-
-        {/* IMAGES */}
         <input type="file" multiple accept="image/*" onChange={handleImages} />
 
         <div className="preview-grid">
+          {existingImages.map((img, i) => (
+            <div key={i} className="preview-box">
+              <img src={img} alt="cake" />
+              <span onClick={() => removeExistingImage(i)}>✕</span>
+            </div>
+          ))}
+
           {previews.map((src, i) => (
             <div key={i} className="preview-box">
               <img src={src} alt="preview" />
-              <span onClick={() => removeImage(i)}>✕</span>
+              <span onClick={() => removeNewImage(i)}>✕</span>
             </div>
           ))}
         </div>
 
-        {/* SELECTS */}
-        <select name="category" onChange={handleChange}>
-          <option value="">Category</option>
-          <option value="classic">Classic</option>
-          <option value="occasional">Occasional</option>
-          <option value="waffles">Waffles</option>
-          <option value="cakepops">Cake Pops</option>
-          <option value="cakeslices">Cake Slices</option>
-          <option value="brownies">Brownies</option>
-        </select>
-
-        <select name="flavor" onChange={handleChange}>
-          <option value="">Flavor</option>
-          <option value="chocolate">Chocolate</option>
-          <option value="fruit">Fruit</option>
-        </select>
-
-        <select name="occasion" onChange={handleChange}>
-          <option value="">Occasion</option>
-          <option value="birthday">Birthday</option>
-          <option value="anniversary">Anniversary</option>
-        </select>
-
-        {/* CHECKBOX */}
-        <div className="check-row">
-          <label>
-            <input
-              type="checkbox"
-              name="eggless"
-              checked={form.eggless}
-              onChange={handleChange}
-            />
-            Eggless
-          </label>
-
-          <label>
-            <input
-              type="checkbox"
-              name="bestseller"
-              checked={form.bestseller}
-              onChange={handleChange}
-            />
-            Best Seller
-          </label>
-        </div>
-
-        <button className="add-btn">Add Cake</button>
+        <button className="add-btn">Update Cake</button>
       </form>
     </section>
   );
