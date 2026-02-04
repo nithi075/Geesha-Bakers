@@ -12,16 +12,14 @@ export default function SingleCake() {
   const [allProducts, setAllProducts] = useState([]);
 
   const [activeImg, setActiveImg] = useState("");
-
-  // 🔹 common
   const [price, setPrice] = useState(0);
   const [adding, setAdding] = useState(false);
 
-  // 🔹 cake specific
+  // cake
   const [kg, setKg] = useState("1");
   const [message, setMessage] = useState("");
 
-  // 🔹 brownies specific
+  // pieces
   const [pieceQty, setPieceQty] = useState("1");
 
   useEffect(() => {
@@ -30,7 +28,8 @@ export default function SingleCake() {
       setCake(data);
       setActiveImg(data.images?.[0] || "");
 
-      if (data.pricingType === "piece") {
+      // 🔥 category based pricing
+      if (data.category === "brownies") {
         setPieceQty("1");
         setPrice(data.priceByPiece?.["1"] || 0);
       } else {
@@ -45,6 +44,8 @@ export default function SingleCake() {
   }, [id]);
 
   if (!cake) return null;
+
+  const isCake = cake.category !== "brownies";
 
   const relatedProducts = allProducts.filter(
     (p) => p.category === cake.category && p._id !== cake._id
@@ -68,26 +69,23 @@ export default function SingleCake() {
     try {
       setAdding(true);
 
-      const payload =
-        cake.pricingType === "piece"
-          ? {
-              productId: cake._id,
-              title: cake.title,
-              price,
-              qty: Number(pieceQty),
-              pricingType: "piece",
-              img: activeImg,
-            }
-          : {
-              productId: cake._id,
-              title: cake.title,
-              price,
-              kg,
-              qty: 1,
-              pricingType: "kg",
-              img: activeImg,
-              message,
-            };
+      const payload = isCake
+        ? {
+            productId: cake._id,
+            title: cake.title,
+            price,
+            kg,
+            qty: 1,
+            img: activeImg,
+            message,
+          }
+        : {
+            productId: cake._id,
+            title: cake.title,
+            price,
+            qty: Number(pieceQty),
+            img: activeImg,
+          };
 
       await API.post("/cart", payload);
 
@@ -125,13 +123,11 @@ export default function SingleCake() {
 
         <div className="swiggy-price">
           ₹{price}{" "}
-          <span>
-            {cake.pricingType === "piece" ? "/ piece" : "Inclusive of taxes"}
-          </span>
+          <span>{isCake ? "Inclusive of taxes" : "/ piece"}</span>
         </div>
 
-        {/* ===== KG SELECT (CAKES) ===== */}
-        {cake.pricingType === "kg" && (
+        {/* ===== CAKES → KG + MESSAGE ===== */}
+        {isCake && (
           <>
             <div className="swiggy-kg">
               {Object.keys(cake.priceByKg).map((k) => (
@@ -158,8 +154,8 @@ export default function SingleCake() {
           </>
         )}
 
-        {/* ===== PIECE SELECT (BROWNIES) ===== */}
-        {cake.pricingType === "piece" && (
+        {/* ===== BROWNIES → PIECES ===== */}
+        {!isCake && (
           <div className="swiggy-kg">
             {Object.keys(cake.priceByPiece).map((p) => (
               <button
@@ -193,34 +189,29 @@ export default function SingleCake() {
         </div>
       </section>
 
-      {/* RELATED PRODUCTS */}
+      {/* RELATED */}
       {relatedProducts.length > 0 && (
         <section className="india-loves">
           <h1 className="il-title">You may also like</h1>
-          <p className="il-sub">Customers also loved these items</p>
 
           <div className="il-grid">
             {relatedProducts.slice(0, 8).map((item) => {
               const relPrice =
-                item.pricingType === "piece"
+                item.category === "brownies"
                   ? item.priceByPiece?.["1"]
                   : item.priceByKg?.["1"];
 
               return (
                 <article
-                  className="portrait-card"
                   key={item._id}
+                  className="portrait-card"
                   onClick={() => navigate(`/cake/${item._id}`)}
                 >
                   <div className="portrait-img">
-                    <img
-                      src={item.images?.[0] || "/placeholder-cake.jpg"}
-                      alt={item.title}
-                    />
+                    <img src={item.images?.[0]} alt={item.title} />
                     <span className="price-tag">₹{relPrice}</span>
                   </div>
-
-                  <h3 className="portrait-title">{item.title}</h3>
+                  <h3>{item.title}</h3>
                 </article>
               );
             })}
