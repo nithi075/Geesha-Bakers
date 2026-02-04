@@ -24,7 +24,7 @@ export default function AddCake() {
     "2": "",
   });
 
-  // 🔹 piece pricing (for brownies)
+  // 🔹 piece pricing
   const [priceByPiece, setPriceByPiece] = useState({
     "1": "",
     "6": "",
@@ -32,7 +32,6 @@ export default function AddCake() {
   });
 
   const [cakeMessage, setCakeMessage] = useState("");
-
   const [images, setImages] = useState([]);
   const [previews, setPreviews] = useState([]);
 
@@ -49,12 +48,12 @@ export default function AddCake() {
   const handleChange = (e) => {
     const { name, value, type, checked } = e.target;
 
-    // 🔥 auto switch pricing
+    // 🔥 CATEGORY → PRICING RULE
     if (name === "category") {
-      if (value === "brownies") {
-        setPricingType("piece");
-      } else {
+      if (value === "classic" || value === "occasional") {
         setPricingType("kg");
+      } else {
+        setPricingType("piece");
       }
     }
 
@@ -231,7 +230,7 @@ export default function AddCake() {
           </>
         )}
 
-        {/* ===== PIECE PRICE (BROWNIES) ===== */}
+        {/* ===== PIECE PRICE ===== */}
         {pricingType === "piece" && (
           <>
             <h3 className="kg-title">Price by Pieces</h3>
