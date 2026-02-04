@@ -9,8 +9,6 @@ export default function SingleCake() {
   const navigate = useNavigate();
 
   const [cake, setCake] = useState(null);
-  const [allProducts, setAllProducts] = useState([]);
-
   const [activeImg, setActiveImg] = useState("");
   const [price, setPrice] = useState(0);
   const [adding, setAdding] = useState(false);
@@ -40,9 +38,6 @@ export default function SingleCake() {
         setKg("1");
         setPrice(data.priceByKg?.["1"] || 0);
       }
-
-      const all = await API.get("/products");
-      setAllProducts(all.data);
     };
 
     fetchData();
@@ -52,18 +47,13 @@ export default function SingleCake() {
 
   const isCake = cake.category !== "brownies";
 
-  /* =========================
-     HANDLERS
-  ========================= */
-
   const handleKg = (k) => {
     setKg(k);
     setPrice(cake.priceByKg[k]);
   };
 
   const handlePieceQty = (qty) => {
-    const q = Math.max(1, Number(qty));
-    setPieceQty(q);
+    setPieceQty(Math.max(1, Number(qty)));
   };
 
   const addToCart = async (redirect = false) => {
@@ -74,7 +64,7 @@ export default function SingleCake() {
         ? {
             productId: cake._id,
             title: cake.title,
-            price,        // ✅ unit price (per cake)
+            price,
             qty: 1,
             kg,
             img: activeImg,
@@ -83,13 +73,12 @@ export default function SingleCake() {
         : {
             productId: cake._id,
             title: cake.title,
-            price: perPiecePrice, // ✅ unit price
-            qty: pieceQty,        // ✅ quantity
+            price: perPiecePrice,
+            qty: pieceQty,
             img: activeImg,
           };
 
       await API.post("/cart", payload);
-      await API.get("/cart"); // ✅ ensure backend sync
 
       if (redirect) navigate("/cart");
     } catch (err) {
@@ -127,13 +116,20 @@ export default function SingleCake() {
               ))}
             </div>
 
-            <input
-              type="text"
-              maxLength={25}
-              placeholder="Cake Message"
-              value={message}
-              onChange={(e) => setMessage(e.target.value)}
-            />
+            {/* MESSAGE */}
+            <div className="swiggy-message">
+              <label>Message on Cake</label>
+              <input
+                type="text"
+                maxLength={25}
+                placeholder="Eg: Happy Birthday ❤️"
+                value={message}
+                onChange={(e) => setMessage(e.target.value)}
+              />
+              <span className="char-count">
+                {message.length}/25
+              </span>
+            </div>
           </>
         )}
 
@@ -147,12 +143,21 @@ export default function SingleCake() {
           />
         )}
 
+        {/* ACTION BUTTONS */}
         <div className="swiggy-action-row">
-          <button disabled={adding} onClick={() => addToCart(true)}>
+          <button
+            className="swiggy-buy-btn"
+            disabled={adding}
+            onClick={() => addToCart(true)}
+          >
             BUY NOW
           </button>
 
-          <button disabled={adding} onClick={() => addToCart(false)}>
+          <button
+            className="swiggy-add-btn"
+            disabled={adding}
+            onClick={() => addToCart(false)}
+          >
             {adding ? "ADDING..." : "ADD TO CART"}
           </button>
         </div>
