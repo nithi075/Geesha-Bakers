@@ -8,7 +8,7 @@ const menuCategories = [
   { title: "CLASSIC", value: "classic", img: "/images/menu/menu1.jpg" },
   { title: "OCCASIONAL", value: "occsional", img: "/images/menu/menu3.jpg" },
   { title: "BROWNIES", value: "brownies", img: "/images/menu/menu7.jpg" },
-  { title: "JAR CAKES", value: "designer", img: "/images/menu/menu2.jpg" },
+  { title: "JAR CAKES", value: "jarcakes", img: "/images/menu/menu2.jpg" },
   { title: "WAFFLES", value: "waffles", img: "/images/menu/menu4.jpeg" },
   { title: "CAKE POPS", value: "cakepops", img: "/images/menu/menu5.jpg" },
   { title: "CAKESLICES", value: "cakeslices", img: "/images/menu/menu6.jpeg" },
