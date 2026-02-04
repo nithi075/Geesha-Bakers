@@ -73,7 +73,6 @@ export default function AddCake() {
 
   const removeImage = (index) => {
     URL.revokeObjectURL(previews[index]);
-
     setImages((prev) => prev.filter((_, i) => i !== index));
     setPreviews((prev) => prev.filter((_, i) => i !== index));
   };
@@ -96,21 +95,31 @@ export default function AddCake() {
 
     const data = new FormData();
 
+    // normal fields
     Object.keys(form).forEach((key) => {
       data.append(key, form[key]);
     });
 
+    // priceByKg
     data.append("priceByKg", JSON.stringify(priceByKg));
 
+    // images
     images.forEach((img) => {
       data.append("images", img);
     });
 
+    // 🔍 DEBUG (once check, later remove)
+    for (let pair of data.entries()) {
+      console.log("FORMDATA 👉", pair[0], pair[1]);
+    }
+
     try {
+      // ❌ DO NOT set Content-Type manually
       await API.post("/products", data);
 
       alert("🎂 Cake Added Successfully!");
 
+      // reset
       setForm({
         title: "",
         rating: "",
@@ -126,8 +135,12 @@ export default function AddCake() {
       setImages([]);
       setPreviews([]);
     } catch (err) {
-      console.error(err);
-      alert("❌ Error adding cake");
+      console.error("AXIOS ERROR 👉", err.response?.data || err.message);
+
+      alert(
+        err.response?.data?.error ||
+          "❌ Error adding cake (check console)"
+      );
     }
   };
 
