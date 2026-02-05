@@ -9,27 +9,27 @@ export default function SingleCake() {
   const navigate = useNavigate();
 
   const [cake, setCake] = useState(null);
-  const [allProducts, setAllProducts] = useState([]);
-
   const [activeImg, setActiveImg] = useState("");
   const [price, setPrice] = useState(0);
   const [adding, setAdding] = useState(false);
 
-  // cakes
+  // KG cakes
   const [kg, setKg] = useState("1");
   const [message, setMessage] = useState("");
 
-  // brownies
+  // PIECE products
   const [pieceQty, setPieceQty] = useState(1);
   const [perPiecePrice, setPerPiecePrice] = useState(0);
 
   useEffect(() => {
-    API.get(`/products/${id}`).then((res) => {
+    const fetchData = async () => {
+      const res = await API.get(`/products/${id}`);
       const data = res.data;
+
       setCake(data);
       setActiveImg(data.images?.[0] || "");
 
-      if (data.category === "brownies") {
+      if (data.pricingType === "piece") {
         const ppp = data.priceByPiece?.["1"] || 0;
         setPerPiecePrice(ppp);
         setPieceQty(1);
@@ -38,36 +38,29 @@ export default function SingleCake() {
         setKg("1");
         setPrice(data.priceByKg?.["1"] || 0);
       }
-    });
+    };
 
-    API.get("/products").then((res) => {
-      setAllProducts(res.data);
-    });
+    fetchData();
   }, [id]);
 
   if (!cake) return null;
 
-  const isCake = cake.category !== "brownies";
+  const isCake = cake.pricingType === "kg";
 
-  const relatedProducts = allProducts.filter(
-    (p) => p.category === cake.category && p._id !== cake._id
-  );
-
-  /* =========================
-     HANDLERS
-  ========================= */
-
+  /* ===== KG HANDLER ===== */
   const handleKg = (k) => {
     setKg(k);
     setPrice(cake.priceByKg[k]);
   };
 
-  const handlePieceQty = (qty) => {
-    const q = Math.max(1, Number(qty));
-    setPieceQty(q);
-    setPrice(perPiecePrice * q);
+  /* ===== PIECE QTY HANDLER ===== */
+  const handleQtyChange = (val) => {
+    const qty = Math.max(1, Number(val));
+    setPieceQty(qty);
+    setPrice(qty * perPiecePrice);
   };
 
+  /* ===== ADD TO CART ===== */
   const addToCart = async (redirect = false) => {
     try {
       setAdding(true);
@@ -77,23 +70,24 @@ export default function SingleCake() {
             productId: cake._id,
             title: cake.title,
             price,
-            kg,
             qty: 1,
+            kg,
             img: activeImg,
             message,
           }
         : {
             productId: cake._id,
             title: cake.title,
-            price,              // total price
-            qty: pieceQty,      // number of pieces
-            perPiecePrice,
+            price,
+            qty: pieceQty,
             img: activeImg,
           };
 
       await API.post("/cart", payload);
 
       if (redirect) navigate("/cart");
+    } catch (err) {
+      console.error("Add to cart failed", err);
     } finally {
       setAdding(false);
     }
@@ -106,14 +100,14 @@ export default function SingleCake() {
         <img src={activeImg || "/placeholder-cake.jpg"} alt={cake.title} />
       </div>
 
-      {/* SUB IMAGES */}
+      {/* MULTI IMAGE THUMBNAILS (FOR BOTH) */}
       {cake.images?.length > 1 && (
-        <div className="swiggy-sub-images">
+        <div className="swiggy-thumb-row">
           {cake.images.map((img, i) => (
             <img
               key={i}
               src={img}
-              alt="cake"
+              alt="thumb"
               className={activeImg === img ? "active" : ""}
               onClick={() => setActiveImg(img)}
             />
@@ -121,16 +115,13 @@ export default function SingleCake() {
         </div>
       )}
 
-      {/* CONTENT */}
       <section className="swiggy-page">
         <h1>{cake.title}</h1>
 
-        <div className="swiggy-price">
-          ₹{price}{" "}
-          <span>{isCake ? "Inclusive of taxes" : `(${pieceQty} pcs)`}</span>
-        </div>
+        {/* PRICE */}
+        <div className="swiggy-price">₹{price}</div>
 
-        {/* ===== CAKES ===== */}
+        {/* ===== KG CAKES ===== */}
         {isCake && (
           <>
             <div className="swiggy-kg">
@@ -146,31 +137,27 @@ export default function SingleCake() {
             </div>
 
             <div className="swiggy-message">
-              <label>Cake Message</label>
+              <label>Message on Cake</label>
               <input
                 type="text"
                 maxLength={25}
-                placeholder="Write your message"
+                placeholder="Eg: Happy Birthday ❤️"
                 value={message}
                 onChange={(e) => setMessage(e.target.value)}
               />
+              <span className="char-count">
+                {message.length}/25
+              </span>
             </div>
           </>
         )}
 
-        {/* ===== BROWNIES → USER TYPES PIECES ===== */}
+        {/* ===== PIECE PRODUCTS ===== */}
         {!isCake && (
-          <div className="swiggy-message">
-            <label>Number of Pieces</label>
-            <input
-              type="number"
-              min="1"
-              value={pieceQty}
-              onChange={(e) => handlePieceQty(e.target.value)}
-            />
-            <p className="piece-note">
-              ₹{perPiecePrice} per piece
-            </p>
+          <div className="piece-qty-wrap">
+            <button onClick={() => handleQtyChange(pieceQty - 1)}>-</button>
+            <span>{pieceQty}</span>
+            <button onClick={() => handleQtyChange(pieceQty + 1)}>+</button>
           </div>
         )}
 
@@ -193,36 +180,6 @@ export default function SingleCake() {
           </button>
         </div>
       </section>
-
-      {/* RELATED */}
-      {relatedProducts.length > 0 && (
-        <section className="india-loves">
-          <h1 className="il-title">You may also like</h1>
-
-          <div className="il-grid">
-            {relatedProducts.slice(0, 8).map((item) => {
-              const relPrice =
-                item.category === "brownies"
-                  ? item.priceByPiece?.["1"]
-                  : item.priceByKg?.["1"];
-
-              return (
-                <article
-                  key={item._id}
-                  className="portrait-card"
-                  onClick={() => navigate(`/cake/${item._id}`)}
-                >
-                  <div className="portrait-img">
-                    <img src={item.images?.[0]} alt={item.title} />
-                    <span className="price-tag">₹{relPrice}</span>
-                  </div>
-                  <h3>{item.title}</h3>
-                </article>
-              );
-            })}
-          </div>
-        </section>
-      )}
 
       <SingleCakeReview />
     </>

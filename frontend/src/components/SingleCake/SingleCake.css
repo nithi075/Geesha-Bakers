@@ -1,22 +1,18 @@
 :root {
-  /* CAKE PALETTE */
-  --bg-main: #FFF5E4;        /* Vanilla cream */
-  --bg-soft: #FFD1D1;        /* Soft pink */
-  --bg-card: #FFFFFF;
+  --bg-main: #FFF5E4;
+  --bg-soft: #FFD1D1;
+  --white: #FFFFFF;
 
-  --accent-primary: #FF9494; /* Strawberry pink */
+  --accent-primary: #FF9494;
   --accent-hover: #FF7A7A;
 
-  --text-dark: #3B2A2A;      /* Chocolate */
+  --text-dark: #3B2A2A;
   --text-muted: rgba(59, 42, 42, 0.65);
-  --text-light: #FFF5E4;
 
   --border: rgba(59, 42, 42, 0.2);
-  --white: #FFFFFF;
 }
-/* =========================
-   MAIN IMAGE
-========================= */
+
+/* ================= IMAGE ================= */
 .swiggy-img-wrap img {
   margin-top: 68px;
   width: 100%;
@@ -25,88 +21,56 @@
   background: var(--bg-soft);
 }
 
-/* =========================
-   SUB IMAGES
-========================= */
-.swiggy-sub-images {
+/* ================= THUMBNAILS ================= */
+.swiggy-thumb-row {
   display: flex;
   gap: 10px;
-  padding: 10px 16px;
+  margin: 12px 16px 0;
   overflow-x: auto;
-  background: var(--white);
 }
 
-.swiggy-sub-images::-webkit-scrollbar {
-  display: none;
-}
-
-.swiggy-sub-images img {
-  width: 70px;
-  height: 70px;
+.swiggy-thumb-row img {
+  width: 64px;
+  height: 64px;
   border-radius: 10px;
   object-fit: cover;
   cursor: pointer;
+  opacity: 0.6;
   border: 2px solid transparent;
+  transition: all 0.2s ease;
 }
 
-.swiggy-sub-images img.active {
+.swiggy-thumb-row img.active {
+  opacity: 1;
   border-color: var(--accent-primary);
 }
 
-/* =========================
-   PAGE CONTENT
-========================= */
+.swiggy-thumb-row img:hover {
+  opacity: 1;
+}
+
+/* ================= PAGE ================= */
 .swiggy-page {
   padding: 16px;
-  font-family: "Quicksand", sans-serif;
   background: var(--white);
+  font-family: "Quicksand", sans-serif;
 }
 
-/* HEADER */
-.swiggy-header {
-  display: flex;
-  justify-content: space-between;
-  align-items: center;
-}
-
-.swiggy-header h1 {
+.swiggy-page h1 {
   font-size: 22px;
   font-weight: 700;
   color: var(--text-dark);
 }
 
-.swiggy-heart {
-  font-size: 22px;
-  color: var(--text-muted);
-  cursor: pointer;
-}
-
-.swiggy-heart.active {
-  color: var(--accent-primary);
-}
-
-/* DESC */
-.swiggy-desc {
-  font-size: 14px;
-  color: var(--text-muted);
-  margin: 6px 0 12px;
-}
-
-/* PRICE */
+/* ================= PRICE ================= */
 .swiggy-price {
   font-size: 20px;
   font-weight: 700;
   margin-bottom: 14px;
-  color: var(--text-dark);
+  color: var(--accent-primary);
 }
 
-.swiggy-price span {
-  font-size: 12px;
-  font-weight: 400;
-  color: var(--text-muted);
-}
-
-/* KG */
+/* ================= KG SELECT ================= */
 .swiggy-kg {
   display: flex;
   gap: 10px;
@@ -118,9 +82,8 @@
   border-radius: 8px;
   border: 1px solid var(--border);
   background: var(--white);
-  font-size: 13px;
   cursor: pointer;
-  color: var(--text-dark);
+  transition: all 0.2s ease;
 }
 
 .swiggy-kg button.active {
@@ -129,144 +92,132 @@
   font-weight: 700;
 }
 
-/* MESSAGE */
+/* ================= MESSAGE ================= */
 .swiggy-message {
   margin-bottom: 20px;
+  position: relative;
 }
 
 .swiggy-message label {
   font-size: 13px;
-  color: var(--text-dark);
   font-weight: 600;
 }
 
 .swiggy-message input {
   width: 100%;
-  padding: 10px;
+  padding: 12px;
   margin-top: 6px;
-  border-radius: 8px;
+  border-radius: 10px;
   border: 1px solid var(--border);
+  font-size: 14px;
+  outline: none;
 }
 
-/* =========================
-   ACTION ROW
-========================= */
+.swiggy-message input:focus {
+  border-color: var(--accent-primary);
+  box-shadow: 0 0 0 2px rgba(255, 148, 148, 0.2);
+}
+
+.char-count {
+  position: absolute;
+  right: 10px;
+  bottom: -18px;
+  font-size: 11px;
+  color: var(--text-muted);
+}
+
+/* ================= PIECE QUANTITY ================= */
+.piece-qty-wrap {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 18px;
+  margin: 22px 0;
+}
+
+.piece-qty-wrap button {
+  width: 40px;
+  height: 40px;
+  border-radius: 50%;
+  border: none;
+  background: var(--accent-primary);
+  color: #fff;
+  font-size: 20px;
+  font-weight: 700;
+  cursor: pointer;
+  transition: all 0.2s ease;
+}
+
+.piece-qty-wrap button:hover {
+  background: var(--accent-hover);
+  transform: scale(1.05);
+}
+
+.piece-qty-wrap span {
+  min-width: 32px;
+  text-align: center;
+  font-size: 18px;
+  font-weight: 700;
+  color: var(--text-dark);
+}
+
+/* ================= ACTION BUTTONS ================= */
 .swiggy-action-row {
   display: flex;
   gap: 12px;
+  margin-top: 20px;
 }
 
-/* ADD TO CART */
 .swiggy-add-btn {
   flex: 1;
-  background: linear-gradient(135deg, var(--accent-primary), var(--accent-hover));
+  background: linear-gradient(
+    135deg,
+    var(--accent-primary),
+    var(--accent-hover)
+  );
   color: #fff;
   padding: 14px;
-  border-radius: 8px;
+  border-radius: 10px;
   font-size: 16px;
   font-weight: 700;
   border: none;
   cursor: pointer;
+  transition: all 0.2s ease;
 }
 
-/* BUY NOW */
+.swiggy-add-btn:hover {
+  opacity: 0.9;
+  transform: translateY(-1px);
+}
+
 .swiggy-buy-btn {
   flex: 1;
   background: var(--white);
   color: var(--accent-primary);
   padding: 14px;
-  border-radius: 8px;
+  border-radius: 10px;
   font-size: 15px;
   font-weight: 700;
   border: 2px solid var(--accent-primary);
   cursor: pointer;
+  transition: all 0.2s ease;
 }
 
-/* =========================
-   YOU MAY ALSO LIKE
-========================= */
-.swiggy-related {
-  padding: 16px;
-  background: var(--bg-main);
+.swiggy-buy-btn:hover {
+  background: var(--accent-primary);
+  color: #fff;
 }
 
-.swiggy-related h3 {
-  font-size: 18px;
-  font-weight: 700;
-  margin-bottom: 12px;
-  color: var(--text-dark);
+.swiggy-add-btn:disabled,
+.swiggy-buy-btn:disabled {
+  opacity: 0.6;
+  cursor: not-allowed;
 }
 
-/* HORIZONTAL SCROLL */
-.related-scroll {
-  display: flex;
-  gap: 12px;
-  overflow-x: auto;
-  padding-bottom: 6px;
-}
-
-.related-scroll::-webkit-scrollbar {
-  display: none;
-}
-
-/* CARD */
-.related-card {
-  flex: 0 0 auto;
-  width: 160px;
-  cursor: pointer;
-}
-
-/* IMAGE */
-.related-card img {
-  width: 100%;
-  aspect-ratio: 1 / 1;
-  border-radius: 12px;
-  object-fit: cover;
-  background: var(--bg-soft);
-}
-
-/* TITLE */
-.related-title {
-  font-size: 14px;
-  font-weight: 600;
-  margin: 6px 0 2px;
-  color: var(--text-dark);
-
-  display: -webkit-box;
-  -webkit-line-clamp: 2;
-  -webkit-box-orient: vertical;
-  overflow: hidden;
-}
-
-/* PRICE */
-.related-price {
-  font-size: 14px;
-  font-weight: 700;
-  color: var(--accent-primary);
-}
-
-/* =========================
-   DESKTOP CENTER
-========================= */
+/* ================= DESKTOP ================= */
 @media (min-width: 768px) {
-  .swiggy-page,
-  .swiggy-related {
+  .swiggy-page {
     max-width: 520px;
     margin: auto;
-  }
-  .related-title {
-    font-size: 10px;
-  }
-}
-
-/* MOBILE */
-@media (max-width: 480px) {
-  .related-card {
-    width: 140px;
-  }
-
-  .related-title,
-  .related-price {
-    font-size: 12px;
   }
 }
