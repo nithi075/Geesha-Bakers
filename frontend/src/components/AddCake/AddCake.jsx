@@ -32,7 +32,14 @@ export default function AddCake() {
   const [images, setImages] = useState([]);
   const [previews, setPreviews] = useState([]);
 
-  const FLAVOR_CATEGORIES = ["classic", "cupcakes", "jarcakes", "waffles"];
+  // ✅ ADD brownies here
+  const FLAVOR_CATEGORIES = [
+    "classic",
+    "cupcakes",
+    "jarcakes",
+    "waffles",
+    "brownies",
+  ];
 
   /* ===== CLEANUP PREVIEWS ===== */
   useEffect(() => {
@@ -50,7 +57,6 @@ export default function AddCake() {
         setPricingType("piece");
       }
 
-      // reset unwanted fields
       setForm((prev) => ({
         ...prev,
         category: value,
