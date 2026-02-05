@@ -6,7 +6,7 @@ import API from "../api";
 /* ===== MAIN MENU ===== */
 const menuCategories = [
   { title: "CLASSIC", value: "classic", img: "/images/menu/menu1.jpg" },
-  { title: "OCCASIONAL", value: "occasional", img: "/images/menu/menu3.jpg" }, // ✅ FIXED
+  { title: "OCCASIONAL", value: "occasional", img: "/images/menu/menu3.jpg" },
   { title: "BROWNIES", value: "brownies", img: "/images/menu/menu7.jpg" },
   { title: "CUPCAKES", value: "cupcakes", img: "/images/menu/menu8.jpg" },
   { title: "JAR CAKES", value: "jarcakes", img: "/images/menu/menu2.jpg" },
@@ -85,12 +85,14 @@ export default function Treats() {
     .filter((item) => {
       if (category !== "all" && item.category !== category) return false;
 
+      // OCCASIONAL FILTER
       if (category === "occasional" && occasion !== "all") {
         if (item.occasion !== occasion) return false;
       }
 
+      // FLAVOR FILTER (classic + cupcakes + brownies + jarcakes)
       if (
-        ["classic", "cupcakes", "brownies"].includes(category) &&
+        ["classic", "cupcakes", "brownies", "jarcakes"].includes(category) &&
         flavor !== "all"
       ) {
         if (!item.flavor || item.flavor !== flavor) return false;
@@ -193,8 +195,8 @@ export default function Treats() {
         </div>
       )}
 
-      {/* ===== FLAVOUR MENU ===== */}
-      {["classic", "cupcakes", "brownies"].includes(category) && (
+      {/* ===== FLAVOUR MENU (INCLUDES JAR CAKES) ===== */}
+      {["classic", "cupcakes", "brownies", "jarcakes"].includes(category) && (
         <div className="menu-filter">
           {flavourMenu.map((item) => (
             <div
