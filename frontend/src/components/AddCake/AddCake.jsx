@@ -51,7 +51,7 @@ export default function AddCake() {
         setForm((prev) => ({ ...prev, occasion: "" }));
       } else {
         setPricingType("piece");
-        setForm((prev) => ({ ...prev, flavor: "", occasion: "" }));
+        setForm((prev) => ({ ...prev, occasion: "" }));
       }
     }
 
@@ -111,6 +111,11 @@ export default function AddCake() {
 
     if (form.category === "occasional" && !form.occasion) {
       alert("❌ Occasion is required for Occasional cakes");
+      return;
+    }
+
+    if (form.category !== "occasional" && !form.flavor) {
+      alert("❌ Flavor is required");
       return;
     }
 
@@ -189,8 +194,8 @@ export default function AddCake() {
           <option value="cakeslices">Cake Slices</option>
         </select>
 
-        {/* FLAVOR */}
-        {["classic", "brownies", "cupcakes"].includes(form.category) && (
+        {/* FLAVOR – SHOW FOR ALL EXCEPT OCCASIONAL */}
+        {form.category && form.category !== "occasional" && (
           <select
             name="flavor"
             value={form.flavor}
