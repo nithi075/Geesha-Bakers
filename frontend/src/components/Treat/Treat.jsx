@@ -8,11 +8,11 @@ const menuCategories = [
   { title: "CLASSIC", value: "classic", img: "/images/menu/menu1.jpg" },
   { title: "OCCASIONAL", value: "occsional", img: "/images/menu/menu3.jpg" },
   { title: "BROWNIES", value: "brownies", img: "/images/menu/menu7.jpg" },
-  { title: "CUPCAKES", value: "cupcakes", img: "/images/menu/menu2.jpg" },
-  { title: "JAR CAKES", value: "jarcakes", img: "/images/menu/menu4.jpeg" },
-  { title: "WAFFLES", value: "waffles", img: "/images/menu/menu5.jpg" },
-  { title: "CAKE POPS", value: "cakepops", img: "/images/menu/menu6.jpeg" },
-  { title: "CAKESLICES", value: "cakeslices", img: "/images/menu/menu8.jpg" },
+  { title: "CUPCAKES", value: "cupcakes", img: "/images/menu/menu8.jpg" },
+  { title: "JAR CAKES", value: "jarcakes", img: "/images/menu/menu2.jpeg" },
+  { title: "WAFFLES", value: "waffles", img: "/images/menu/menu4.jpg" },
+  { title: "CAKE POPS", value: "cakepops", img: "/images/menu/menu5.jpeg" },
+  { title: "CAKESLICES", value: "cakeslices", img: "/images/menu/menu6.jpg" },
 ];
 
 /* ===== OCCASION TYPES ===== */
@@ -40,7 +40,6 @@ export default function Treats() {
 
   const [products, setProducts] = useState([]);
   const [category, setCategory] = useState("all");
-
   const [flavour, setFlavour] = useState("all");
   const [occasionType, setOccasionType] = useState("all");
 
@@ -63,9 +62,16 @@ export default function Treats() {
     const cat = searchParams.get("category") || "all";
     setCategory(cat);
     setCurrentPage(1);
+  }, [searchParams]);
+
+  /* ===== RESET SUB FILTERS WHEN CATEGORY CHANGES ===== */
+  useEffect(() => {
     setFlavour("all");
     setOccasionType("all");
-  }, [searchParams]);
+    setPriceRange("all");
+    setOnlyBestseller(false);
+    setSortBy("");
+  }, [category]);
 
   /* ===== PRICE HELPER ===== */
   const getBasePrice = (item) => {
@@ -126,7 +132,11 @@ export default function Treats() {
             className={`menu-filter-item ${
               category === item.value ? "active" : ""
             }`}
-            onClick={() => setSearchParams({ category: item.value })}
+            onClick={() =>
+              setSearchParams({
+                category: category === item.value ? "all" : item.value,
+              })
+            }
           >
             <div className="menu-filter-img">
               <img src={item.img} alt={item.title} />
@@ -135,7 +145,9 @@ export default function Treats() {
           </div>
         ))}
       </div>
-       <div className="filter-bar">
+
+      {/* ===== FILTER BAR ===== */}
+      <div className="filter-bar">
         <button
           className={`filter-chip ${priceRange === "low" ? "active" : ""}`}
           onClick={() =>
@@ -172,7 +184,11 @@ export default function Treats() {
               className={`menu-filter-item ${
                 occasionType === item.value ? "active" : ""
               }`}
-              onClick={() => setOccasionType(item.value)}
+              onClick={() =>
+                setOccasionType(
+                  occasionType === item.value ? "all" : item.value
+                )
+              }
             >
               <div className="menu-filter-img">
                 <img src={item.img} alt={item.title} />
@@ -192,7 +208,9 @@ export default function Treats() {
               className={`menu-filter-item ${
                 flavour === item.value ? "active" : ""
               }`}
-              onClick={() => setFlavour(item.value)}
+              onClick={() =>
+                setFlavour(flavour === item.value ? "all" : item.value)
+              }
             >
               <div className="menu-filter-img">
                 <img src={item.img} alt={item.title} />
@@ -202,9 +220,6 @@ export default function Treats() {
           ))}
         </div>
       )}
-
-      {/* ===== FILTER BAR ===== */}
-     
 
       {/* ===== PRODUCTS GRID ===== */}
       <div className="treats-grid">
@@ -216,16 +231,12 @@ export default function Treats() {
           >
             <div className="card-img-box">
               {item.bestseller && <span className="badge">BESTSELLER</span>}
-
               <img
                 className="treat-img"
                 src={item.images?.[0] || "/placeholder-cake.jpg"}
                 alt={item.title}
               />
-
-              <span className="treat-price-tag">
-                ₹{getBasePrice(item)}
-              </span>
+              <span className="treat-price-tag">₹{getBasePrice(item)}</span>
             </div>
 
             <div className="card-content">
