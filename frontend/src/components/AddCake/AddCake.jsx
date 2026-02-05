@@ -41,12 +41,17 @@ export default function AddCake() {
   const handleChange = (e) => {
     const { name, value, type, checked } = e.target;
 
-    // 🔥 CATEGORY → PRICING TYPE RULE
+    // CATEGORY LOGIC
     if (name === "category") {
-      if (["classic", "occsional"].includes(value)) {
+      if (value === "occasional") {
         setPricingType("kg");
+        setForm((prev) => ({ ...prev, flavor: "" }));
+      } else if (["classic", "brownies", "cupcakes"].includes(value)) {
+        setPricingType("kg");
+        setForm((prev) => ({ ...prev, occasion: "" }));
       } else {
         setPricingType("piece");
+        setForm((prev) => ({ ...prev, flavor: "", occasion: "" }));
       }
     }
 
@@ -101,6 +106,11 @@ export default function AddCake() {
 
     if (pricingType === "piece" && !priceByPiece["1"]) {
       alert("❌ 1 piece price is required");
+      return;
+    }
+
+    if (form.category === "occasional" && !form.occasion) {
+      alert("❌ Occasion is required for Occasional cakes");
       return;
     }
 
@@ -162,10 +172,15 @@ export default function AddCake() {
         />
 
         {/* CATEGORY */}
-        <select name="category" value={form.category} onChange={handleChange} required>
+        <select
+          name="category"
+          value={form.category}
+          onChange={handleChange}
+          required
+        >
           <option value="">Category</option>
           <option value="classic">Classic</option>
-          <option value="occsional">Occasional</option>
+          <option value="occasional">Occasional</option>
           <option value="brownies">Brownies</option>
           <option value="cupcakes">Cupcakes</option>
           <option value="jarcakes">Jar Cakes</option>
@@ -175,25 +190,39 @@ export default function AddCake() {
         </select>
 
         {/* FLAVOR */}
-        <select name="flavor" value={form.flavor} onChange={handleChange}>
-          <option value="">Flavor</option>
-          <option value="chocolate">Chocolate</option>
-          <option value="strawberry">Strawberry</option>
-          <option value="blackcurrant">Blackcurrant</option>
-          <option value="mango">Mango</option>
-          <option value="pineapple">Pineapple</option>
-          <option value="redvelvet">Red Velvet</option>
-          <option value="oreo">Oreo</option>
-        </select>
+        {["classic", "brownies", "cupcakes"].includes(form.category) && (
+          <select
+            name="flavor"
+            value={form.flavor}
+            onChange={handleChange}
+            required
+          >
+            <option value="">Flavor</option>
+            <option value="chocolate">Chocolate</option>
+            <option value="strawberry">Strawberry</option>
+            <option value="blackcurrant">Blackcurrant</option>
+            <option value="mango">Mango</option>
+            <option value="pineapple">Pineapple</option>
+            <option value="redvelvet">Red Velvet</option>
+            <option value="oreo">Oreo</option>
+          </select>
+        )}
 
         {/* OCCASION */}
-        <select name="occasion" value={form.occasion} onChange={handleChange}>
-          <option value="">Occasion</option>
-          <option value="birthday">Birthday</option>
-          <option value="wedding">Wedding</option>
-          <option value="anniversary">Anniversary</option>
-          <option value="engagement">Engagement</option>
-        </select>
+        {form.category === "occasional" && (
+          <select
+            name="occasion"
+            value={form.occasion}
+            onChange={handleChange}
+            required
+          >
+            <option value="">Occasion</option>
+            <option value="birthday">Birthday</option>
+            <option value="wedding">Wedding</option>
+            <option value="anniversary">Anniversary</option>
+            <option value="engagement">Engagement</option>
+          </select>
+        )}
 
         {/* KG PRICE */}
         {pricingType === "kg" && (
