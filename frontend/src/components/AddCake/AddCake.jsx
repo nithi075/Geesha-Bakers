@@ -41,17 +41,22 @@ export default function AddCake() {
   const handleChange = (e) => {
     const { name, value, type, checked } = e.target;
 
-    // CATEGORY LOGIC
+    // ✅ CATEGORY → PRICING LOGIC
     if (name === "category") {
-      if (value === "occasional") {
+      if (value === "classic" || value === "occasional") {
         setPricingType("kg");
-        setForm((prev) => ({ ...prev, flavor: "" }));
-      } else if (["classic", "brownies", "cupcakes"].includes(value)) {
-        setPricingType("kg");
-        setForm((prev) => ({ ...prev, occasion: "" }));
+        setForm((prev) => ({
+          ...prev,
+          flavor: value === "occasional" ? "" : prev.flavor,
+          occasion: value === "classic" ? "" : prev.occasion,
+        }));
       } else {
         setPricingType("piece");
-        setForm((prev) => ({ ...prev, occasion: "" }));
+        setForm((prev) => ({
+          ...prev,
+          flavor: "",
+          occasion: "",
+        }));
       }
     }
 
@@ -114,7 +119,7 @@ export default function AddCake() {
       return;
     }
 
-    if (form.category !== "occasional" && !form.flavor) {
+    if (form.category !== "occasional" && pricingType === "kg" && !form.flavor) {
       alert("❌ Flavor is required");
       return;
     }
@@ -194,8 +199,8 @@ export default function AddCake() {
           <option value="cakeslices">Cake Slices</option>
         </select>
 
-        {/* FLAVOR – SHOW FOR ALL EXCEPT OCCASIONAL */}
-        {form.category && form.category !== "occasional" && (
+        {/* FLAVOR (ONLY FOR KG NON-OCCASIONAL) */}
+        {pricingType === "kg" && form.category !== "occasional" && (
           <select
             name="flavor"
             value={form.flavor}
