@@ -6,7 +6,7 @@ import API from "../api";
 /* ===== MAIN MENU ===== */
 const menuCategories = [
   { title: "CLASSIC", value: "classic", img: "/images/menu/menu1.jpg" },
-  { title: "OCCASIONAL", value: "occsional", img: "/images/menu/menu3.jpg" },
+  { title: "OCCASIONAL", value: "occasional", img: "/images/menu/menu3.jpg" }, // ✅ FIXED
   { title: "BROWNIES", value: "brownies", img: "/images/menu/menu7.jpg" },
   { title: "CUPCAKES", value: "cupcakes", img: "/images/menu/menu8.jpg" },
   { title: "JAR CAKES", value: "jarcakes", img: "/images/menu/menu2.jpg" },
@@ -15,7 +15,7 @@ const menuCategories = [
   { title: "CAKESLICES", value: "cakeslices", img: "/images/menu/menu6.jpeg" },
 ];
 
-/* ===== OCCASION TYPES ===== */
+/* ===== OCCASIONS ===== */
 const occasionTypes = [
   { title: "Wedding", value: "wedding", img: "/images/occasion/wedding.jpg" },
   { title: "Birthday", value: "birthday", img: "/images/occasion/birthday.jpg" },
@@ -41,8 +41,8 @@ export default function Treats() {
   const [products, setProducts] = useState([]);
 
   const [category, setCategory] = useState("all");
-  const [flavor, setFlavor] = useState("all");          // ✅ backend match
-  const [occasion, setOccasion] = useState("all");      // ✅ backend match
+  const [flavor, setFlavor] = useState("all");
+  const [occasion, setOccasion] = useState("all");
 
   const [priceRange, setPriceRange] = useState("all");
   const [onlyBestseller, setOnlyBestseller] = useState(false);
@@ -65,7 +65,7 @@ export default function Treats() {
     setCurrentPage(1);
   }, [searchParams]);
 
-  /* ===== RESET SUB FILTERS WHEN CATEGORY CHANGES ===== */
+  /* ===== RESET FILTERS ON CATEGORY CHANGE ===== */
   useEffect(() => {
     setFlavor("all");
     setOccasion("all");
@@ -74,20 +74,18 @@ export default function Treats() {
     setSortBy("");
   }, [category]);
 
-  /* ===== PRICE HELPER ===== */
-  const getBasePrice = (item) => {
-    if (item.pricingType === "piece") {
-      return Number(item.priceByPiece?.["1"] || 0);
-    }
-    return Number(item.priceByKg?.["1"] || 0);
-  };
+  /* ===== PRICE ===== */
+  const getBasePrice = (item) =>
+    item.pricingType === "piece"
+      ? Number(item.priceByPiece?.["1"] || 0)
+      : Number(item.priceByKg?.["1"] || 0);
 
-  /* ===== FILTER LOGIC ===== */
+  /* ===== FILTER ===== */
   const filteredProducts = products
     .filter((item) => {
       if (category !== "all" && item.category !== category) return false;
 
-      if (category === "occsional" && occasion !== "all") {
+      if (category === "occasional" && occasion !== "all") {
         if (item.occasion !== occasion) return false;
       }
 
@@ -95,7 +93,7 @@ export default function Treats() {
         ["classic", "cupcakes", "brownies"].includes(category) &&
         flavor !== "all"
       ) {
-        if (item.flavor !== flavor) return false;
+        if (!item.flavor || item.flavor !== flavor) return false;
       }
 
       const price = getBasePrice(item);
@@ -111,7 +109,6 @@ export default function Treats() {
     });
 
   const totalPages = Math.ceil(filteredProducts.length / itemsPerPage);
-
   const paginatedProducts = filteredProducts.slice(
     (currentPage - 1) * itemsPerPage,
     currentPage * itemsPerPage
@@ -125,14 +122,12 @@ export default function Treats() {
 
   return (
     <section className="treats-section">
-      {/* ===== MAIN CATEGORY MENU ===== */}
+      {/* ===== CATEGORY MENU ===== */}
       <div className="menu-filter">
         {menuCategories.map((item) => (
           <div
             key={item.value}
-            className={`menu-filter-item ${
-              category === item.value ? "active" : ""
-            }`}
+            className={`menu-filter-item ${category === item.value ? "active" : ""}`}
             onClick={() =>
               setSearchParams({
                 category: category === item.value ? "all" : item.value,
@@ -151,9 +146,7 @@ export default function Treats() {
       <div className="filter-bar">
         <button
           className={`filter-chip ${priceRange === "low" ? "active" : ""}`}
-          onClick={() =>
-            setPriceRange(priceRange === "low" ? "all" : "low")
-          }
+          onClick={() => setPriceRange(priceRange === "low" ? "all" : "low")}
         >
           Under ₹500
         </button>
@@ -180,15 +173,13 @@ export default function Treats() {
         </button>
       </div>
 
-      {/* ===== OCCASION SUB MENU ===== */}
-      {category === "occsional" && (
+      {/* ===== OCCASION MENU ===== */}
+      {category === "occasional" && (
         <div className="menu-filter">
           {occasionTypes.map((item) => (
             <div
               key={item.value}
-              className={`menu-filter-item ${
-                occasion === item.value ? "active" : ""
-              }`}
+              className={`menu-filter-item ${occasion === item.value ? "active" : ""}`}
               onClick={() =>
                 setOccasion(occasion === item.value ? "all" : item.value)
               }
@@ -208,9 +199,7 @@ export default function Treats() {
           {flavourMenu.map((item) => (
             <div
               key={item.value}
-              className={`menu-filter-item ${
-                flavor === item.value ? "active" : ""
-              }`}
+              className={`menu-filter-item ${flavor === item.value ? "active" : ""}`}
               onClick={() =>
                 setFlavor(flavor === item.value ? "all" : item.value)
               }
@@ -224,7 +213,7 @@ export default function Treats() {
         </div>
       )}
 
-      {/* ===== PRODUCTS GRID ===== */}
+      {/* ===== PRODUCTS ===== */}
       <div className="treats-grid">
         {paginatedProducts.map((item) => (
           <div
@@ -239,14 +228,12 @@ export default function Treats() {
                 src={item.images?.[0] || "/placeholder-cake.jpg"}
                 alt={item.title}
               />
-              <span className="treat-price-tag">
-                ₹{getBasePrice(item)}
-              </span>
+              <span className="treat-price-tag">₹{getBasePrice(item)}</span>
             </div>
 
             <div className="card-content">
               <h3 className="cake-name">{item.title}</h3>
-              <p className="cake-category">4.2 ⭐</p>
+              <p>4.2 ⭐</p>
             </div>
           </div>
         ))}
@@ -255,25 +242,19 @@ export default function Treats() {
       {/* ===== PAGINATION ===== */}
       {totalPages > 1 && (
         <div className="pagination">
-          <button
-            disabled={currentPage === 1}
-            onClick={() => goToPage(currentPage - 1)}
-          >
+          <button disabled={currentPage === 1} onClick={() => goToPage(currentPage - 1)}>
             Prev
           </button>
 
-          {[...Array(totalPages)].map((_, i) => {
-            const page = i + 1;
-            return (
-              <button
-                key={page}
-                className={currentPage === page ? "active" : ""}
-                onClick={() => goToPage(page)}
-              >
-                {page}
-              </button>
-            );
-          })}
+          {[...Array(totalPages)].map((_, i) => (
+            <button
+              key={i}
+              className={currentPage === i + 1 ? "active" : ""}
+              onClick={() => goToPage(i + 1)}
+            >
+              {i + 1}
+            </button>
+          ))}
 
           <button
             disabled={currentPage === totalPages}

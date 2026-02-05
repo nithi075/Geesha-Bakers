@@ -55,7 +55,16 @@ export const getSingleProduct = async (req, res) => {
 ========================= */
 export const createProduct = async (req, res) => {
   try {
-    const { pricingType, category, flavour, occasionType } = req.body;
+    const {
+      title,
+      pricingType,
+      category,
+      flavor,      // ✅ CORRECT
+      occasion,    // ✅ CORRECT
+      cakeMessage,
+      eggless,
+      bestseller,
+    } = req.body;
 
     if (!pricingType) {
       return res.status(400).json({ error: "pricingType is required" });
@@ -69,24 +78,16 @@ export const createProduct = async (req, res) => {
     let priceByPiece = {};
 
     if (pricingType === "kg") {
-      try {
-        priceByKg = JSON.parse(req.body.priceByKg);
-        if (!priceByKg["1"]) {
-          return res.status(400).json({ error: "1Kg price required" });
-        }
-      } catch {
-        return res.status(400).json({ error: "Invalid priceByKg format" });
+      priceByKg = JSON.parse(req.body.priceByKg || "{}");
+      if (!priceByKg["1"]) {
+        return res.status(400).json({ error: "1Kg price required" });
       }
     }
 
     if (pricingType === "piece") {
-      try {
-        priceByPiece = JSON.parse(req.body.priceByPiece);
-        if (!priceByPiece["1"]) {
-          return res.status(400).json({ error: "1 piece price required" });
-        }
-      } catch {
-        return res.status(400).json({ error: "Invalid priceByPiece format" });
+      priceByPiece = JSON.parse(req.body.priceByPiece || "{}");
+      if (!priceByPiece["1"]) {
+        return res.status(400).json({ error: "1 piece price required" });
       }
     }
 
@@ -113,32 +114,21 @@ export const createProduct = async (req, res) => {
 
     const imageUrls = await Promise.all(uploadPromises);
 
-    /* ---------- Cake Message Rule ---------- */
-    let cakeMessage = req.body.cakeMessage || "";
-    if (category === "brownies") {
-      cakeMessage = "";
-    }
-
     /* ---------- Create Product ---------- */
     const product = new Product({
-      title: req.body.title,
-      description: req.body.description || "",
-
+      title,
       category,
       pricingType,
       priceByKg,
       priceByPiece,
-      cakeMessage,
-
+      cakeMessage: category === "brownies" ? "" : cakeMessage || "",
       images: imageUrls,
 
-      // ✅ FIXED FIELD NAMES
-      flavour: flavour || "",
-      occasionType: occasionType || "",
+      flavor: flavor || "",        // ✅ FIXED
+      occasion: occasion || "",    // ✅ FIXED
 
-      eggless: req.body.eggless === "true" || req.body.eggless === true,
-      bestseller:
-        req.body.bestseller === "true" || req.body.bestseller === true,
+      eggless: eggless === "true" || eggless === true,
+      bestseller: bestseller === "true" || bestseller === true,
     });
 
     await product.save();
@@ -158,7 +148,16 @@ export const updateProduct = async (req, res) => {
       return res.status(404).json({ error: "Product not found" });
     }
 
-    const { pricingType, category, flavour, occasionType } = req.body;
+    const {
+      title,
+      pricingType,
+      category,
+      flavor,      // ✅
+      occasion,    // ✅
+      cakeMessage,
+      eggless,
+      bestseller,
+    } = req.body;
 
     let priceByKg = {};
     let priceByPiece = {};
@@ -201,24 +200,19 @@ export const updateProduct = async (req, res) => {
     }
 
     /* ---------- Update Fields ---------- */
-    product.title = req.body.title;
-    product.description = req.body.description || "";
-
+    product.title = title;
     product.category = category;
     product.pricingType = pricingType;
     product.priceByKg = priceByKg;
     product.priceByPiece = priceByPiece;
-    product.cakeMessage = category === "brownies" ? "" : req.body.cakeMessage;
-
+    product.cakeMessage = category === "brownies" ? "" : cakeMessage || "";
     product.images = images;
 
-    // ✅ FIXED FIELD NAMES
-    product.flavour = flavour || "";
-    product.occasionType = occasionType || "";
+    product.flavor = flavor || "";       // ✅ FIXED
+    product.occasion = occasion || "";   // ✅ FIXED
 
-    product.eggless = req.body.eggless === "true" || req.body.eggless === true;
-    product.bestseller =
-      req.body.bestseller === "true" || req.body.bestseller === true;
+    product.eggless = eggless === "true" || eggless === true;
+    product.bestseller = bestseller === "true" || bestseller === true;
 
     await product.save();
     res.json(product);
