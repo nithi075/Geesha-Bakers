@@ -3,15 +3,31 @@ import { useNavigate, useSearchParams } from "react-router-dom";
 import "./Treat.css";
 import API from "../api";
 
-/* ===== MENU FILTERS ===== */
+/* ===== MAIN MENU ===== */
 const menuCategories = [
   { title: "CLASSIC", value: "classic", img: "/images/menu/menu1.jpg" },
   { title: "OCCASIONAL", value: "occsional", img: "/images/menu/menu3.jpg" },
   { title: "BROWNIES", value: "brownies", img: "/images/menu/menu7.jpg" },
-  { title: "JAR CAKES", value: "jarcakes", img: "/images/menu/menu2.jpg" },
-  { title: "WAFFLES", value: "waffles", img: "/images/menu/menu4.jpeg" },
-  { title: "CAKE POPS", value: "cakepops", img: "/images/menu/menu5.jpg" },
-  { title: "CAKESLICES", value: "cakeslices", img: "/images/menu/menu6.jpeg" },
+  { title: "CUPCAKES", value: "cupcakes", img: "/images/menu/menu2.jpg" },
+];
+
+/* ===== OCCASION TYPES ===== */
+const occasionTypes = [
+  { title: "Wedding", value: "wedding", img: "/images/occasion/wedding.jpg" },
+  { title: "Birthday", value: "birthday", img: "/images/occasion/birthday.jpg" },
+  { title: "Anniversary", value: "anniversary", img: "/images/occasion/anniversary.jpg" },
+  { title: "Engagement", value: "engagement", img: "/images/occasion/engagement.jpg" },
+];
+
+/* ===== FLAVOURS ===== */
+const flavourMenu = [
+  { title: "Chocolate", value: "chocolate", img: "/images/flavours/chocolate.jpg" },
+  { title: "Strawberry", value: "strawberry", img: "/images/flavours/strawberry.jpg" },
+  { title: "Blackcurrant", value: "blackcurrant", img: "/images/flavours/blackcurrant.jpg" },
+  { title: "Mango", value: "mango", img: "/images/flavours/mango.jpg" },
+  { title: "Pineapple", value: "pineapple", img: "/images/flavours/pineapple.jpg" },
+  { title: "Red Velvet", value: "redvelvet", img: "/images/flavours/redvelvet.jpg" },
+  { title: "Oreo", value: "oreo", img: "/images/flavours/oreo.jpg" },
 ];
 
 export default function Treats() {
@@ -21,6 +37,9 @@ export default function Treats() {
   const [products, setProducts] = useState([]);
   const [category, setCategory] = useState("all");
 
+  const [flavour, setFlavour] = useState("all");
+  const [occasionType, setOccasionType] = useState("all");
+
   const [priceRange, setPriceRange] = useState("all");
   const [onlyBestseller, setOnlyBestseller] = useState(false);
   const [sortBy, setSortBy] = useState("");
@@ -28,36 +47,49 @@ export default function Treats() {
   const [currentPage, setCurrentPage] = useState(1);
   const itemsPerPage = 8;
 
-  /* ---------------- FETCH DATA ---------------- */
+  /* ===== FETCH PRODUCTS ===== */
   useEffect(() => {
     API.get("/products")
       .then((res) => setProducts(res.data))
       .catch(console.error);
   }, []);
 
-  /* -------- READ CATEGORY FROM URL -------- */
+  /* ===== READ CATEGORY FROM URL ===== */
   useEffect(() => {
     const cat = searchParams.get("category") || "all";
     setCategory(cat);
     setCurrentPage(1);
+    setFlavour("all");
+    setOccasionType("all");
   }, [searchParams]);
 
   /* ===== PRICE HELPER ===== */
-  const getBasePrice = (cake) => {
-    if (cake.pricingType === "piece") {
-      return Number(cake.priceByPiece?.["1"] || 0);
+  const getBasePrice = (item) => {
+    if (item.pricingType === "piece") {
+      return Number(item.priceByPiece?.["1"] || 0);
     }
-    return Number(cake.priceByKg?.["1"] || 0);
+    return Number(item.priceByKg?.["1"] || 0);
   };
 
-  /* ---------------- FILTER ---------------- */
+  /* ===== FILTER LOGIC ===== */
   const filteredProducts = products
-    .filter((cake) => {
-      if (category !== "all" && cake.category !== category) return false;
+    .filter((item) => {
+      if (category !== "all" && item.category !== category) return false;
 
-      const price = getBasePrice(cake);
+      if (category === "occsional" && occasionType !== "all") {
+        if (item.occasionType !== occasionType) return false;
+      }
+
+      if (
+        ["classic", "cupcakes", "brownies"].includes(category) &&
+        flavour !== "all"
+      ) {
+        if (item.flavour !== flavour) return false;
+      }
+
+      const price = getBasePrice(item);
       if (priceRange === "low" && price > 500) return false;
-      if (onlyBestseller && !cake.bestseller) return false;
+      if (onlyBestseller && !item.bestseller) return false;
 
       return true;
     })
@@ -82,7 +114,7 @@ export default function Treats() {
 
   return (
     <section className="treats-section">
-      {/* ===== IMAGE MENU FILTER ===== */}
+      {/* ===== MAIN CATEGORY MENU ===== */}
       <div className="menu-filter">
         {menuCategories.map((item) => (
           <div
@@ -99,6 +131,46 @@ export default function Treats() {
           </div>
         ))}
       </div>
+
+      {/* ===== OCCASIONAL SUB MENU ===== */}
+      {category === "occsional" && (
+        <div className="menu-filter">
+          {occasionTypes.map((item) => (
+            <div
+              key={item.value}
+              className={`menu-filter-item ${
+                occasionType === item.value ? "active" : ""
+              }`}
+              onClick={() => setOccasionType(item.value)}
+            >
+              <div className="menu-filter-img">
+                <img src={item.img} alt={item.title} />
+              </div>
+              <span>{item.title}</span>
+            </div>
+          ))}
+        </div>
+      )}
+
+      {/* ===== FLAVOUR MENU ===== */}
+      {["classic", "cupcakes", "brownies"].includes(category) && (
+        <div className="menu-filter">
+          {flavourMenu.map((item) => (
+            <div
+              key={item.value}
+              className={`menu-filter-item ${
+                flavour === item.value ? "active" : ""
+              }`}
+              onClick={() => setFlavour(item.value)}
+            >
+              <div className="menu-filter-img">
+                <img src={item.img} alt={item.title} />
+              </div>
+              <span>{item.title}</span>
+            </div>
+          ))}
+        </div>
+      )}
 
       {/* ===== FILTER BAR ===== */}
       <div className="filter-bar">
@@ -127,38 +199,32 @@ export default function Treats() {
           <option value="priceLow">Price ↑</option>
           <option value="priceHigh">Price ↓</option>
         </select>
-
-        <button className="filter-chip" onClick={() => navigate("/add-cake")}>
-          More
-        </button>
       </div>
 
       {/* ===== PRODUCTS GRID ===== */}
       <div className="treats-grid">
-        {paginatedProducts.map((cake) => (
+        {paginatedProducts.map((item) => (
           <div
-            key={cake._id}
+            key={item._id}
             className="treat-card"
-            onClick={() => navigate(`/cake/${cake._id}`)}
+            onClick={() => navigate(`/cake/${item._id}`)}
           >
             <div className="card-img-box">
-              {cake.bestseller && (
-                <span className="badge">BESTSELLER</span>
-              )}
+              {item.bestseller && <span className="badge">BESTSELLER</span>}
 
               <img
                 className="treat-img"
-                src={cake.images?.[0] || "/placeholder-cake.jpg"}
-                alt={cake.title}
+                src={item.images?.[0] || "/placeholder-cake.jpg"}
+                alt={item.title}
               />
 
               <span className="treat-price-tag">
-                ₹{getBasePrice(cake)}
+                ₹{getBasePrice(item)}
               </span>
             </div>
 
             <div className="card-content">
-              <h3 className="cake-name">{cake.title}</h3>
+              <h3 className="cake-name">{item.title}</h3>
               <p className="cake-category">4.2 ⭐</p>
             </div>
           </div>

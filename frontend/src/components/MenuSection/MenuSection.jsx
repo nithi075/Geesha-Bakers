@@ -6,6 +6,7 @@ const categories = [
   { id: 1, title: "CLASSIC", value: "classic", img: "/images/menu/menu1.jpg" },
   { id: 2, title: "OCCASIONAL", value: "occsional", img: "/images/menu/menu3.jpg" },
      {id: 7, title: "BROWNIES", value: "brownies", img: "/images/menu/menu7.jpg" },
+  { id: 8, title: "CUPCAKES", value: "cupcakes", img: "/images/menu/menu8.jpg" },
   { id: 3, title: "JAR CAKES", value: "jarcakes", img: "/images/menu/menu2.jpg" },
   { id: 4, title: "WAFFLES", value: "waffles", img: "/images/menu/menu4.jpeg" },
   { id: 5, title: "CAKE POPS", value: "cakepops", img: "/images/menu/menu5.jpg" },

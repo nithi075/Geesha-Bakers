@@ -9,9 +9,28 @@ import {
 
 const router = express.Router();
 
+/* =========================
+   PRODUCT ROUTES
+========================= */
+
+// 👉 Get all products
 router.get("/", getProducts);
+
+// 👉 Get single product by ID
 router.get("/:id", getSingleProduct);
-router.post("/", upload.array("images", 5), createProduct);
-router.put("/:id", upload.array("images", 5), updateProduct);
+
+// 👉 Create new product
+router.post(
+  "/",
+  upload.array("images", 5), // max 5 images
+  createProduct
+);
+
+// 👉 Update existing product
+router.put(
+  "/:id",
+  upload.array("images", 5), // max 5 images
+  updateProduct
+);
 
 export default router;

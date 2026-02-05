@@ -55,7 +55,7 @@ export const getSingleProduct = async (req, res) => {
 ========================= */
 export const createProduct = async (req, res) => {
   try {
-    const { pricingType, category } = req.body;
+    const { pricingType, category, flavour, occasionType } = req.body;
 
     if (!pricingType) {
       return res.status(400).json({ error: "pricingType is required" });
@@ -113,27 +113,28 @@ export const createProduct = async (req, res) => {
 
     const imageUrls = await Promise.all(uploadPromises);
 
-    /* ---------- Cake message safety ---------- */
+    /* ---------- Cake Message Rule ---------- */
     let cakeMessage = req.body.cakeMessage || "";
     if (category === "brownies") {
       cakeMessage = "";
     }
 
+    /* ---------- Create Product ---------- */
     const product = new Product({
       title: req.body.title,
+      description: req.body.description || "",
+
+      category,
       pricingType,
       priceByKg,
       priceByPiece,
       cakeMessage,
 
-      rating: Number(req.body.rating || 0),
-      reviews: req.body.reviews || "",
-
       images: imageUrls,
 
-      category,
-      flavor: req.body.flavor,
-      occasion: req.body.occasion,
+      // ✅ FIXED FIELD NAMES
+      flavour: flavour || "",
+      occasionType: occasionType || "",
 
       eggless: req.body.eggless === "true" || req.body.eggless === true,
       bestseller:
@@ -157,7 +158,7 @@ export const updateProduct = async (req, res) => {
       return res.status(404).json({ error: "Product not found" });
     }
 
-    const { pricingType, category } = req.body;
+    const { pricingType, category, flavour, occasionType } = req.body;
 
     let priceByKg = {};
     let priceByPiece = {};
@@ -199,19 +200,21 @@ export const updateProduct = async (req, res) => {
       return res.status(400).json({ error: "Maximum 5 images allowed" });
     }
 
+    /* ---------- Update Fields ---------- */
     product.title = req.body.title;
+    product.description = req.body.description || "";
+
+    product.category = category;
     product.pricingType = pricingType;
     product.priceByKg = priceByKg;
     product.priceByPiece = priceByPiece;
     product.cakeMessage = category === "brownies" ? "" : req.body.cakeMessage;
 
-    product.rating = Number(req.body.rating || 0);
-    product.reviews = req.body.reviews || "";
     product.images = images;
 
-    product.category = category;
-    product.flavor = req.body.flavor;
-    product.occasion = req.body.occasion;
+    // ✅ FIXED FIELD NAMES
+    product.flavour = flavour || "";
+    product.occasionType = occasionType || "";
 
     product.eggless = req.body.eggless === "true" || req.body.eggless === true;
     product.bestseller =
