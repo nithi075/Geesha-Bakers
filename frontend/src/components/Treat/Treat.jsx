@@ -13,7 +13,7 @@ const menuCategories = [
   { title: "WAFFLES", value: "waffles", img: "/images/menu/menu4.jpeg" },
   { title: "CAKE POPS", value: "cakepops", img: "/images/menu/menu5.jpg" },
   { title: "CAKESLICES", value: "cakeslices", img: "/images/menu/menu6.jpeg" },
-];         
+];
 
 /* ===== OCCASION TYPES ===== */
 const occasionTypes = [
@@ -39,9 +39,10 @@ export default function Treats() {
   const [searchParams, setSearchParams] = useSearchParams();
 
   const [products, setProducts] = useState([]);
+
   const [category, setCategory] = useState("all");
-  const [flavour, setFlavour] = useState("all");
-  const [occasionType, setOccasionType] = useState("all");
+  const [flavor, setFlavor] = useState("all");          // ✅ backend match
+  const [occasion, setOccasion] = useState("all");      // ✅ backend match
 
   const [priceRange, setPriceRange] = useState("all");
   const [onlyBestseller, setOnlyBestseller] = useState(false);
@@ -66,8 +67,8 @@ export default function Treats() {
 
   /* ===== RESET SUB FILTERS WHEN CATEGORY CHANGES ===== */
   useEffect(() => {
-    setFlavour("all");
-    setOccasionType("all");
+    setFlavor("all");
+    setOccasion("all");
     setPriceRange("all");
     setOnlyBestseller(false);
     setSortBy("");
@@ -86,15 +87,15 @@ export default function Treats() {
     .filter((item) => {
       if (category !== "all" && item.category !== category) return false;
 
-      if (category === "occsional" && occasionType !== "all") {
-        if (item.occasionType !== occasionType) return false;
+      if (category === "occsional" && occasion !== "all") {
+        if (item.occasion !== occasion) return false;
       }
 
       if (
         ["classic", "cupcakes", "brownies"].includes(category) &&
-        flavour !== "all"
+        flavor !== "all"
       ) {
-        if (item.flavour !== flavour) return false;
+        if (item.flavor !== flavor) return false;
       }
 
       const price = getBasePrice(item);
@@ -173,24 +174,23 @@ export default function Treats() {
           <option value="priceLow">Price ↑</option>
           <option value="priceHigh">Price ↓</option>
         </select>
+
         <button className="filter-chip" onClick={() => navigate("/add-cake")}>
           More
         </button>
       </div>
 
-      {/* ===== OCCASIONAL SUB MENU ===== */}
+      {/* ===== OCCASION SUB MENU ===== */}
       {category === "occsional" && (
         <div className="menu-filter">
           {occasionTypes.map((item) => (
             <div
               key={item.value}
               className={`menu-filter-item ${
-                occasionType === item.value ? "active" : ""
+                occasion === item.value ? "active" : ""
               }`}
               onClick={() =>
-                setOccasionType(
-                  occasionType === item.value ? "all" : item.value
-                )
+                setOccasion(occasion === item.value ? "all" : item.value)
               }
             >
               <div className="menu-filter-img">
@@ -209,10 +209,10 @@ export default function Treats() {
             <div
               key={item.value}
               className={`menu-filter-item ${
-                flavour === item.value ? "active" : ""
+                flavor === item.value ? "active" : ""
               }`}
               onClick={() =>
-                setFlavour(flavour === item.value ? "all" : item.value)
+                setFlavor(flavor === item.value ? "all" : item.value)
               }
             >
               <div className="menu-filter-img">
@@ -239,7 +239,9 @@ export default function Treats() {
                 src={item.images?.[0] || "/placeholder-cake.jpg"}
                 alt={item.title}
               />
-              <span className="treat-price-tag">₹{getBasePrice(item)}</span>
+              <span className="treat-price-tag">
+                ₹{getBasePrice(item)}
+              </span>
             </div>
 
             <div className="card-content">

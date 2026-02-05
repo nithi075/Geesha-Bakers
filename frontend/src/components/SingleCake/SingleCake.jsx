@@ -100,7 +100,7 @@ export default function SingleCake() {
         <img src={activeImg || "/placeholder-cake.jpg"} alt={cake.title} />
       </div>
 
-      {/* MULTI IMAGE THUMBNAILS (FOR BOTH) */}
+      {/* MULTI IMAGE THUMBNAILS */}
       {cake.images?.length > 1 && (
         <div className="swiggy-thumb-row">
           {cake.images.map((img, i) => (
@@ -117,6 +117,13 @@ export default function SingleCake() {
 
       <section className="swiggy-page">
         <h1>{cake.title}</h1>
+
+        {/* ⭐ FLAVOR DISPLAY */}
+        {cake.flavor && (
+          <div className="cake-flavor">
+            🍰 Flavor: <strong>{cake.flavor}</strong>
+          </div>
+        )}
 
         {/* PRICE */}
         <div className="swiggy-price">₹{price}</div>

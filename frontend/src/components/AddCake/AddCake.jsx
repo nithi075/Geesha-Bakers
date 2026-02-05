@@ -5,7 +5,7 @@ import API from "../api";
 export default function AddCake() {
   const [form, setForm] = useState({
     title: "",
-    rating: "",
+    rating: 0,
     reviews: "",
     category: "",
     flavor: "",
@@ -14,17 +14,14 @@ export default function AddCake() {
     bestseller: false,
   });
 
-  // 🔹 pricing type
   const [pricingType, setPricingType] = useState("kg");
 
-  // 🔹 kg pricing
   const [priceByKg, setPriceByKg] = useState({
     "0.5": "",
     "1": "",
     "2": "",
   });
 
-  // 🔹 piece pricing
   const [priceByPiece, setPriceByPiece] = useState({
     "1": "",
     "6": "",
@@ -35,22 +32,18 @@ export default function AddCake() {
   const [images, setImages] = useState([]);
   const [previews, setPreviews] = useState([]);
 
-  /* =========================
-     CLEANUP PREVIEWS
-  ========================= */
+  /* ===== CLEANUP PREVIEWS ===== */
   useEffect(() => {
     return () => previews.forEach((url) => URL.revokeObjectURL(url));
   }, [previews]);
 
-  /* =========================
-     HANDLE INPUT
-  ========================= */
+  /* ===== HANDLE INPUT ===== */
   const handleChange = (e) => {
     const { name, value, type, checked } = e.target;
 
-    // 🔥 CATEGORY → PRICING RULE
+    // 🔥 CATEGORY → PRICING TYPE RULE
     if (name === "category") {
-      if (value === "classic" || value === "occasional") {
+      if (["classic", "occsional"].includes(value)) {
         setPricingType("kg");
       } else {
         setPricingType("piece");
@@ -63,23 +56,14 @@ export default function AddCake() {
     }));
   };
 
-  /* =========================
-     HANDLE KG PRICE
-  ========================= */
-  const handleKgPrice = (kg, value) => {
+  /* ===== PRICE HANDLERS ===== */
+  const handleKgPrice = (kg, value) =>
     setPriceByKg((prev) => ({ ...prev, [kg]: value }));
-  };
 
-  /* =========================
-     HANDLE PIECE PRICE
-  ========================= */
-  const handlePiecePrice = (qty, value) => {
+  const handlePiecePrice = (qty, value) =>
     setPriceByPiece((prev) => ({ ...prev, [qty]: value }));
-  };
 
-  /* =========================
-     HANDLE IMAGES
-  ========================= */
+  /* ===== IMAGE HANDLING ===== */
   const handleImages = (e) => {
     const files = Array.from(e.target.files);
 
@@ -101,9 +85,7 @@ export default function AddCake() {
     setPreviews((prev) => prev.filter((_, i) => i !== index));
   };
 
-  /* =========================
-     SUBMIT
-  ========================= */
+  /* ===== SUBMIT ===== */
   const submitCake = async (e) => {
     e.preventDefault();
 
@@ -143,10 +125,10 @@ export default function AddCake() {
       await API.post("/products", data);
       alert("🎂 Product Added Successfully!");
 
-      // reset
+      // RESET
       setForm({
         title: "",
-        rating: "",
+        rating: 0,
         reviews: "",
         category: "",
         flavor: "",
@@ -166,9 +148,6 @@ export default function AddCake() {
     }
   };
 
-  /* =========================
-     JSX
-  ========================= */
   return (
     <section className="add-cake-section">
       <h1>Add New Product 🎂</h1>
@@ -183,30 +162,48 @@ export default function AddCake() {
         />
 
         {/* CATEGORY */}
-        <select name="category" value={form.category} onChange={handleChange}>
+        <select name="category" value={form.category} onChange={handleChange} required>
           <option value="">Category</option>
           <option value="classic">Classic</option>
-          <option value="occasional">Occasional</option>
+          <option value="occsional">Occasional</option>
+          <option value="brownies">Brownies</option>
+          <option value="cupcakes">Cupcakes</option>
+          <option value="jarcakes">Jar Cakes</option>
           <option value="waffles">Waffles</option>
           <option value="cakepops">Cake Pops</option>
           <option value="cakeslices">Cake Slices</option>
-          <option value="brownies">Brownies</option>
-          <option value="cupcake">Cup Cake</option>
-          <option value="jarcake">Jar Cake</option>
         </select>
 
-        {/* ===== KG PRICE ===== */}
+        {/* FLAVOR */}
+        <select name="flavor" value={form.flavor} onChange={handleChange}>
+          <option value="">Flavor</option>
+          <option value="chocolate">Chocolate</option>
+          <option value="strawberry">Strawberry</option>
+          <option value="blackcurrant">Blackcurrant</option>
+          <option value="mango">Mango</option>
+          <option value="pineapple">Pineapple</option>
+          <option value="redvelvet">Red Velvet</option>
+          <option value="oreo">Oreo</option>
+        </select>
+
+        {/* OCCASION */}
+        <select name="occasion" value={form.occasion} onChange={handleChange}>
+          <option value="">Occasion</option>
+          <option value="birthday">Birthday</option>
+          <option value="wedding">Wedding</option>
+          <option value="anniversary">Anniversary</option>
+          <option value="engagement">Engagement</option>
+        </select>
+
+        {/* KG PRICE */}
         {pricingType === "kg" && (
           <>
-            <h3 className="kg-title">Price by Weight</h3>
-
             <input
               type="number"
               placeholder="0.5 Kg Price ₹"
               value={priceByKg["0.5"]}
               onChange={(e) => handleKgPrice("0.5", e.target.value)}
             />
-
             <input
               type="number"
               placeholder="1 Kg Price ₹ (Required)"
@@ -214,14 +211,12 @@ export default function AddCake() {
               onChange={(e) => handleKgPrice("1", e.target.value)}
               required
             />
-
             <input
               type="number"
               placeholder="2 Kg Price ₹"
               value={priceByKg["2"]}
               onChange={(e) => handleKgPrice("2", e.target.value)}
             />
-
             <input
               placeholder="Cake Message"
               value={cakeMessage}
@@ -230,11 +225,9 @@ export default function AddCake() {
           </>
         )}
 
-        {/* ===== PIECE PRICE ===== */}
+        {/* PIECE PRICE */}
         {pricingType === "piece" && (
           <>
-            <h3 className="kg-title">Price by Pieces</h3>
-
             <input
               type="number"
               placeholder="1 Piece Price ₹ (Required)"
@@ -242,14 +235,12 @@ export default function AddCake() {
               onChange={(e) => handlePiecePrice("1", e.target.value)}
               required
             />
-
             <input
               type="number"
               placeholder="6 Pieces Price ₹"
               value={priceByPiece["6"]}
               onChange={(e) => handlePiecePrice("6", e.target.value)}
             />
-
             <input
               type="number"
               placeholder="12 Pieces Price ₹"
@@ -271,7 +262,7 @@ export default function AddCake() {
           ))}
         </div>
 
-        {/* CHECKBOX */}
+        {/* CHECKBOXES */}
         <div className="check-row">
           <label>
             <input
@@ -290,7 +281,7 @@ export default function AddCake() {
               checked={form.bestseller}
               onChange={handleChange}
             />
-            Best Seller
+            Bestseller
           </label>
         </div>
 
