@@ -32,6 +32,8 @@ export default function AddCake() {
   const [images, setImages] = useState([]);
   const [previews, setPreviews] = useState([]);
 
+  const FLAVOR_CATEGORIES = ["classic", "cupcakes", "jarcakes", "waffles"];
+
   /* ===== CLEANUP PREVIEWS ===== */
   useEffect(() => {
     return () => previews.forEach((url) => URL.revokeObjectURL(url));
@@ -41,23 +43,21 @@ export default function AddCake() {
   const handleChange = (e) => {
     const { name, value, type, checked } = e.target;
 
-    // ✅ CATEGORY → PRICING LOGIC
     if (name === "category") {
       if (value === "classic" || value === "occasional") {
         setPricingType("kg");
-        setForm((prev) => ({
-          ...prev,
-          flavor: value === "occasional" ? "" : prev.flavor,
-          occasion: value === "classic" ? "" : prev.occasion,
-        }));
       } else {
         setPricingType("piece");
-        setForm((prev) => ({
-          ...prev,
-          flavor: "",
-          occasion: "",
-        }));
       }
+
+      // reset unwanted fields
+      setForm((prev) => ({
+        ...prev,
+        category: value,
+        flavor: FLAVOR_CATEGORIES.includes(value) ? prev.flavor : "",
+        occasion: value === "occasional" ? prev.occasion : "",
+      }));
+      return;
     }
 
     setForm((prev) => ({
@@ -115,11 +115,11 @@ export default function AddCake() {
     }
 
     if (form.category === "occasional" && !form.occasion) {
-      alert("❌ Occasion is required for Occasional cakes");
+      alert("❌ Occasion is required");
       return;
     }
 
-    if (form.category !== "occasional" && pricingType === "kg" && !form.flavor) {
+    if (FLAVOR_CATEGORIES.includes(form.category) && !form.flavor) {
       alert("❌ Flavor is required");
       return;
     }
@@ -145,7 +145,6 @@ export default function AddCake() {
       await API.post("/products", data);
       alert("🎂 Product Added Successfully!");
 
-      // RESET
       setForm({
         title: "",
         rating: 0,
@@ -199,8 +198,8 @@ export default function AddCake() {
           <option value="cakeslices">Cake Slices</option>
         </select>
 
-        {/* FLAVOR (ONLY FOR KG NON-OCCASIONAL) */}
-        {pricingType === "kg" && form.category !== "occasional" && (
+        {/* FLAVOR */}
+        {FLAVOR_CATEGORIES.includes(form.category) && (
           <select
             name="flavor"
             value={form.flavor}
