@@ -7,11 +7,10 @@
   --pink-soft: #ffd1d1;
   --choco: #3b2a2a;
   --white: #ffffff;
-  --gradient-pink: linear-gradient(90deg, #ff9494, #ff6b6b);
-}
 
-* {
-  box-sizing: border-box;
+  /* Swiggy-ish neutrals */
+  --title-dark: #282c3f;
+  --subtle-text: #686b78;
 }
 
 /* ===============================
@@ -24,50 +23,45 @@
 }
 
 /* ===============================
-   TITLE
+   TITLE (SWIGGY STYLE)
 =============================== */
 .il-title {
-  text-align: center;
-  font-size: 30px;
+  font-size: 28px;
   font-weight: 800;
-  letter-spacing: 0.3px;
+  color: var(--title-dark);
   margin-bottom: 6px;
-
-  background: var(--gradient-pink);
-  -webkit-background-clip: text;
-  -webkit-text-fill-color: transparent;
-
+  text-align: center;
   position: relative;
   display: inline-block;
+  letter-spacing: 0.2px;
 }
 
+/* Small accent bar under title */
 .il-title::after {
   content: "";
   position: absolute;
   left: 50%;
-  bottom: -6px;
+  bottom: -8px;
   transform: translateX(-50%);
-  width: 42px;
+  width: 36px;
   height: 4px;
-  border-radius: 999px;
+  border-radius: 6px;
   background: var(--pink);
-  opacity: 0.8;
 }
 
 /* ===============================
-   SUB TITLE
+   SUB TITLE (SWIGGY STYLE)
 =============================== */
 .il-sub {
-  text-align: center;
-  margin-top: 14px;
+  margin-top: 16px;
   font-size: 15px;
   font-weight: 500;
-  color: var(--choco);
-  opacity: 0.75;
+  color: var(--subtle-text);
   line-height: 1.6;
+  text-align: center;
 }
 
-/* center padding */
+/* Center padding */
 .il-title,
 .il-sub {
   padding: 0 16px;
@@ -148,10 +142,10 @@
   margin-top: 8px;
   font-size: 14px;
   font-weight: 600;
-  color: var(--choco);
+  color: var(--title-dark);
   line-height: 1.4;
-
   height: 40px;
+
   display: -webkit-box;
   -webkit-line-clamp: 2;
   -webkit-box-orient: vertical;
@@ -195,11 +189,18 @@
   }
 
   .il-title {
-    font-size: 34px;
+    font-size: 32px;
+    text-align: left;
+  }
+
+  .il-title::after {
+    left: 0;
+    transform: none;
   }
 
   .il-sub {
     font-size: 16px;
+    text-align: left;
   }
 
   .il-title,
@@ -218,11 +219,12 @@
   }
 
   .il-title {
-    font-size: 38px;
+    font-size: 36px;
   }
 
   .il-sub {
     font-size: 17px;
+    max-width: 520px;
   }
 
   .il-title,
