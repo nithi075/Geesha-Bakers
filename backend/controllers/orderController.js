@@ -36,9 +36,6 @@ export const placeOrder = async (req, res) => {
           : `https://sweettooth-backend.onrender.com${item.img}`;
       }
 
-      // ✅ CAKE PAGE LINK
-      const cakeLink = `https://sweettooth-pkaq.onrender.com/cake/${item.productId}`;
-
       message += `\n${index + 1}. *${item.title}*\n`;
       message += `   Qty: ${item.qty}\n`;
       message += `   Price: ₹${item.price}\n`;
@@ -50,8 +47,6 @@ export const placeOrder = async (req, res) => {
       if (imageUrl) {
         message += `   🖼 Image: ${imageUrl}\n`;
       }
-
-      message += `   🔗 Cake Link: ${cakeLink}\n`;
 
       total += item.price * item.qty;
     });
