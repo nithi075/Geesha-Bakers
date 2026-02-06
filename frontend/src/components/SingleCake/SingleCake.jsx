@@ -78,20 +78,18 @@ export default function SingleCake() {
 
   const isCake = cake.pricingType === "kg";
 
-  /* ================= KG HANDLER ================= */
+  /* ================= HANDLERS ================= */
   const handleKg = (k) => {
     setKg(k);
     setPrice(cake.priceByKg[k]);
   };
 
-  /* ================= PIECE QTY ================= */
   const handleQtyChange = (val) => {
     const qty = Math.max(1, Number(val));
     setPieceQty(qty);
     setPrice(qty * perPiecePrice);
   };
 
-  /* ================= ADD TO CART ================= */
   const addToCart = async (redirect = false) => {
     try {
       setAdding(true);
@@ -153,7 +151,6 @@ export default function SingleCake() {
       <section className="swiggy-page">
         <h1>{cake.title}</h1>
 
-        {/* FLAVOR */}
         {cake.flavor && (
           <div className="cake-flavor-badge">
             <span>🍰</span>
@@ -161,10 +158,8 @@ export default function SingleCake() {
           </div>
         )}
 
-        {/* PRICE */}
         <div className="swiggy-price">₹{price}</div>
 
-        {/* ================= KG CAKES ================= */}
         {isCake && (
           <>
             <div className="swiggy-kg">
@@ -195,20 +190,14 @@ export default function SingleCake() {
           </>
         )}
 
-        {/* ================= PIECE PRODUCTS ================= */}
         {!isCake && (
           <div className="piece-qty-wrap">
-            <button onClick={() => handleQtyChange(pieceQty - 1)}>
-              −
-            </button>
+            <button onClick={() => handleQtyChange(pieceQty - 1)}>−</button>
             <span>{pieceQty}</span>
-            <button onClick={() => handleQtyChange(pieceQty + 1)}>
-              +
-            </button>
+            <button onClick={() => handleQtyChange(pieceQty + 1)}>+</button>
           </div>
         )}
 
-        {/* ================= ACTION BUTTONS ================= */}
         <div className="swiggy-action-row">
           <button
             className="swiggy-buy-btn"
@@ -234,27 +223,29 @@ export default function SingleCake() {
           <h2>You may also like</h2>
 
           <div className="like-row">
-            {related.map((item) => (
-              <div
-                key={item._id}
-                className="like-card"
-                onClick={() => navigate(`/cake/${item._id}`)}
-              >
-                <img
-                  src={
-                    item.images?.[0] ||
-                    "/placeholder-cake.jpg"
-                  }
-                  alt={item.title}
-                />
-                <h4>{item.title}</h4>
-                <p>
-                  ₹
-                  {item.priceByKg?.["1"] ||
-                    item.priceByPiece?.["1"]}
-                </p>
-              </div>
-            ))}
+            {related.map((item) => {
+              const itemPrice =
+                item.priceByKg?.["1"] ||
+                item.priceByPiece?.["1"];
+
+              return (
+                <div
+                  key={item._id}
+                  className="like-card"
+                  onClick={() => navigate(`/cake/${item._id}`)}
+                >
+                  <img
+                    src={
+                      item.images?.[0] ||
+                      "/placeholder-cake.jpg"
+                    }
+                    alt={item.title}
+                  />
+                  <h4>{item.title}</h4>
+                  <p>₹{itemPrice}</p>
+                </div>
+              );
+            })}
           </div>
         </section>
       )}
