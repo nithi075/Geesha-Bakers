@@ -21,8 +21,8 @@ export default function SingleCake() {
   const [pieceQty, setPieceQty] = useState(1);
   const [perPiecePrice, setPerPiecePrice] = useState(0);
 
-  // RELATED PRODUCTS
-  const [related, setRelated] = useState([]);
+  // ✅ RELATED PRODUCTS STATE
+  const [relatedProducts, setRelatedProducts] = useState([]);
 
   /* ================= FETCH PRODUCT ================= */
   useEffect(() => {
@@ -65,7 +65,7 @@ export default function SingleCake() {
           (p) => p._id !== cake._id
         );
 
-        setRelated(filtered.slice(0, 6));
+        setRelatedProducts(filtered);
       } catch (err) {
         console.error("Related fetch failed", err);
       }
@@ -124,7 +124,7 @@ export default function SingleCake() {
 
   return (
     <>
-      {/* ================= MAIN IMAGE ================= */}
+      {/* MAIN IMAGE */}
       <div className="swiggy-img-wrap">
         <img
           src={activeImg || "/placeholder-cake.jpg"}
@@ -132,7 +132,7 @@ export default function SingleCake() {
         />
       </div>
 
-      {/* ================= THUMBNAILS ================= */}
+      {/* THUMBNAILS */}
       {cake.images?.length > 1 && (
         <div className="swiggy-thumb-row">
           {cake.images.map((img, i) => (
@@ -147,14 +147,12 @@ export default function SingleCake() {
         </div>
       )}
 
-      {/* ================= DETAILS ================= */}
       <section className="swiggy-page">
         <h1>{cake.title}</h1>
 
         {cake.flavor && (
-          <div className="cake-flavor-badge">
-            <span>🍰</span>
-            <strong>{cake.flavor}</strong>
+          <div className="cake-flavor">
+            🍰 Flavor: <strong>{cake.flavor}</strong>
           </div>
         )}
 
@@ -192,9 +190,13 @@ export default function SingleCake() {
 
         {!isCake && (
           <div className="piece-qty-wrap">
-            <button onClick={() => handleQtyChange(pieceQty - 1)}>−</button>
+            <button onClick={() => handleQtyChange(pieceQty - 1)}>
+              -
+            </button>
             <span>{pieceQty}</span>
-            <button onClick={() => handleQtyChange(pieceQty + 1)}>+</button>
+            <button onClick={() => handleQtyChange(pieceQty + 1)}>
+              +
+            </button>
           </div>
         )}
 
@@ -218,39 +220,40 @@ export default function SingleCake() {
       </section>
 
       {/* ================= YOU MAY ALSO LIKE ================= */}
-      {related.length > 0 && (
-        <section className="you-may-like">
-          <h2>You may also like</h2>
+      {relatedProducts.length > 0 && (
+        <section className="india-loves">
+          <h1 className="il-title">You may also like</h1>
 
-          <div className="like-row">
-            {related.map((item) => {
-              const itemPrice =
-                item.priceByKg?.["1"] ||
-                item.priceByPiece?.["1"];
+          <div className="il-grid">
+            {relatedProducts.slice(0, 8).map((item) => {
+              const relPrice =
+                item.pricingType === "piece"
+                  ? item.priceByPiece?.["1"]
+                  : item.priceByKg?.["1"];
 
               return (
-                <div
+                <article
                   key={item._id}
-                  className="like-card"
+                  className="portrait-card"
                   onClick={() => navigate(`/cake/${item._id}`)}
                 >
-                  <img
-                    src={
-                      item.images?.[0] ||
-                      "/placeholder-cake.jpg"
-                    }
-                    alt={item.title}
-                  />
-                  <h4>{item.title}</h4>
-                  <p>₹{itemPrice}</p>
-                </div>
+                  <div className="portrait-img">
+                    <img
+                      src={item.images?.[0] || "/placeholder-cake.jpg"}
+                      alt={item.title}
+                    />
+                    <span className="price-tag">
+                      ₹{relPrice}
+                    </span>
+                  </div>
+                  <h3>{item.title}</h3>
+                </article>
               );
             })}
           </div>
         </section>
       )}
 
-      {/* ================= REVIEWS ================= */}
       <SingleCakeReview />
     </>
   );
