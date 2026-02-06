@@ -2,13 +2,11 @@
    ROOT VARIABLES
 =============================== */
 :root {
-  --cream: #fff5e4;
   --pink: #ff9494;
   --pink-soft: #ffd1d1;
   --choco: #3b2a2a;
   --white: #ffffff;
 
-  /* Swiggy-ish neutrals */
   --title-dark: #282c3f;
   --subtle-text: #686b78;
 }
@@ -18,22 +16,206 @@
 =============================== */
 .india-loves {
   background: var(--white);
-  padding: 32px 0 36px;
+  padding: 36px 0 40px;
   font-family: "Quicksand", sans-serif;
 }
 
 /* ===============================
-   TITLE (SWIGGY STYLE)
+   HEADER (CENTER LIKE SWIGGY)
+=============================== */
+.il-header {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  text-align: center;
+  margin-bottom: 8px;
+}
+
+/* ===============================
+   TITLE
 =============================== */
 .il-title {
-  font-size: 28px;
+  font-size: 30px;
   font-weight: 800;
   color: var(--title-dark);
-  margin-bottom: 6px;
-  text-align: center;
   position: relative;
-  display: inline-block;
   letter-spacing: 0.2px;
+}
+
+/* Swiggy-style underline */
+.il-title::after {
+  content: "";
+  display: block;
+  margin: 8px auto 0;
+  width: 40px;
+  height: 4px;
+  border-radius: 8px;
+  background: var(--pink);
+}
+
+/* ===============================
+   SUB TITLE
+=============================== */
+.il-sub {
+  margin-top: 12px;
+  font-size: 15px;
+  font-weight: 500;
+  color: var(--subtle-text);
+  line-height: 1.6;
+  max-width: 520px;
+}
+
+/* ===============================
+   HORIZONTAL STRIP
+=============================== */
+.il-grid {
+  display: flex;
+  gap: 14px;
+  overflow-x: auto;
+  padding: 18px 16px 6px;
+  scroll-behavior: smooth;
+}
+
+.il-grid::-webkit-scrollbar {
+  display: none;
+}
+
+/* ===============================
+   CARD
+=============================== */
+.portrait-card {
+  flex: 0 0 auto;
+  width: 160px;
+  cursor: pointer;
+  display: flex;
+  flex-direction: column;
+}
+
+/* ===============================
+   IMAGE
+=============================== */
+.portrait-img {
+  position: relative;
+  width: 100%;
+  aspect-ratio: 1 / 1;
+  border-radius: 14px;
+  overflow: hidden;
+  background: var(--pink-soft);
+  box-shadow: 0 6px 16px rgba(59, 42, 42, 0.18);
+}
+
+.portrait-img img {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+  transition: transform 0.4s ease;
+}
+
+.portrait-card:hover img {
+  transform: scale(1.08);
+}
+
+/* ===============================
+   PRICE TAG
+=============================== */
+.price-tag {
+  position: absolute;
+  bottom: 8px;
+  left: 8px;
+  background: var(--white);
+  padding: 6px 12px;
+  border-radius: 999px;
+  font-size: 13px;
+  font-weight: 700;
+  color: var(--choco);
+  box-shadow: 0 4px 10px rgba(0, 0, 0, 0.15);
+}
+
+/* ===============================
+   PRODUCT TITLE
+=============================== */
+.portrait-title {
+  margin-top: 8px;
+  font-size: 14px;
+  font-weight: 600;
+  color: var(--title-dark);
+  line-height: 1.4;
+  height: 40px;
+
+  display: -webkit-box;
+  -webkit-line-clamp: 2;
+  -webkit-box-orient: vertical;
+  overflow: hidden;
+}
+
+/* ===============================
+   VIEW MORE BUTTON
+=============================== */
+.view-more-wrap {
+  display: flex;
+  justify-content: center;
+  margin-top: 26px;
+}
+
+.view-more-btn {
+  padding: 11px 32px;
+  border-radius: 999px;
+  border: 1.5px solid var(--pink);
+  background: var(--white);
+  color: var(--pink);
+  font-size: 14px;
+  font-weight: 700;
+  cursor: pointer;
+  transition: all 0.25s ease;
+}
+
+.view-more-btn:hover {
+  background: var(--pink);
+  color: #fff;
+  box-shadow: 0 6px 18px rgba(255, 148, 148, 0.45);
+  transform: translateY(-2px);
+}
+
+/* ===============================
+   TABLET
+=============================== */
+@media (min-width: 768px) {
+  .portrait-card {
+    width: 190px;
+  }
+
+  .il-title {
+    font-size: 34px;
+  }
+
+  .il-sub {
+    font-size: 16px;
+  }
+
+  .il-grid {
+    padding: 20px 40px;
+  }
+}
+
+/* ===============================
+   DESKTOP
+=============================== */
+@media (min-width: 1024px) {
+  .portrait-card {
+    width: 210px;
+  }
+
+  .il-title {
+    font-size: 38px;
+  }
+
+  .il-sub {
+    font-size: 17px;
+  }
+
+  .il-grid {
+    padding: 22px 80px;
+  }
 }
 
 /* Small accent bar under title */
