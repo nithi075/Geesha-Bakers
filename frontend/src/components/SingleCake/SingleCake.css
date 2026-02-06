@@ -62,6 +62,35 @@
   color: var(--text-dark);
 }
 
+/* ================= FLAVOR BADGE (UPDATED) ================= */
+.cake-flavor {
+  display: inline-flex;
+  align-items: center;
+  gap: 6px;
+  margin: 10px 0 14px;
+  padding: 6px 14px;
+  border-radius: 999px;
+  background: linear-gradient(
+    135deg,
+    var(--bg-soft),
+    var(--bg-main)
+  );
+  border: 1px solid var(--accent-primary);
+  font-size: 13px;
+  font-weight: 600;
+  color: var(--text-dark);
+}
+
+.cake-flavor strong {
+  color: var(--accent-primary);
+  font-weight: 700;
+}
+
+.cake-flavor::before {
+  content: "🍰";
+  font-size: 14px;
+}
+
 /* ================= PRICE ================= */
 .swiggy-price {
   font-size: 20px;
@@ -222,30 +251,77 @@
   }
 }
 
-/* ================= FLAVOR ================= */
-.cake-flavor-badge {
-  display: inline-flex;
-  align-items: center;
-  gap: 6px;
-  background: linear-gradient(
-    135deg,
-    var(--bg-soft),
-    var(--bg-main)
-  );
-  border: 1px solid var(--accent-primary);
-  padding: 6px 14px;
-  border-radius: 999px;
-  font-size: 13px;
-  font-weight: 600;
-  margin: 10px 0 14px;
+/* ================= YOU MAY ALSO LIKE ================= */
+.india-loves {
+  margin-top: 32px;
+  padding: 16px;
+  background: var(--bg-main);
+}
+
+.il-title {
+  font-size: 18px;
+  font-weight: 700;
+  margin-bottom: 16px;
   color: var(--text-dark);
 }
 
-.cake-flavor-badge span {
-  font-size: 14px;
+.il-grid {
+  display: grid;
+  grid-template-columns: repeat(2, 1fr);
+  gap: 14px;
 }
 
-.cake-flavor-badge strong {
-  color: var(--accent-primary);
+.portrait-card {
+  background: var(--white);
+  border-radius: 14px;
+  overflow: hidden;
+  cursor: pointer;
+  box-shadow: 0 6px 16px rgba(0, 0, 0, 0.08);
+  transition: all 0.25s ease;
+}
+
+.portrait-card:hover {
+  transform: translateY(-4px);
+}
+
+.portrait-img {
+  position: relative;
+  height: 140px;
+  background: var(--bg-soft);
+}
+
+.portrait-img img {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+}
+
+.price-tag {
+  position: absolute;
+  bottom: 8px;
+  right: 8px;
+  background: linear-gradient(
+    135deg,
+    var(--accent-primary),
+    var(--accent-hover)
+  );
+  color: #fff;
+  font-size: 13px;
   font-weight: 700;
+  padding: 4px 10px;
+  border-radius: 999px;
+}
+
+.portrait-card h3 {
+  font-size: 14px;
+  font-weight: 700;
+  padding: 10px;
+  color: var(--text-dark);
+}
+
+/* ================= DESKTOP GRID ================= */
+@media (min-width: 768px) {
+  .il-grid {
+    grid-template-columns: repeat(4, 1fr);
+  }
 }
