@@ -7,6 +7,7 @@
   --pink-soft: #ffd1d1;
   --choco: #3b2a2a;
   --white: #ffffff;
+  --gradient-pink: linear-gradient(90deg, #ff9494, #ff6b6b);
 }
 
 * {
@@ -18,26 +19,60 @@
 =============================== */
 .india-loves {
   background: var(--white);
-  padding: 28px 0 32px;
+  padding: 32px 0 36px;
   font-family: "Quicksand", sans-serif;
 }
 
 /* ===============================
-   TITLE
+   TITLE (ENHANCED)
 =============================== */
 .il-title {
   text-align: center;
-  font-size: 28px;
-  font-weight: 700;
-  color: var(--choco);
+  font-size: 30px;
+  font-weight: 800;
+  letter-spacing: 0.3px;
+  margin-bottom: 6px;
+
+  background: var(--gradient-pink);
+  -webkit-background-clip: text;
+  -webkit-text-fill-color: transparent;
+
+  position: relative;
+  display: inline-block;
 }
 
+/* underline accent */
+.il-title::after {
+  content: "";
+  position: absolute;
+  left: 50%;
+  bottom: -6px;
+  transform: translateX(-50%);
+  width: 42px;
+  height: 4px;
+  border-radius: 999px;
+  background: var(--pink);
+  opacity: 0.8;
+}
+
+/* ===============================
+   SUB TITLE (ENHANCED)
+=============================== */
 .il-sub {
   text-align: center;
-  margin-top: 4px;
-  font-size: 14px;
+  margin-top: 14px;
+  font-size: 15px;
+  font-weight: 500;
   color: var(--choco);
   opacity: 0.75;
+  line-height: 1.6;
+}
+
+/* wrap title + subtitle center nicely */
+.il-title,
+.il-sub {
+  padding-left: 16px;
+  padding-right: 16px;
 }
 
 /* ===============================
@@ -47,7 +82,7 @@
   display: flex;
   gap: 14px;
   overflow-x: auto;
-  padding: 16px 16px 6px;
+  padding: 18px 16px 6px;
   scroll-behavior: smooth;
   -webkit-overflow-scrolling: touch;
 }
@@ -106,7 +141,7 @@
 }
 
 /* ===============================
-   TITLE
+   CARD TITLE
 =============================== */
 .portrait-title {
   margin-top: 8px;
@@ -127,11 +162,11 @@
 .view-more-wrap {
   display: flex;
   justify-content: center;
-  margin-top: 22px;
+  margin-top: 24px;
 }
 
 .view-more-btn {
-  padding: 10px 28px;
+  padding: 11px 30px;
   border-radius: 999px;
   border: 1.5px solid var(--pink);
   background: var(--white);
@@ -157,6 +192,14 @@
     width: 190px;
   }
 
+  .il-title {
+    font-size: 34px;
+  }
+
+  .il-sub {
+    font-size: 16px;
+  }
+
   .il-title,
   .il-sub,
   .il-grid {
@@ -171,6 +214,14 @@
 @media (min-width: 1024px) {
   .portrait-card {
     width: 210px;
+  }
+
+  .il-title {
+    font-size: 38px;
+  }
+
+  .il-sub {
+    font-size: 17px;
   }
 
   .il-title,
