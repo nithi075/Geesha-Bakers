@@ -85,10 +85,10 @@ export default function ContactPage() {
               <h4>@geesha_bakers</h4>
               <p>Daily bakes & dessert reels</p>
               <a
-                href="https://www.instagram.com/sweet_tooth_trichy/"
+                href="https://www.instagram.com/geesha_bakers/"
                 target="_blank"
                 rel="noopener noreferrer"
-              >
+               >
                 <FaInstagram /> Follow on Instagram
               </a>
             </div>
