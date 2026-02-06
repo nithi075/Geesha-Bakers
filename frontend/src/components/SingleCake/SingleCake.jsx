@@ -21,7 +21,7 @@ export default function SingleCake() {
   const [pieceQty, setPieceQty] = useState(1);
   const [perPiecePrice, setPerPiecePrice] = useState(0);
 
-  // ✅ RELATED PRODUCTS STATE
+  // RELATED PRODUCTS (ONLY 4)
   const [relatedProducts, setRelatedProducts] = useState([]);
 
   /* ================= FETCH PRODUCT ================= */
@@ -51,7 +51,7 @@ export default function SingleCake() {
     fetchData();
   }, [id]);
 
-  /* ================= FETCH RELATED ================= */
+  /* ================= FETCH RELATED (SAME CATEGORY, 4 ONLY) ================= */
   useEffect(() => {
     if (!cake) return;
 
@@ -65,7 +65,7 @@ export default function SingleCake() {
           (p) => p._id !== cake._id
         );
 
-        setRelatedProducts(filtered);
+        setRelatedProducts(filtered.slice(0, 4));
       } catch (err) {
         console.error("Related fetch failed", err);
       }
@@ -124,7 +124,7 @@ export default function SingleCake() {
 
   return (
     <>
-      {/* MAIN IMAGE */}
+      {/* ================= MAIN IMAGE ================= */}
       <div className="swiggy-img-wrap">
         <img
           src={activeImg || "/placeholder-cake.jpg"}
@@ -132,7 +132,7 @@ export default function SingleCake() {
         />
       </div>
 
-      {/* THUMBNAILS */}
+      {/* ================= THUMBNAILS ================= */}
       {cake.images?.length > 1 && (
         <div className="swiggy-thumb-row">
           {cake.images.map((img, i) => (
@@ -152,7 +152,7 @@ export default function SingleCake() {
 
         {cake.flavor && (
           <div className="cake-flavor">
-            🍰 Flavor: <strong>{cake.flavor}</strong>
+            <strong>{cake.flavor}</strong>
           </div>
         )}
 
@@ -219,13 +219,13 @@ export default function SingleCake() {
         </div>
       </section>
 
-      {/* ================= YOU MAY ALSO LIKE ================= */}
+      {/* ================= YOU MAY ALSO LIKE (HORIZONTAL) ================= */}
       {relatedProducts.length > 0 && (
         <section className="india-loves">
           <h1 className="il-title">You may also like</h1>
 
           <div className="il-grid">
-            {relatedProducts.slice(0, 8).map((item) => {
+            {relatedProducts.map((item) => {
               const relPrice =
                 item.pricingType === "piece"
                   ? item.priceByPiece?.["1"]
@@ -239,14 +239,20 @@ export default function SingleCake() {
                 >
                   <div className="portrait-img">
                     <img
-                      src={item.images?.[0] || "/placeholder-cake.jpg"}
+                      src={
+                        item.images?.[0] ||
+                        "/placeholder-cake.jpg"
+                      }
                       alt={item.title}
                     />
                     <span className="price-tag">
                       ₹{relPrice}
                     </span>
                   </div>
-                  <h3>{item.title}</h3>
+
+                  <div className="portrait-title">
+                    {item.title}
+                  </div>
                 </article>
               );
             })}
